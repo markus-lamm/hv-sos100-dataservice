@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using log_api.Data;
-using log_api.Models;
+using LogApi.Data;
+using LogApi.Models;
 
-namespace log_api.Controllers;
+namespace LogApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

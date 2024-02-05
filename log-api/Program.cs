@@ -1,7 +1,7 @@
-using log_api.Data;
+using LogApi.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace log_api;
+namespace LogApi;
 
 public class Program
 {

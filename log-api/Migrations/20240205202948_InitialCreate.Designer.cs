@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using log_api.Data;
+using LogApi.Data;
 
 #nullable disable
 
-namespace log_api.Migrations
+namespace LogApi.Migrations
 {
     [DbContext(typeof(LogDbContext))]
     [Migration("20240205202948_InitialCreate")]

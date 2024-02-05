@@ -1,4 +1,4 @@
-﻿namespace log_api.Models
+﻿namespace LogApi.Models
 {
     public class Log
     {

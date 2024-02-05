@@ -1,7 +1,7 @@
-﻿using log_api.Models;
+﻿using LogApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace log_api.Data;
+namespace LogApi.Data;
 
 public class LogDbContext : DbContext
 {
