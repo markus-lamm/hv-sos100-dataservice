@@ -1,4 +1,4 @@
-namespace LogGui
+namespace Hv.SOS100.DataService.Log.Gui
 {
     public class Program
     {
