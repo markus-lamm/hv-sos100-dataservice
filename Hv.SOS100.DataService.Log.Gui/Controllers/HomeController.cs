@@ -1,8 +1,8 @@
-using LogGui.Models;
+using Hv.SOS100.DataService.Log.Gui.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace LogGui.Controllers
+namespace Hv.SOS100.DataService.Log.Gui.Controllers
 {
     public class HomeController : Controller
     {

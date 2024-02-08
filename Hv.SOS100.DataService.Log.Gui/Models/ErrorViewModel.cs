@@ -1,4 +1,4 @@
-namespace LogGui.Models
+namespace Hv.SOS100.DataService.Log.Gui.Models
 {
     public class ErrorViewModel
     {
