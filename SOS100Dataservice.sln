@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log-api", "log-api\log-api.csproj", "{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogApi", "LogApi\LogApi.csproj", "{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogGui", "LogGui\LogGui.csproj", "{F67932D1-F2BA-4657-8D1B-71DB16B492DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F67932D1-F2BA-4657-8D1B-71DB16B492DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F67932D1-F2BA-4657-8D1B-71DB16B492DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F67932D1-F2BA-4657-8D1B-71DB16B492DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F67932D1-F2BA-4657-8D1B-71DB16B492DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
