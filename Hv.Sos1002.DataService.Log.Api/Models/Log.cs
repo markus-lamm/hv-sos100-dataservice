@@ -1,4 +1,4 @@
-﻿namespace Hv.SOS100.DataService.Log.Api.Models
+﻿namespace Hv.Sos1002.DataService.Log.Api.Models
 {
     public class Log
     {

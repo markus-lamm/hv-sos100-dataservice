@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Hv.SOS100.DataService.Log.Api.Data;
+namespace Hv.Sos1002.DataService.Log.Api.Data;
 
 public class LogDbContext : DbContext
 {

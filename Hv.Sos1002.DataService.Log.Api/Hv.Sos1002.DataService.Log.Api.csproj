@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <RootNamespace>Hv.SOS100.DataService.Log.Api</RootNamespace>
+    <RootNamespace>Hv.Sos1002.DataService.Log.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

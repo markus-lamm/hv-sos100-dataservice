@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Hv.SOS100.DataService.Log.Api.Migrations
+namespace Hv.Sos1002.DataService.Log.Api.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

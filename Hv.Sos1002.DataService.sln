@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.SOS100.DataService.Log.Api", "Hv.SOS100.DataService.Log.Api\Hv.SOS100.DataService.Log.Api.csproj", "{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos1002.DataService.Log.Api", "Hv.Sos1002.DataService.Log.Api\Hv.Sos1002.DataService.Log.Api.csproj", "{B54F4F60-AE0D-4591-9FC5-F7A84F000E1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.SOS100.DataService.Log.Gui", "Hv.SOS100.DataService.Log.Gui\Hv.SOS100.DataService.Log.Gui.csproj", "{F67932D1-F2BA-4657-8D1B-71DB16B492DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos1002.DataService.Log.Gui", "Hv.Sos1002.DataService.Log.Gui\Hv.Sos1002.DataService.Log.Gui.csproj", "{F67932D1-F2BA-4657-8D1B-71DB16B492DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
