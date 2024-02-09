@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Hv.SOS100.DataService.Log.Api.Data;
+using Hv.Sos100.DataService.Log.Api.Data;
 
 #nullable disable
 
-namespace Hv.SOS100.DataService.Log.Api.Migrations
+namespace Hv.Sos100.DataService.Log.Api.Migrations
 {
     [DbContext(typeof(LogDbContext))]
     partial class LogDbContextModelSnapshot : ModelSnapshot
