@@ -1,7 +1,7 @@
-using Hv.Sos1002.DataService.Log.Api.Data;
+using Hv.Sos100.DataService.Log.Api.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hv.Sos1002.DataService.Log.Api;
+namespace Hv.Sos100.DataService.Log.Api;
 
 public class Program
 {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hv.Sos1002.DataService.Log.Api.Data;
+using Hv.Sos100.DataService.Log.Api.Data;
 
-namespace Hv.Sos1002.DataService.Log.Api.Controllers;
+namespace Hv.Sos100.DataService.Log.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
