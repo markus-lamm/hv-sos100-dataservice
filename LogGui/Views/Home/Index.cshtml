@@ -1,8 +1,29 @@
-﻿@{
+﻿@model List<Log>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Logs</h1>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="tableStyle">ID</th>
+                    <th class="tableStyle">Tid vid fel</th>
+                    <th class="tableStyle">Tjänst</th>
+                    <th class="tableStyle">Meddelande</th>
+                </tr>
+            </thead>
+            @foreach (var log in Model)
+            {
+                <tr>
+                    <td class="tableStyle">@log.Id</td>
+                    <td class="tableStyle">@log.TimeStamp</td>
+                    <td class="tableStyle">@log.SourceSystem</td>
+                    <td class="tableStyle">@log.Message</td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>
