@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LogApi.Data;
-using LogApi.Models;
+using Hv.Sos100.DataService.Log.Api.Data;
 
-namespace LogApi.Controllers;
+namespace Hv.Sos100.DataService.Log.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -20,11 +14,11 @@ public class LogsController : ControllerBase
 
     // GET: api/Logs
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Log>>> GetLogs() => await _context.Logs.ToListAsync();
+    public async Task<ActionResult<IEnumerable<Models.Log>>> GetLogs() => await _context.Logs.ToListAsync();
 
     // GET: api/Logs/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Log>> GetLog(int id)
+    public async Task<ActionResult<Models.Log>> GetLog(int id)
     {
         var log = await _context.Logs.FindAsync(id);
 
@@ -38,7 +32,7 @@ public class LogsController : ControllerBase
 
     // POST: api/Logs
     [HttpPost]
-    public async Task<ActionResult<Log>> PostLog(Log log)
+    public async Task<ActionResult<Models.Log>> PostLog(Models.Log log)
     {
         _context.Logs.Add(log);
         await _context.SaveChangesAsync();
