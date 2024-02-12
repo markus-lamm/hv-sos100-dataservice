@@ -14,8 +14,7 @@ jobs:
 
       - name: Build and publish project
         run: |
-          ./build.sh
-        shell: bash
+              dotnet build Hv.Sos100.DataService.Log.Api.csproj -c Release
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
