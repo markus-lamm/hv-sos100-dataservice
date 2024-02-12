@@ -1,7 +1,4 @@
-using LogGui.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace LogGui
+namespace Hv.Sos100.DataService.Log.Gui
 {
     public class Program
     {
