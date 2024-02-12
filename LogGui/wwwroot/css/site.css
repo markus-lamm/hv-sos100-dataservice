@@ -20,3 +20,27 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 0.8rem;
+}
+
+table{
+    width: 87vw;
+    margin-top: 5vh;
+}
+.tableStyle {
+    width: 10vw;
+}
+.tableStyle1 {
+    width: 5vw;
+}
+.tableStyle2 {
+    width: 25vw;
+}
+.tableHeader{
+    background-color: #F9F871
+}
+

@@ -7,21 +7,21 @@
     <h1 class="display-4">Logs</h1>
     <div>
         <table>
-            <thead>
+            <thead class="tableHeader">
                 <tr>
-                    <th class="tableStyle">ID</th>
+                    <th class="tableStyle1">ID</th>
                     <th class="tableStyle">Tid vid fel</th>
-                    <th class="tableStyle">Tjänst</th>
-                    <th class="tableStyle">Meddelande</th>
+                    <th class="tableStyle2">Tjänst</th>
+                    <th>Meddelande</th>
                 </tr>
             </thead>
             @foreach (var log in Model)
             {
                 <tr>
-                    <td class="tableStyle">@log.Id</td>
+                    <td class="tableStyle1">@log.Id</td>
                     <td class="tableStyle">@log.TimeStamp</td>
-                    <td class="tableStyle">@log.SourceSystem</td>
-                    <td class="tableStyle">@log.Message</td>
+                    <td class="tableStyle2">@log.SourceSystem</td>
+                    <td>@log.Message</td>
                 </tr>
             }
         </table>
