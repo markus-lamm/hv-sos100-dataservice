@@ -1,3 +1,6 @@
+using LogGui.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace LogGui
 {
     public class Program
