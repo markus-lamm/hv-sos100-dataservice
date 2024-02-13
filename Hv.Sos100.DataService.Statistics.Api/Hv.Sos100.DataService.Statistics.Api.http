@@ -1,0 +1,6 @@
+@Hv.Sos100.DataService.Statistics.Api_HostAddress = http://localhost:5019
+
+GET {{Hv.Sos100.DataService.Statistics.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
