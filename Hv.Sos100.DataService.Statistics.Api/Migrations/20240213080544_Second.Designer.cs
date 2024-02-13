@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatatserviceAPI.Migrations
 {
-    [DbContext(typeof(EventStatisticsContext))]
+    [DbContext(typeof(StatisticsContext))]
     [Migration("20240213080544_Second")]
     partial class Second
     {

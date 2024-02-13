@@ -3,9 +3,9 @@
 namespace Hv.Sos100.DataService.Statistics.Api.Models
 {
    
-    public class EventStatisticsContext : DbContext
+    public class StatisticsContext : DbContext
     {
-        public EventStatisticsContext(DbContextOptions<EventStatisticsContext> options)
+        public StatisticsContext(DbContextOptions<StatisticsContext> options)
         : base(options)
         { }
 

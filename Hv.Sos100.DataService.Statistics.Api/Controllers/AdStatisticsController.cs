@@ -13,9 +13,9 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
     [ApiController]
     public class AdStatisticsController : ControllerBase
     {
-        private readonly EventStatisticsContext _context;
+        private readonly StatisticsContext _context;
 
-        public AdStatisticsController(EventStatisticsContext context)
+        public AdStatisticsController(StatisticsContext context)
         {
             _context = context;
         }

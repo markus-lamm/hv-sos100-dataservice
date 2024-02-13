@@ -13,9 +13,9 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
     [ApiController]
     public class EventStatisticsController : ControllerBase
     {
-        private readonly EventStatisticsContext _context;
+        private readonly StatisticsContext _context;
 
-        public EventStatisticsController(EventStatisticsContext context)
+        public EventStatisticsController(StatisticsContext context)
         {
             _context = context;
         }

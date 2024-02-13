@@ -17,7 +17,7 @@ namespace Hv.Sos100.DataService.Statistics.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<EventStatisticsContext>(options =>
+            builder.Services.AddDbContext<StatisticsContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerDatabase")));
 
             var app = builder.Build();

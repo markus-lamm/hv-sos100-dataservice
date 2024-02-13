@@ -13,9 +13,9 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
     [ApiController]
     public class CountyStatisticsController : ControllerBase
     {
-        private readonly EventStatisticsContext _context;
+        private readonly StatisticsContext _context;
 
-        public CountyStatisticsController(EventStatisticsContext context)
+        public CountyStatisticsController(StatisticsContext context)
         {
             _context = context;
         }
