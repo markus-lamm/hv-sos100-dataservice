@@ -28,7 +28,7 @@ table, th, td {
 }
 
 table{
-    width: 87vw;
+    width: 90vw;
     margin-top: 5vh;
 }
 .tableStyle {
@@ -42,5 +42,9 @@ table{
 }
 .tableHeader{
     background-color: #F9F871
+}
+.showLogs{
+    display: flex;
+    justify-content:center;
 }
 
