@@ -1,9 +1,9 @@
-using Hv.Sos100.DataService.Log.Gui.Models;
+using LogGui.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace Hv.Sos100.DataService.Log.Gui.Controllers
+namespace LogGui.Controllers
 {
     public class HomeController : Controller
     {
@@ -17,7 +17,7 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Models.Log>? logsList = new List<Models.Log>();
+            List<Log>? logsList = new List<Log>();
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -27,7 +27,7 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         string content = await response.Content.ReadAsStringAsync();
-                        logsList = JsonSerializer.Deserialize<List<Models.Log>>(content,
+                        logsList = JsonSerializer.Deserialize<List<Log>>(content,
                         new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     }
                     else
@@ -40,8 +40,8 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
             }
             return View(logsList);
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
