@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using SyncBackgroundJobs.Model;
+using Quartz;
+using SyncBackgroundJobs.Jobs;
 
 namespace SyncBackgroundJobs
 {
@@ -9,9 +10,20 @@ namespace SyncBackgroundJobs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<DataServiceDbContext>(options =>
-             options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection")));
+            builder.Services.AddDbContext<StatisticsContext>(options =>
+             options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerDatabase")));
 
+            builder.Services.AddQuartz(options =>
+            {
+                options.UseMicrosoftDependencyInjectionJobFactory();
+
+                options.AddJob<AdvertisementStaticsJob>(JobKey.Create(nameof(AdvertisementStaticsJob)))
+                    .AddTrigger(trigger => trigger.ForJob(nameof(AdvertisementStaticsJob)).WithCronSchedule("0 0/1 * * * ?"));
+
+            });
+
+            builder.Services.AddQuartzHostedService();
+                
             var app = builder.Build();
 
             app.MapGet("/", () => "Hello World!");

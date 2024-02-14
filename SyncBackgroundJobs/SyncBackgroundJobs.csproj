@@ -14,10 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Jobs\" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.0" />
   </ItemGroup>
 
 </Project>
