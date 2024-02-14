@@ -1,0 +1,24 @@
+name: Publish build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build and publish project
+        run: |
+          ./build.sh
+        shell: bash
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: publish
+          path: publish

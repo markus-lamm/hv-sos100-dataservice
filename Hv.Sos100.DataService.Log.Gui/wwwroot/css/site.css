@@ -1,0 +1,50 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 0.8rem;
+}
+
+table{
+    width: 90vw;
+    margin-top: 5vh;
+}
+.tableStyle {
+    width: 10vw;
+}
+.tableStyle1 {
+    width: 5vw;
+}
+.tableStyle2 {
+    width: 25vw;
+}
+.tableHeader{
+    background-color: #F9F871
+}
+.showLogs{
+    display: flex;
+    justify-content:center;
+}
+
