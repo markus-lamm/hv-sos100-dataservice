@@ -9,10 +9,14 @@
     <link rel="stylesheet" href="~/Hv.Sos100.DataService.Log.Gui.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var isAuthenticated = ViewData["IsAuthenticated"] as string;
+        var userId = ViewData["UserId"] as string;
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Loggar</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LogGui</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,6 +30,53 @@
                 </div>
             </div>
         </nav>
+        <div>
+            @if (isAuthenticated != "true")
+            {
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Log In
+                </button>
+
+                <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form asp-controller="Home" asp-action="Login">
+                                    <div class="form-group">
+                                        <label for="inputUsername">Username</label>
+                                        <input class="form-control" id="inputUsername" name="username" placeholder="Enter Username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword">Password</label>
+                                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Enter Password">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div>
+                    Welcome, @userId!
+                </div>
+                <form asp-controller="Home" asp-action="Logout" >
+                    <button type="submit" class="btn btn-primary">Log Out</button>
+                </form>
+            }
+
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

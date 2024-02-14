@@ -1,44 +1,48 @@
 using Hv.Sos100.DataService.Log.Gui.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Text.Json;
+using Hv.Sos100.SingleSignOn;
+using Hv.Sos100.DataService.Log.Gui.Data;
 
 namespace Hv.Sos100.DataService.Log.Gui.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApiService _apiService;
+        private readonly AuthenticationService _authenticationService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApiService apiService, AuthenticationService authenticationService)
         {
             _logger = logger;
+            _apiService = apiService;
+            _authenticationService = authenticationService;
         }
-        string _baseURL = "https://informatik6.ei.hv.se/logapi/api/Logs";
+
         public async Task<IActionResult> Index()
         {
+            var existingSession = await _authenticationService.ResumeSession(controllerBase:this, HttpContext);
+            if (existingSession)
+            {
+                _authenticationService.ReadSessionVariables(controller:this, HttpContext);
+            }
+            return View(await _apiService.GetLogs() ?? new List<Models.Log>());
+        }
 
-            List<Models.Log>? logsList = new List<Models.Log>();
-            try
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            var authenticationResult = await _authenticationService.CreateSession(username, password, controllerBase: this, HttpContext);
+            if (authenticationResult)
             {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(_baseURL);
-                    HttpResponseMessage response = await client.GetAsync("Logs");
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        logsList = JsonSerializer.Deserialize<List<Models.Log>>(content,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    }
-                    else
-                        ViewBag.Message = "Tyvärr gick något fel: " + response.ReasonPhrase;
-                }
+                _authenticationService.ReadSessionVariables(controller:this, HttpContext);
             }
-            catch (Exception ex)
-            {
-                ViewBag.Message = "Tyvärr gick något fel: " + ex.Message;
-            }
-            return View(logsList);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Logout()
+        {
+            _authenticationService.EndSession(controllerBase: this, HttpContext);
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
