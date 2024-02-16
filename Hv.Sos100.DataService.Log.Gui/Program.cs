@@ -1,3 +1,6 @@
+using Hv.Sos100.DataService.Log.Gui.Data;
+using Hv.Sos100.SingleSignOn;
+
 namespace Hv.Sos100.DataService.Log.Gui
 {
     public class Program
@@ -8,6 +11,9 @@ namespace Hv.Sos100.DataService.Log.Gui
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<AuthenticationService>();
+            builder.Services.AddScoped<ApiService>();
+            builder.Services.AddSession();
 
             var app = builder.Build();
 
@@ -19,6 +25,7 @@ namespace Hv.Sos100.DataService.Log.Gui
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
