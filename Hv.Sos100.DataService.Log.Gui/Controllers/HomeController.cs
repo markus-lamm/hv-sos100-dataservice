@@ -26,12 +26,22 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
             {
                 _authenticationService.ReadSessionVariables(controller:this, HttpContext);
             }
-            return View(await _apiService.GetLogs() ?? new List<Models.Log>());
+
+            var logs = new List<Models.Log>();
+
+            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
+            
+            if (isAuthenticated == "true")
+            {
+                logs = await _apiService.GetLogs() ?? new List<Models.Log>();
+            }
+
+            return View(logs);
         }
 
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
-            var authenticationResult = await _authenticationService.CreateSession(username, password, controllerBase: this, HttpContext);
+            var authenticationResult = await _authenticationService.CreateSession(email, password, controllerBase: this, HttpContext);
             if (authenticationResult)
             {
                 _authenticationService.ReadSessionVariables(controller:this, HttpContext);
