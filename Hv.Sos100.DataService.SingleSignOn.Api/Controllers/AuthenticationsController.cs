@@ -102,13 +102,11 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
         [HttpPost("validateNewSession")]
         public async Task<ActionResult<Authentication>> ValidateNewSession(Account inputAccount)
         {
-            var apiAccounts = await _apiService.GetAccounts();
-            if (apiAccounts == null) { return NotFound("The api could not find any accounts"); }
+            if (inputAccount.Email == null || inputAccount.Password == null) { return BadRequest("The sent data must include an email and password"); }
+            var apiAccount = await _apiService.AuthAccount(inputAccount.Email, inputAccount.Password);
+            if (apiAccount == null) { return NotFound("The api could not find any account matching the input"); }
 
-            var foundAccount = apiAccounts.FirstOrDefault(searchAccount => inputAccount.Email == searchAccount.Email && inputAccount.Password == searchAccount.Password);
-            if (foundAccount == null) { return NotFound("The api could not match any accounts to the input"); }
-
-            var existingAuthentication = await _context.Authentication.FirstOrDefaultAsync(authentication => authentication.AccountId == foundAccount.Id.ToString());
+            var existingAuthentication = await _context.Authentication.FirstOrDefaultAsync(authentication => authentication.AccountId == apiAccount.Id.ToString());
             if (existingAuthentication != null)
             {
                 existingAuthentication.LastActivity = DateTime.Now;
@@ -123,11 +121,11 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             
             var newAuthentication = new Authentication
             {
-                AccountId = foundAccount.Id.ToString(),
+                AccountId = apiAccount.Id.ToString(),
                 LastActivity = DateTime.Now,
                 Token = Guid.NewGuid().ToString(),
                 TokenExpiration = DateTime.Now.AddMonths(1),
-                AccountType = foundAccount.AccountType
+                AccountType = apiAccount.AccountType
             };
 
             _context.Authentication.Add(newAuthentication);
@@ -166,14 +164,15 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             return Ok(authentication);
         }
 
-        // GET: api/Authentications/accounts
-        [HttpGet("accounts")]
-        public async Task<ActionResult<Account>> GetAccount()
+        // POST: api/Authentications/authenticate
+        [HttpPost("authenticate")]
+        public async Task<ActionResult<Account>> Authenticate(Account inputAccount)
         {
-            var accounts = await _apiService.GetAccounts();
-            if (accounts == null) { return NotFound(); }
+            if (inputAccount.Email == null || inputAccount.Password == null) { return BadRequest(); }
+            var apiAccount = await _apiService.AuthAccount(inputAccount.Email, inputAccount.Password);
+            if (apiAccount == null) { return NotFound(); }
 
-            return Ok(accounts);
+            return Ok(apiAccount);
         }
     }
 }
