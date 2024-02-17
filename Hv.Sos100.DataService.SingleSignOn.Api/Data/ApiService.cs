@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using Hv.Sos100.DataService.SingleSignOn.Api.Models;
 
 namespace Hv.Sos100.DataService.SingleSignOn.Api.Data;
@@ -8,39 +9,40 @@ internal class ApiService
     private readonly HttpClient _httpClient = new();
     private const string BaseUrl = "https://informatik3.ei.hv.se/KontoInloggAPI";
 
-    internal async Task<List<Account>?> GetAccounts()
+    internal async Task<Account?> AuthAccount(string email, string password)
     {
-        var users = await GetUsers();
-        var organizations = await GetOrganizations();
+        var user = await AuthUser(email, password);
+        if (user != null) { return user; }
 
-        if (users == null || organizations == null) { return null; }
+        var org = await AuthOrganizations(email, password);
+        if (org != null) { return org; }
 
-        foreach (var user in users)
-        {
-            user.AccountType = "User";
-        }
-
-        foreach (var org in organizations)
-        {
-            org.AccountType = "Organization";
-        }
-
-        return users.Concat(organizations).ToList();
+        return null;
     }
 
-    private async Task<List<Account>?> GetUsers()
+    private async Task<Account?> AuthUser(string email, string password)
     {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/api/Users");
+        var response = await _httpClient.PostAsync($"{BaseUrl}/api/AuthUsers", new StringContent(JsonSerializer.Serialize(
+            new { Email = email, Password = password }), Encoding.UTF8, "application/json"));
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<Account>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        var userList = JsonSerializer.Deserialize<List<Account>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var user = userList?.FirstOrDefault();
+        if (user != null) { user.AccountType = "User"; }
+        return user;
     }
 
-    private async Task<List<Account>?> GetOrganizations()
+    private async Task<Account?> AuthOrganizations(string email, string password)
     {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/api/Orgs");
+        var response = await _httpClient.PostAsync($"{BaseUrl}/api/AuthOrgs", new StringContent(JsonSerializer.Serialize(
+            new { Email = email, Password = password }), Encoding.UTF8, "application/json"));
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<Account>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        var orgList = JsonSerializer.Deserialize<List<Account>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var org = orgList?.FirstOrDefault();
+        if (org != null) { org.AccountType = "Organization"; }
+        return org;
     }
 }
