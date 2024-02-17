@@ -11,10 +11,14 @@ internal class ApiService
 
     internal async Task<Account?> AuthAccount(string email, string password)
     {
-        var user = await AuthUser(email, password);
-        if (user != null) { return user; }
+        // Call both user and organization authentication endpoints simultaneously and return the first successful result
+        var userTask = AuthUser(email, password);
+        var orgTask = AuthOrganizations(email, password);
 
-        var org = await AuthOrganizations(email, password);
+        var user = await userTask;
+        if (user != null) { return user; }
+        
+        var org = await orgTask;
         if (org != null) { return org; }
 
         return null;
