@@ -1,29 +1,46 @@
 ﻿@model List<Log>
 @{
     ViewData["Title"] = "Home Page";
+    var isAuthenticated = ViewData["IsAuthenticated"] as string;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Logs</h1>
+    <h1 class="display-4">Loggar</h1>
     <div class="showLogs">
-        <table>
-            <thead class="tableHeader">
+        @if (isAuthenticated != "true")
+        {
+            <p>Logga in för att se loggar</p>
+        }
+        else
+        {
+            <table>
+                <thead class="tableHeader">
                 <tr>
                     <th class="tableStyle1">ID</th>
                     <th class="tableStyle">Tid vid fel</th>
                     <th class="tableStyle2">Tjänst</th>
                     <th>Meddelande</th>
                 </tr>
-            </thead>
-            @foreach (var log in Model)
-            {
-                <tr>
-                    <td class="tableStyle1">@log.Id</td>
-                    <td class="tableStyle">@log.TimeStamp</td>
-                    <td class="tableStyle2">@log.SourceSystem</td>
-                    <td>@log.Message</td>
-                </tr>
-            }
-        </table>
+                </thead>
+                @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="4">Inga loggar att visa</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var log in Model)
+                    {
+                        <tr>
+                            <td class="tableStyle1">@log.Id</td>
+                            <td class="tableStyle">@log.TimeStamp</td>
+                            <td class="tableStyle2">@log.SourceSystem</td>
+                            <td>@log.Message</td>
+                        </tr>
+                    }
+                }
+            </table>            
+        }
     </div>
 </div>
