@@ -11,12 +11,8 @@ namespace SyncBackgroundJobs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<StatisticsContext>(options =>
-             options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerDatabase")));
-
             builder.Services.AddJobsAsDependency();
             builder.Services.AddHttpClient();
-
 
             var app = builder.Build();
 

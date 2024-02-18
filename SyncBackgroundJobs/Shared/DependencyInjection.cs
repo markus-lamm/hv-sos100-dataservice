@@ -9,13 +9,12 @@ namespace SyncBackgroundJobs.Shared
         {
             services.AddQuartz(options =>
             {
-                ConfigureAndAddJob<AdvertisementStaticsJob>(options, nameof(AdvertisementStaticsJob), "0 0/1 * * * ?");
-
+                ConfigureAndAddJob<AdvertisementStaticsJob>(options, nameof(AdvertisementStaticsJob), "0 0 23 1/1 * ? *");
+                ConfigureAndAddJob<ActivityStatisticJob>(options, nameof(ActivityStatisticJob), "0 0 23 1/1 * ? *");
+                ConfigureAndAddJob<CountyStatisticJob>(options, nameof(CountyStatisticJob), "0 0 23 1/1 * ? *");
+                ConfigureAndAddJob<EventStatisticJob>(options, nameof(EventStatisticJob), "0 0 23 1/1 * ? *");
             });
-
             services.AddQuartzHostedService();
-
-
         }
         static void ConfigureAndAddJob<T>(IServiceCollectionQuartzConfigurator options, string jobName, string cronSchedule) where T : IJob
         {
