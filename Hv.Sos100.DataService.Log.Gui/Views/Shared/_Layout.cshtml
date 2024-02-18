@@ -9,10 +9,14 @@
     <link rel="stylesheet" href="~/Hv.Sos100.DataService.Log.Gui.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var isAuthenticated = ViewData["IsAuthenticated"] as string;
+        var accountId = ViewData["AccountId"] as string;
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Loggar</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LogGui</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,6 +28,57 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            <div>
+                @if (isAuthenticated != "true")
+                {
+                    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        Logga in
+                    </button>
+
+                    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="loginModalLabel">Logga in</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <form asp-controller="Home" asp-action="Login">
+                                        <div class="form-group m-2">
+                                            <label for="inputEmail">E-post</label>
+                                            <input class="form-control" id="inputEmail" name="email" placeholder="Ange E-post">
+                                        </div>
+                                        <div class="form-group m-2">
+                                            <label for="inputPassword">Lösenord</label>
+                                            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Ange Lösenord">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary m-2">Fortsätt</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row m-2">
+                        <div class="col-sm-6">
+                            Välkommen, @accountId!
+                        </div>
+                        <div class="col-sm-6">
+                            <form asp-controller="Home" asp-action="Logout">
+                                <button type="submit" class="btn btn-primary">Logga ut</button>
+                            </form>
+                        </div>
+                    </div>
+                }
             </div>
         </nav>
     </header>
