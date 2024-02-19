@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos100.DataService.Stati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncBackgroundJobs", "SyncBackgroundJobs\SyncBackgroundJobs.csproj", "{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hv.Sos100.DataService.Statistics.EnterpriseGui", "Hv.Sos100.DataService.Statistics.EnterpriseGui\Hv.Sos100.DataService.Statistics.EnterpriseGui.csproj", "{16AF8929-F4F5-44D0-BF60-E924011BC9F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
