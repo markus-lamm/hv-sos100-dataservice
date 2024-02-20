@@ -1,8 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Statistik</title>
+    <link rel="stylesheet" href="~/css/menu.css">
+</head>
+<body>
+    <h1>Statistik</h1>
+    <hr>
+    <div class="menu-container">
+        <h2 class="menu-item"><a asp-controller="Event" asp-action="Index">Eventstatistik</a></h2>
+        <h2 class="menu-item"><a asp-controller="Activity" asp-action="Index">Aktivitestatistik</a></h2>
+        <h2 class="menu-item"><a asp-controller="Ad" asp-action="Index">Annonsstatistik</a></h2>
+    </div>
+</body>
+</html>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>

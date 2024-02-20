@@ -1,0 +1,31 @@
+﻿body {
+    background-image: url('/lib/bilder/bakgrund.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: Arial;
+}
+
+h1 {
+    text-align: center;
+    font-size: 50px;
+    background-image: linear-gradient(to right, #FE85B6, #F9F871); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+}
+
+
+hr {
+    position: relative;
+    width: 10%;
+    border: none;
+    border-top: 5px solid #000000;
+    right: 3.5%;
+    bottom: 35px;
+}
+
+h2 {
+    font-size: 30px;
+    color: #000000;
+    text-align: center;
+}

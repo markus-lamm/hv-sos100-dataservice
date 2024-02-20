@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Aktivitet</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/activity.css">
+</head>
+<body>
+    <h1>Aktivitetstatistik</h1>
+    <hr>
+
+    <div class="ChooseActivity">
+        <label for="activity">Välj aktivitet:</label>
+        <select id="activity" onchange="updateStatistics()">
+            <option value="activity1">Activity 1</option>
+            <option value="activity2">Activity 2</option>
+            <option value="activity3">Activity 3</option>
+        </select>
+    </div>
+    <div class="Views">
+        <h2>Visningar</h2>
+        <canvas id="ViewsChart"></canvas>
+    </div>
+    <div class="SavedEvents">
+        <h2>Sparningar:</h2>
+        <canvas id="SavedEventsChart"></canvas>
+        
+    </div>
+   
+
+    <script>
+        var MonthlyViews = @Html.Raw(ViewBag.MonthlyViews);
+        var SavedEvents = @Html.Raw(ViewBag.SavedEvents);
+
+        var ctxViews = document.getElementById('ViewsChart').getContext('2d');
+        var viewsChart = new Chart(ctxViews, {
+            type: 'bar',
+            data: {
+                labels: ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'],
+                datasets: [{
+                    label: 'Visningar',
+                    data: [500, 550, 650, 590, 689, 456, 974, 537, 987, 1092, 879, 783],
+                    backgroundColor: '#FE85B6',
+                    borderColor: '#FE85B6',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+       
+
+        var ctxSavedEvents = document.getElementById('SavedEventsChart').getContext('2d');
+        var savedEventsChart = new Chart(ctxSavedEvents, {
+            type: 'bar',
+            data: {
+                labels: ['Totalt sparade aktiviteter'],
+                datasets: [{
+                    label: 'Totalt sparade aktiviteter',
+                    data: [SavedEvents],
+                    backgroundColor: '#FFA487',
+                    borderColor: '#FFA487',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: function (value, context) {
+                            return value; 
+                        }
+                    }
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>

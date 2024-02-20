@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Event</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/styles.css">
+</head>
+<body>
+    <h1>Eventstatistik</h1>
+    <hr>
+
+    <div class="ChooseEvent">
+        <label for="events">Välj event:</label>
+        <select id="events" onchange="updateStatistics()">
+            <option value="event1">Event 1</option>
+            <option value="event2">Event 2</option>
+            <option value="event3">Event 3</option>
+        </select>
+    </div>
+    <div class="Views">
+        <h2>Visningar och totala anmälningar</h2>
+        <canvas id="ViewsChart"></canvas>
+    </div>
+    <div class="StarRating">
+        <h2>Stjärnbetyg</h2>
+        <canvas id="starRatingsChart"></canvas>
+    </div>
+    <div class="Gender">
+        <h2>Kön</h2>
+        <canvas id="genderChart"></canvas>
+    </div>
+    <div class="Age">
+        <h2>Ålder</h2>
+        <canvas id="ageChart"></canvas>
+    </div>
+
+    <script>
+        var femaleSignups = @Html.Raw(ViewBag.femaleSignups);
+        var maleSignups = @Html.Raw(ViewBag.maleSignups);
+        var Signups16_30 = @Html.Raw(ViewBag.Signups16_30);
+        var Signups31_50 = @Html.Raw(ViewBag.Signups31_50);
+        var Signups50plus = @Html.Raw(ViewBag.Signups50plus);
+        var views = @Html.Raw(ViewBag.Views);
+        var totalSignups = @Html.Raw(ViewBag.TotalSignups);
+
+        var ctxGender = document.getElementById('genderChart').getContext('2d');
+        var genderChart = new Chart(ctxGender, {
+            type: 'pie',
+            data: {
+                labels: ['Kvinnor', 'Män'],
+                datasets: [{
+                    data: [femaleSignups, maleSignups],
+                    backgroundColor: ['#FFA487', '#F9F871']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var ctxAge = document.getElementById('ageChart').getContext('2d');
+        var ageChart = new Chart(ctxAge, {
+            type: 'pie',
+            data: {
+                labels: ['16-30', '31-50', '50+'],
+                datasets: [{
+                    data: [Signups16_30, Signups31_50, Signups50plus],
+                    backgroundColor: ['#FE85B6', '#FFBE73', '#FFA487']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var ctxViews = document.getElementById('ViewsChart').getContext('2d');
+        var viewsChart = new Chart(ctxViews, {
+            type: 'bar',
+            data: {
+                labels: [''],
+                datasets: [{
+                    label: 'Visningar',
+                    data: [views],
+                    backgroundColor: '#FE85B6',
+                    borderColor: '#FE85B6',
+                    borderWidth: 1
+                }, {
+                    label: 'Anmälningar',
+                    data: [totalSignups],
+                    backgroundColor: '#F9F871',
+                    borderColor: '#F9F871',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var oneRating = @Html.Raw(Json.Serialize(ViewBag.oneRating));
+        var twoRating = @Html.Raw(Json.Serialize(ViewBag.twoRating));
+        var threeRating = @Html.Raw(Json.Serialize(ViewBag.threeRating));
+        var fourRating = @Html.Raw(Json.Serialize(ViewBag.fourRating));
+        var fiveRating = @Html.Raw(Json.Serialize(ViewBag.fiveRating));
+
+        var ctx = document.getElementById('starRatingsChart').getContext('2d');
+        var starRatingsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['1 Rating', '2 Rating', '3 Rating', '4 Rating', '5 Rating'],
+                datasets: [{
+                    label: 'Antal röster',
+                    data: [oneRating, twoRating, threeRating, fourRating, fiveRating],
+                    backgroundColor: ['#FFA487', '#FE85B6', '#FF909F', '#FFDB68', '#F9F871'],
+                    borderColor: ['#FFA487', '#FE85B6', '#FF909F', '#FFDB68', '#F9F871'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+﻿body {
+    background-image: url('/lib/bilder/bakgrund.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size: 50px;
+    background-image: linear-gradient(to right, #FE85B6, #F9F871); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+}
+
+hr {
+    position: relative; 
+    width: 10%; 
+    border: none; 
+    border-top: 5px solid #000000; 
+    right: 10.5%; 
+    bottom: 35px; 
+}
+
+h2 {
+    color: #000000;
+}
+
+.ChooseAd {
+    margin-bottom: 20px;
+}
+
+.ChooseAd {
+    font-size: 20px;
+    position: relative;
+    left: 10%;
+}
+
+select {
+    padding: 8px;
+    border: 1px solid #FFA487; 
+    border-radius: 5px;
+    background-color: #fff; 
+    color: #000000; 
+    font-size: 20px;
+}
+
+
+
+    select:focus {
+        outline: none; 
+        border-color: #FF909F; 
+    }
+
+canvas {
+    max-width: 400px; 
+    max-height: 400px; 
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.Views,
+.Age {
+    position: relative;
+    left: 9%;
+    width: 50%;
+    float: left;
+}
+
+.Gender
+ {
+    position: relative;
+    left: 9%;
+    width: 50%;
+    float: left;
+}

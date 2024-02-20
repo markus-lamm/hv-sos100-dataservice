@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Annons</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/ad.css">
+</head>
+<body>
+    <h1>Annonsstatistik</h1>
+    <hr>
+    <div class="ChooseAd">
+        <label for="ads">Välj annons:</label>
+        <select id="ads" onchange="updateStatistics()">
+            <option value="annons1">Annons 1</option>
+            <option value="annons2">Annons 2</option>
+            <option value="annons3">Annons 3</option>
+        </select>
+    </div>
+    <div class="Views">
+        <h2>Visningar och klicks</h2>
+        <canvas id="ViewsChart"></canvas>
+    </div>
+
+    <div class="Gender">
+        <h2>Kön</h2>
+        <canvas id="genderChart"></canvas>
+    </div>
+    <div class="Age">
+        <h2>Ålder</h2>
+        <canvas id="ageChart"></canvas>
+    </div>
+
+    <script>
+        var femaleSignups = @Html.Raw(ViewBag.femaleSignups);
+        var maleSignups = @Html.Raw(ViewBag.maleSignups);
+        var Signups16_30 = @Html.Raw(ViewBag.Signups16_30);
+        var Signups31_50 = @Html.Raw(ViewBag.Signups31_50);
+        var Signups50plus = @Html.Raw(ViewBag.Signups50plus);
+        var views = @Html.Raw(ViewBag.Views);
+        var Clicks = @Html.Raw(ViewBag.Clicks);
+
+        var ctxGender = document.getElementById('genderChart').getContext('2d');
+        var genderChart = new Chart(ctxGender, {
+            type: 'pie',
+            data: {
+                labels: ['Kvinnor', 'Män'],
+                datasets: [{
+                    data: [femaleSignups, maleSignups],
+                    backgroundColor: ['#FFA487', '#F9F871']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var ctxAge = document.getElementById('ageChart').getContext('2d');
+        var ageChart = new Chart(ctxAge, {
+            type: 'pie',
+            data: {
+                labels: ['16-30', '31-50', '50+'],
+                datasets: [{
+                    data: [Signups16_30, Signups31_50, Signups50plus],
+                    backgroundColor: ['#FE85B6', '#FFBE73', '#FFA487']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var ctxViews = document.getElementById('ViewsChart').getContext('2d');
+        var viewsChart = new Chart(ctxViews, {
+            type: 'bar',
+            data: {
+                labels: [''],
+                datasets: [{
+                    label: 'Visningar',
+                    data: [views],
+                    backgroundColor: '#FE85B6',
+                    borderColor: '#FE85B6',
+                    borderWidth: 1
+                }, {
+                    label: 'Klicks',
+                    data: [Clicks],
+                    backgroundColor: '#F9F871',
+                    borderColor: '#F9F871',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>
