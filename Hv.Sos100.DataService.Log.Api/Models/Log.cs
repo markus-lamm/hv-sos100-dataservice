@@ -6,5 +6,6 @@
         public DateTime? TimeStamp { get; set; }
         public string? SourceSystem { get; set; }
         public string? Message { get; set; }
+        public string? Severity { get; set; }
     }
 }
