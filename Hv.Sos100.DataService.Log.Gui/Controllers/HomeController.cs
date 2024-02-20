@@ -27,13 +27,13 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
                 _authenticationService.ReadSessionVariables(controller:this, HttpContext);
             }
 
-            var logs = new List<Models.Log>();
+            var logs = new List<Api.Models.Log>();
 
             var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
             
             if (isAuthenticated == "true")
             {
-                logs = await _apiService.GetLogs() ?? new List<Models.Log>();
+                logs = await _apiService.GetLogs() ?? new List<Api.Models.Log>();
             }
 
             return View(logs);

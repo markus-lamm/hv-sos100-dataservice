@@ -1,4 +1,5 @@
-﻿@model List<Log>
+﻿@using Hv.Sos100.DataService.Log.Api.Models
+@model List<Log>
 @{
     ViewData["Title"] = "Home Page";
     var isAuthenticated = ViewData["IsAuthenticated"] as string;
@@ -17,7 +18,8 @@
                 <thead class="tableHeader">
                 <tr>
                     <th class="tableStyle1">ID</th>
-                    <th class="tableStyle">Tid vid fel</th>
+                    <th class="tableStyle">Log Tid</th>
+                    <th class="tableStyle2">Log Nivå</th>
                     <th class="tableStyle2">Tjänst</th>
                     <th>Meddelande</th>
                 </tr>
@@ -35,6 +37,16 @@
                         <tr>
                             <td class="tableStyle1">@log.Id</td>
                             <td class="tableStyle">@log.TimeStamp</td>
+                            <td class="tableStyle">
+                                @if (log.Severity == null)
+                                {
+                                    <p>null</p>
+                                }
+                                else
+                                {
+                                    @log.Severity
+                                }
+                            </td>
                             <td class="tableStyle2">@log.SourceSystem</td>
                             <td>@log.Message</td>
                         </tr>
