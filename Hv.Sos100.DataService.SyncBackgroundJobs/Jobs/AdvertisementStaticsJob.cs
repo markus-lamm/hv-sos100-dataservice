@@ -1,18 +1,15 @@
-﻿
-using Hv.Sos100.Logger;
-using Quartz;
+﻿using Quartz;
+using System;
+using System.Net.Http.Json;
 using System.Text.Json;
+using Hv.Sos100.Logger;
 
-namespace SyncBackgroundJobs.Jobs
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class AdvertisementStaticsJob : IJob
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient = new();
         private readonly string _baseURL = "https://informatik6.ei.hv.se/statisticapi/";
-        public AdvertisementStaticsJob( HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
         public async Task Execute(IJobExecutionContext context)
         {
             var DemoObj = DemoData();
@@ -22,7 +19,7 @@ namespace SyncBackgroundJobs.Jobs
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
                 await _httpClient.PostAsJsonAsync("api/AdStatistics", DemoObj);
-
+                
             }
             catch (Exception ex)
             {

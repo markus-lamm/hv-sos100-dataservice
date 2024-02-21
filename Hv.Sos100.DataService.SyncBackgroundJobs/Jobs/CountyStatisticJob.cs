@@ -1,7 +1,8 @@
 ﻿using Hv.Sos100.Logger;
 using Quartz;
+using System.Net.Http.Json;
 
-namespace SyncBackgroundJobs.Jobs
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class CountyStatisticJob : IJob
     {
