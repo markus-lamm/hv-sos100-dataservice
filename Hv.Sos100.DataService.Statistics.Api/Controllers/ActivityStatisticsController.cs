@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Statistics.Api.Models;
+using Hv.Sos100.DataService.Statistics.Api.Data;
 
 namespace Hv.Sos100.DataService.Statistics.Api.Controllers
 {
@@ -41,19 +42,65 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
             return activityStatistics;
         }
 
-        
+        // PUT: api/ActivityStatistics/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutActivityStatistics(int id, ActivityStatistics activityStatistics)
+        {
+            if (id != activityStatistics.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(activityStatistics).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ActivityStatisticsExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
 
         // POST: api/ActivityStatistics
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ActivityStatistics>> PostActivityStatistics(ActivityStatistics activityStatistics)
         {
             _context.Activities.Add(activityStatistics);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetActivityStatistics", new { id = activityStatistics.ActivityId }, activityStatistics);
+            return CreatedAtAction("GetActivityStatistics", new { id = activityStatistics.Id }, activityStatistics);
         }
 
-        
+        // DELETE: api/ActivityStatistics/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteActivityStatistics(int id)
+        {
+            var activityStatistics = await _context.Activities.FindAsync(id);
+            if (activityStatistics == null)
+            {
+                return NotFound();
+            }
+
+            _context.Activities.Remove(activityStatistics);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool ActivityStatisticsExists(int id)
+        {
+            return _context.Activities.Any(e => e.Id == id);
+        }
     }
 }
