@@ -4,7 +4,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Models
 {
     public class EventStatistics
     {
-        [Key] public int EventId { get; set; }
+        [Key] public int Id { get; set; }
         public DateTime? TimeStamp { get; set; }
         public int? Views { get; set; }
         public int? TotalSignups { get; set; }

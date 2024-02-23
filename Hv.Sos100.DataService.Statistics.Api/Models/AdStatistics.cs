@@ -4,7 +4,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Models
 {
     public class AdStatistics()
     {
-        [Key] public int AdId { get; set; }
+        [Key] public int Id { get; set; }
         public DateTime? TimeStamp { get; set; }
         public int? Clicks { get; set; }
         public int? TotalViews { get; set; }
