@@ -1,7 +1,8 @@
 ﻿using Hv.Sos100.Logger;
 using Quartz;
+using System.Net.Http.Json;
 
-namespace SyncBackgroundJobs.Jobs
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class ActivityStatisticJob : IJob
     {
@@ -21,6 +22,7 @@ namespace SyncBackgroundJobs.Jobs
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
                 await _httpClient.PostAsJsonAsync("api/ActivityStatistics", DemoObj);
+               
             }
             catch (Exception ex)
             {
