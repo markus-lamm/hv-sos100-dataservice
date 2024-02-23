@@ -4,6 +4,7 @@ using Hv.Sos100.DataService.Statistics.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatatserviceAPI.Migrations
 {
     [DbContext(typeof(StatisticsContext))]
-    partial class EventStatisticsContextModelSnapshot : ModelSnapshot
+    [Migration("20240222134033_Fourth")]
+    partial class Fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace DatatserviceAPI.Migrations
 
             modelBuilder.Entity("Hv.Sos100.DataService.Statistics.Api.Models.ActivityStatistics", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ActivityStatisticsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActivityStatisticsId"));
 
                     b.Property<int?>("MonthlyViews")
                         .HasColumnType("int");
@@ -39,18 +42,18 @@ namespace DatatserviceAPI.Migrations
                     b.Property<DateTime?>("TimeStamp")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ActivityStatisticsId");
 
                     b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("Hv.Sos100.DataService.Statistics.Api.Models.AdStatistics", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AdStatisticsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdStatisticsId"));
 
                     b.Property<int?>("Age16To30Views")
                         .HasColumnType("int");
@@ -76,18 +79,18 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("TotalViews")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("AdStatisticsId");
 
                     b.ToTable("Ads");
                 });
 
             modelBuilder.Entity("Hv.Sos100.DataService.Statistics.Api.Models.CountyStatistics", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CountyStatisticsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CountyStatisticsId"));
 
                     b.Property<int?>("TotalActiveUsers")
                         .HasColumnType("int");
@@ -107,18 +110,18 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("TotalPeopleAccounts")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CountyStatisticsId");
 
                     b.ToTable("Counties");
                 });
 
             modelBuilder.Entity("Hv.Sos100.DataService.Statistics.Api.Models.EventStatistics", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EventStatisticsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventStatisticsId"));
 
                     b.Property<int?>("Age16To30Signups")
                         .HasColumnType("int");
@@ -162,7 +165,7 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("Views")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("EventStatisticsId");
 
                     b.ToTable("Events");
                 });

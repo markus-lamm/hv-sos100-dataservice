@@ -115,7 +115,17 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
                     existingAuthentication.Token = Guid.NewGuid().ToString();
                     existingAuthentication.TokenExpiration = DateTime.Now.AddMonths(1);
                 }
-                await _context.SaveChangesAsync();
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    await _logService.CreateLog("Sso.Api.ValidateNewSession", 3, ex.Message);
+                    return BadRequest("The api had a unknown database error");
+                }
+
                 return Ok(existingAuthentication);
             }
             
@@ -128,8 +138,16 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
                 AccountType = apiAccount.AccountType
             };
 
-            _context.Authentication.Add(newAuthentication);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Authentication.Add(newAuthentication);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                await _logService.CreateLog("Sso.Api.ValidateNewSession", 3, ex.Message);
+                return BadRequest("The api had a unknown database error");
+            }
 
             // Clear sensitive data before returning
             newAuthentication.AuthenticationId = Guid.Empty;
@@ -153,8 +171,16 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
                 return Unauthorized();
             }
 
-            authentication.LastActivity = DateTime.Now;
-            await _context.SaveChangesAsync();
+            try
+            {
+                authentication.LastActivity = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                await _logService.CreateLog("Sso.Api.ValidateExistingSession", 3, ex.Message);
+                return BadRequest("The api had a unknown database error");
+            }
 
             // Clear sensitive data before returning
             authentication.AuthenticationId = Guid.Empty;
