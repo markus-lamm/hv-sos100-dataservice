@@ -13,7 +13,7 @@ public class ApiService
         var response = await _httpClient.GetAsync($"{BaseUrl}/api/Logs");
         if (!response.IsSuccessStatusCode)
         {
-            await _logService.CreateLog("Log.Api.GetLogs", 3, response.ReasonPhrase ?? "Unknown api call error");
+            await _logService.CreateLog("Log.Api.GetLogs", LogService.Severity.Error, response.ReasonPhrase ?? "Unknown api call error");
             return null;
         }
 
