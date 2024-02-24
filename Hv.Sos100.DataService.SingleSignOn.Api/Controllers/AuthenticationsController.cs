@@ -122,7 +122,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    await _logService.CreateLog("Sso.Api.ValidateNewSession", 3, ex.Message);
+                    await _logService.CreateLog("Sso.Api.ValidateNewSession", ex);
                     return BadRequest("The api had a unknown database error");
                 }
 
@@ -145,7 +145,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             }
             catch (Exception ex)
             {
-                await _logService.CreateLog("Sso.Api.ValidateNewSession", 3, ex.Message);
+                await _logService.CreateLog("Sso.Api.ValidateNewSession", ex);
                 return BadRequest("The api had a unknown database error");
             }
 
@@ -178,7 +178,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             }
             catch (Exception ex)
             {
-                await _logService.CreateLog("Sso.Api.ValidateExistingSession", 3, ex.Message);
+                await _logService.CreateLog("Sso.Api.ValidateExistingSession", ex);
                 return BadRequest("The api had a unknown database error");
             }
 
