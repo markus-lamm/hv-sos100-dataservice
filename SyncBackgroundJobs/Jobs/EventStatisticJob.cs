@@ -19,7 +19,20 @@ namespace SyncBackgroundJobs.Jobs
             {
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
-                await _httpClient.PostAsJsonAsync("api/EventStatistics", DemoObj);
+                var result = await _httpClient.PostAsJsonAsync("api/EventStatistics", DemoObj);
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    var logger = new LogService();
+
+                    var logResult = await logger.CreateApiLog("EventStatistic Sync Job", 3, "Anropet lyckades inte");
+
+                    if (!logResult)
+                    {
+                        logger.CreateLocalLog("EventStatistic Sync Job", 3, "Anropet lyckades inte");
+
+                    }
+                }
             }
             catch (Exception ex)
             {
