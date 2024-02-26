@@ -9,17 +9,22 @@ namespace SyncBackgroundJobs.Shared
         {
             services.AddQuartz(options =>
             {
-                ConfigureAndAddJob<AdvertisementStaticsJob>(options, nameof(AdvertisementStaticsJob), "0 0 23 1/1 * ? *");
-                ConfigureAndAddJob<ActivityStatisticJob>(options, nameof(ActivityStatisticJob), "0 0 23 1/1 * ? *");
-                ConfigureAndAddJob<CountyStatisticJob>(options, nameof(CountyStatisticJob), "0 0 23 1/1 * ? *");
-                ConfigureAndAddJob<EventStatisticJob>(options, nameof(EventStatisticJob), "0 0 23 1/1 * ? *");
+                ConfigureAndAddJob<AdvertisementStaticsJob>(options, nameof(AdvertisementStaticsJob));
+                ConfigureAndAddJob<ActivityStatisticJob>(options, nameof(ActivityStatisticJob));
+                ConfigureAndAddJob<CountyStatisticJob>(options, nameof(CountyStatisticJob));
+                ConfigureAndAddJob<EventStatisticJob>(options, nameof(EventStatisticJob));
             });
             services.AddQuartzHostedService();
         }
-        static void ConfigureAndAddJob<T>(IServiceCollectionQuartzConfigurator options, string jobName, string cronSchedule) where T : IJob
+        static void ConfigureAndAddJob<T>(IServiceCollectionQuartzConfigurator options, string jobName) where T : IJob
         {
             options.AddJob<T>(jobBuilder => jobBuilder.WithIdentity(JobKey.Create(jobName)))
-                   .AddTrigger(trigger => trigger.ForJob(jobName).WithCronSchedule(cronSchedule));
+                   .AddTrigger(trigger => trigger.ForJob(jobName).WithDailyTimeIntervalSchedule
+                      (s =>
+                         s.WithIntervalInHours(24)
+                        .OnEveryDay()
+                        .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(17, 0))
+                      ));
         }
     }
 }
