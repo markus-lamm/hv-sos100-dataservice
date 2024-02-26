@@ -1,13 +1,51 @@
 ﻿body {
-    background-image: url('/lib/bilder/bakgrund.png');
+    background-image: url('/lib/bilder/Bakgrund.png');
     background-size: cover;
     background-repeat: no-repeat;
     font-family: Arial, sans-serif;
 }
 
+.navbar {
+    background-color: #000;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-item {
+    margin-right: 20px;
+}
+
+    .nav-item a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2em;
+        transition: color 0.3s ease;
+    }
+
+        .nav-item a:hover {
+            color: #ccc;
+        }
+
 h1 {
-    text-align: center;
-    font-size: 50px;
+    
+    font-size: 40px;
     background-image: linear-gradient(to right, #FE85B6, #F9F871); /* Gradient för texten */
     -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
     background-clip: text; /* Använd gradienten som textfärg */
@@ -17,11 +55,11 @@ h1 {
 
 hr {
     position: relative; 
-    width: 10%; 
+    width: 8%; 
     border: none; 
     border-top: 5px solid #000000; 
-    right: 8.5%; 
-    bottom: 35px; 
+    right: 46%; 
+    bottom: 20px; 
 }
 
 h2 {
