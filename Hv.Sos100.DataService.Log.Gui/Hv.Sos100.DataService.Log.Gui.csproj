@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hv.Sos100.Logger" Version="1.3.1" />
+    <PackageReference Include="Hv.Sos100.Logger" Version="1.5.0" />
     <PackageReference Include="Hv.Sos100.SingleSignOn" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hv.Sos100.DataService.Log.Api\Hv.Sos100.DataService.Log.Api.csproj" />
   </ItemGroup>
 
 </Project>

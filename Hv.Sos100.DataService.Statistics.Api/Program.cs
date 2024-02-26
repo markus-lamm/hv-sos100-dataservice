@@ -1,5 +1,5 @@
 
-using Hv.Sos100.DataService.Statistics.Api.Models;
+using Hv.Sos100.DataService.Statistics.Api.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hv.Sos100.DataService.Statistics.Api
@@ -13,11 +13,10 @@ namespace Hv.Sos100.DataService.Statistics.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<StatisticsContext>(options =>
+            builder.Services.AddDbContext<StatisticsContext>(options => 
             options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerDatabase")));
 
             var app = builder.Build();

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Hv.Sos100.DataService.Statistics.Api.Models
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class EventStatistics
     {
-        [Key] public int Id { get; set; }
+        [Key] public int EventId { get; set; }
         public DateTime? TimeStamp { get; set; }
         public int? Views { get; set; }
         public int? TotalSignups { get; set; }
