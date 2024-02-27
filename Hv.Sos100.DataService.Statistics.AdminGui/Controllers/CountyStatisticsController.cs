@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Hv.Sos100.DataService.Statistics.Api.Models;
+
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
 {
@@ -9,17 +11,17 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Models.CountyStatistics>? countyList = new List<Models.CountyStatistics>();
+            List<CountyStatistics>? countyList = new List<CountyStatistics>();
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_baseURL);
-                    HttpResponseMessage response = await client.GetAsync("County");
+                    HttpResponseMessage response = await client.GetAsync("Counties");
                     if (response.IsSuccessStatusCode)
                     {
                         string content = await response.Content.ReadAsStringAsync();
-                        countyList = JsonSerializer.Deserialize<List<Models.CountyStatistics>>(content,
+                        countyList = JsonSerializer.Deserialize<List<CountyStatistics>>(content,
                         new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     }
                     else

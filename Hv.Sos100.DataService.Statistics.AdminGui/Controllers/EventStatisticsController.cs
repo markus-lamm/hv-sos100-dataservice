@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Hv.Sos100.DataService.Statistics.Api.Models;
+
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
 {
@@ -9,17 +11,17 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Models.EventStatistics>? eventList = new List<Models.EventStatistics>();
+            List<EventStatistics>? eventList = new List<EventStatistics>();
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_baseURL);
-                    HttpResponseMessage response = await client.GetAsync("Event");
+                    HttpResponseMessage response = await client.GetAsync("Events");
                     if (response.IsSuccessStatusCode)
                     {
                         string content = await response.Content.ReadAsStringAsync();
-                        eventList = JsonSerializer.Deserialize<List<Models.EventStatistics>>(content,
+                        eventList = JsonSerializer.Deserialize<List<EventStatistics>>(content,
                         new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     }
                     else

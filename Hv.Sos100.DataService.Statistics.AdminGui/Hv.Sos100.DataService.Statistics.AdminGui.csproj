@@ -14,4 +14,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hv.Sos100.DataService.Statistics.Api\Hv.Sos100.DataService.Statistics.Api.csproj" />
+  </ItemGroup>
+
 </Project>

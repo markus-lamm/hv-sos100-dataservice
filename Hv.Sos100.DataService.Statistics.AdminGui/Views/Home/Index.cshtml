@@ -1,6 +1,13 @@
-﻿@model List<ActivityStatistics> 
+﻿<link href="~/css/site.css" rel="stylesheet" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <div class="dropdown">
+        <button class="dropbtn">Välj område</button>
+        <div class="dropdown-content">
+            <a asp-controller="ActivityStatistics" asp-action="Index">Aktiviteter</a>
+            <a asp-controller="AdStatistics" asp-action="Index">Annonser</a>
+            <a asp-controller="CountyStatistics" asp-action="Index">Kommuner</a>
+            <a asp-controller="EventStatistics" asp-action="Index">Evenemang</a>
+        </div>
+    </div>
 </div>
