@@ -5,54 +5,64 @@
     var isAuthenticated = ViewData["IsAuthenticated"] as string;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Loggar</h1>
-    <div class="showLogs">
+<div class="container">
+    <h1 class="title">Logs</h1>
+    <div class="logs-container">
         @if (isAuthenticated != "true")
         {
-            <p>Logga in för att se loggar</p>
+            <p>Log in to view logs</p>
         }
         else
         {
-            <table>
-                <thead class="tableHeader">
-                <tr>
-                    <th class="tableStyle1">ID</th>
-                    <th class="tableStyle">Log Tid</th>
-                    <th class="tableStyle2">Log Nivå</th>
-                    <th class="tableStyle2">Tjänst</th>
-                    <th>Meddelande</th>
-                </tr>
-                </thead>
-                @if (Model.Count == 0)
-                {
+            <table class="table">
+                <thead class="thead-light">
                     <tr>
-                        <td colspan="4">Inga loggar att visa</td>
+                        <th scope="col">Id</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Severity</th>
+                        <th scope="col">Service</th>
+                        <th scope="col">Message</th>
                     </tr>
-                }
-                else
-                {
-                    @foreach (var log in Model)
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
                     {
                         <tr>
-                            <td class="tableStyle1">@log.Id</td>
-                            <td class="tableStyle">@log.TimeStamp</td>
-                            <td class="tableStyle">
-                                @if (log.Severity == null)
-                                {
-                                    <p>null</p>
-                                }
-                                else
-                                {
-                                    @log.Severity
-                                }
-                            </td>
-                            <td class="tableStyle2">@log.SourceSystem</td>
-                            <td>@log.Message</td>
+                            <td colspan="5">Inga loggar att visa</td>
                         </tr>
                     }
-                }
-            </table>            
+                    else
+                    {
+                        @foreach (var log in Model)
+                        {
+                            <tr>
+                                <td>@log.Id</td>
+                                <td>@log.TimeStamp</td>
+                                <td class="@GetSeverityClass(log.Severity ?? "Info")">@(log.Severity ?? "null")</td>
+                                <td>@log.SourceSystem</td>
+                                <td>@log.Message</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
         }
     </div>
 </div>
+@functions {
+    string GetSeverityClass(string severity)
+    {
+        switch (severity)
+        {
+            case "Error":
+                return "text-danger";
+            case "Warning":
+                return "text-warning";
+            case "Info":
+                return "text-info";
+            default:
+                return "";
+        }
+    }
+}
