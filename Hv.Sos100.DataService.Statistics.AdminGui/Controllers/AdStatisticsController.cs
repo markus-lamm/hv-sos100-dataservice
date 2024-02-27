@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Hv.Sos100.DataService.Statistics.Api.Models
+
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
 {
@@ -8,8 +10,8 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
         string _baseURL = "https://informatik6.ei.hv.se/statisticapi/api/AdStatistics";
         public async Task<IActionResult> Index()
         {
-
-            List<Models.AdStatistics>? adList = new List<Models.AdStatistics>();
+             
+            List<AdStatistics>? adList = new List<Models.AdStatistics>();
             try
             {
                 using (HttpClient client = new HttpClient())

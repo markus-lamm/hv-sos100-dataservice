@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Hv.Sos100.DataService.Statistics.Api.Models
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
 {
@@ -9,13 +10,13 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Models.ActivityStatistics>? activityList = new List<Models.ActivityStatistics>();
+            List<ActivityStatistics>? activityList = new List<Models.ActivityStatistics>();
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_baseURL);
-                    HttpResponseMessage response = await client.GetAsync("Activity");
+                    HttpResponseMessage response = await client.GetAsync("Activities");
                     if (response.IsSuccessStatusCode)
                     {
                         string content = await response.Content.ReadAsStringAsync();
