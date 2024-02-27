@@ -36,6 +36,8 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
                 logs = await _apiService.GetLogs() ?? new List<Api.Models.Log>();
             }
 
+            logs = logs.OrderByDescending(l => l.TimeStamp).ToList();
+
             return View(logs);
         }
 

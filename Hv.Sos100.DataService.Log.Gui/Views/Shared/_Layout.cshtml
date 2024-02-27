@@ -24,7 +24,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Loggar</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Logs</a>
                         </li>
                     </ul>
                 </div>
@@ -34,14 +34,14 @@
                 @if (isAuthenticated != "true")
                 {
                     <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        Logga in
+                        Sign In
                     </button>
 
                     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="loginModalLabel">Logga in</h5>
+                                    <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -51,14 +51,14 @@
 
                                     <form asp-controller="Home" asp-action="Login">
                                         <div class="form-group m-2">
-                                            <label for="inputEmail">E-post</label>
-                                            <input class="form-control" id="inputEmail" name="email" placeholder="Ange E-post">
+                                            <label for="inputEmail">Email</label>
+                                            <input class="form-control" id="inputEmail" name="email" placeholder="Enter Email">
                                         </div>
                                         <div class="form-group m-2">
-                                            <label for="inputPassword">Lösenord</label>
-                                            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Ange Lösenord">
+                                            <label for="inputPassword">Password</label>
+                                            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Enter Password">
                                         </div>
-                                        <button type="submit" class="btn btn-primary m-2">Fortsätt</button>
+                                        <button type="submit" class="btn btn-primary m-2">Submit</button>
                                     </form>
 
                                 </div>
@@ -70,11 +70,11 @@
                 {
                     <div class="row m-2">
                         <div class="col-sm-6">
-                            Välkommen, @accountId!
+                            Welcome, @accountId!
                         </div>
                         <div class="col-sm-6">
                             <form asp-controller="Home" asp-action="Logout">
-                                <button type="submit" class="btn btn-primary">Logga ut</button>
+                                <button type="submit" class="btn btn-primary">Sign Out</button>
                             </form>
                         </div>
                     </div>
