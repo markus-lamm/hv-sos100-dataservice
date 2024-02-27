@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Hv.Sos100.DataService.Statistics.Api.Models
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class CountyStatistics()
     {
-        [Key] public int Id { get; set; }
+        [Key] public int CountyId { get; set; }
         public int? TotalEvents { get; set; }
         public int? TotalActivities { get; set; }
         public int? TotalActiveUsers { get; set; }

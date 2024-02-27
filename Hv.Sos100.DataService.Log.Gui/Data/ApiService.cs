@@ -8,21 +8,15 @@ public class ApiService
     private readonly HttpClient _httpClient = new();
     private const string BaseUrl = "https://informatik6.ei.hv.se/logapi";
 
-    public async Task<List<Models.Log>?> GetLogs()
+    public async Task<List<Api.Models.Log>?> GetLogs()
     {
         var response = await _httpClient.GetAsync($"{BaseUrl}/api/Logs");
-        var logSuccess = false;
         if (!response.IsSuccessStatusCode)
         {
-            logSuccess = await _logService.CreateApiLog("LogApi", response.ReasonPhrase ?? "Unknown api call error");
-            if (logSuccess) { return null; }
-        }
-        if (!response.IsSuccessStatusCode && !logSuccess)
-        {
-            _logService.CreateLocalLog("LogApi", response.ReasonPhrase ?? "Unknown api call error");
+            await _logService.CreateLog("Log.Api.GetLogs", LogService.Severity.Error, response.ReasonPhrase ?? "Unknown api call error");
             return null;
         }
 
-        return await response.Content.ReadFromJsonAsync<List<Models.Log>>();
+        return await response.Content.ReadFromJsonAsync<List<Api.Models.Log>>();
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Hv.Sos100.DataService.Statistics.Api.Models
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class AdStatistics()
     {
-        [Key] public int Id { get; set; }
+        [Key] public int AdId { get; set; }
         public DateTime? TimeStamp { get; set; }
         public int? Clicks { get; set; }
         public int? TotalViews { get; set; }

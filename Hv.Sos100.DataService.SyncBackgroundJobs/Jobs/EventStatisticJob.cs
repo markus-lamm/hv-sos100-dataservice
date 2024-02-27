@@ -1,7 +1,8 @@
 ﻿using Hv.Sos100.Logger;
 using Quartz;
+using System.Net.Http.Json;
 
-namespace SyncBackgroundJobs.Jobs
+namespace Hv.Sos100.DataService.SyncBackgroundJobs
 {
     public class EventStatisticJob : IJob
     {
@@ -19,20 +20,7 @@ namespace SyncBackgroundJobs.Jobs
             {
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
-                var result = await _httpClient.PostAsJsonAsync("api/EventStatistics", DemoObj);
-
-                if (!result.IsSuccessStatusCode)
-                {
-                    var logger = new LogService();
-
-                    var logResult = await logger.CreateApiLog("EventStatistic Sync Job", 3, "Anropet lyckades inte");
-
-                    if (!logResult)
-                    {
-                        logger.CreateLocalLog("EventStatistic Sync Job", 3, "Anropet lyckades inte");
-
-                    }
-                }
+                await _httpClient.PostAsJsonAsync("api/EventStatistics", DemoObj);
             }
             catch (Exception ex)
             {
