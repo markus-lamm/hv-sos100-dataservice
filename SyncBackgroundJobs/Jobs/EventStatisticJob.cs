@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Hv.Sos100.Logger;
+using Quartz;
 
 namespace SyncBackgroundJobs.Jobs
 {
@@ -10,7 +11,7 @@ namespace SyncBackgroundJobs.Jobs
         {
             _httpClient = httpClient;
         }
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
             var DemoObj = GetDemoData();
 
@@ -18,12 +19,32 @@ namespace SyncBackgroundJobs.Jobs
             {
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
-                _httpClient.PostAsJsonAsync("api/EventStatistics", DemoObj);
-                return Task.CompletedTask;
+                var result = await _httpClient.PostAsJsonAsync("api/EventStatistics", DemoObj);
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    var logger = new LogService();
+
+                    var logResult = await logger.CreateApiLog("EventStatistic Sync Job", 3, "Anropet lyckades inte");
+
+                    if (!logResult)
+                    {
+                        logger.CreateLocalLog("EventStatistic Sync Job", 3, "Anropet lyckades inte");
+
+                    }
+                }
             }
             catch (Exception ex)
             {
-                return Task.CompletedTask;
+                var logger = new LogService();
+
+                var logResult = await logger.CreateApiLog("EventStatistic Sync Job", 3, ex.Message);
+
+                if (!logResult)
+                {
+                    logger.CreateLocalLog("EventStatistic Sync Job", 3, ex.Message);
+
+                }
             }
         }
 
@@ -32,7 +53,6 @@ namespace SyncBackgroundJobs.Jobs
             Random rand = new Random();
             return new EventStatistics
             {
-                EventId = 1,
                 TimeStamp = DateTime.Now,
                 Views = rand.Next(100, 1000),
                 TotalSignups = rand.Next(10, 100),

@@ -1,4 +1,5 @@
 ﻿
+using Hv.Sos100.Logger;
 using Quartz;
 using System.Text.Json;
 
@@ -12,7 +13,7 @@ namespace SyncBackgroundJobs.Jobs
         {
             _httpClient = httpClient;
         }
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
             var DemoObj = DemoData();
 
@@ -20,12 +21,33 @@ namespace SyncBackgroundJobs.Jobs
             {
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
-                _httpClient.PostAsJsonAsync("api/AdStatistics", DemoObj);
-                return Task.CompletedTask;
+                var result = await _httpClient.PostAsJsonAsync("api/AdStatistics", DemoObj);
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    var logger = new LogService();
+
+                    var logResult = await logger.CreateApiLog("Advertisement Sync Job", 3, "Anropet lyckades inte");
+
+                    if (!logResult)
+                    {
+                        logger.CreateLocalLog("Advertisement Sync Job", 3, "Anropet lyckades inte");
+
+                    }
+                }
+
             }
             catch (Exception ex)
             {
-                return Task.CompletedTask;
+                var logger = new LogService();
+
+                var logResult = await logger.CreateApiLog("Advertisement Sync Job", 3, ex.Message);
+
+                if (!logResult)
+                {
+                    logger.CreateLocalLog("Advertisement Sync Job", 3, ex.Message);
+
+                }
             }
         }
 
