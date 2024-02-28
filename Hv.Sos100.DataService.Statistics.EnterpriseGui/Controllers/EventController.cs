@@ -25,9 +25,11 @@ namespace DataGui.Controllers
 
             int Views = 300;
             int TotalSignups = 70;
+            int SavedEvents = 120;
 
             ViewBag.Views = Views;
             ViewBag.TotalSignups = TotalSignups;
+            ViewBag.SavedEvents = SavedEvents;
 
             int oneRating = 10;
             int twoRating = 15;

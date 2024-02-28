@@ -4,20 +4,52 @@
     <title>Event</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-logo">
-            <a href="#">Logo</a>
+            <a href="https://informatik5.ei.hv.se/eventivo"> <img src="~/lib/Bilder/loggaEventivo.png" width="70" height="70"> </a>
         </div>
         <ul class="navbar-nav">
-            <li class="nav-item"><a href="#">Home</a></li>
-            <li class="nav-item"><a href="#">About</a></li>
-            <li class="nav-item"><a href="#">Services</a></li>
-            <li class="nav-item"><a href="#">Contact</a></li>
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">STATISTIK</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/Event/Index">EVENTSTATISTIK</a></li>
+                    <li><a href="/Ad/Index">ANNONSSTATISTIK</a></li>
+                    <li><a href="/Activity/Index">AKTIVITETSSTATISTIK</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">EVENT</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/Event/Page1">LÄGG TILL EVENT</a></li>
+                    <li><a href="/Event/Page2">HANTERA EVENT</a></li>
+                    
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">AKTIVITETER</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/Ads/Page1">LÄGG TILL AKTIVITET</a></li>
+                    <li><a href="/Ads/Page2">HANTERA AKTIVITETER</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">ANNONSER</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/Ads/Page1">LÄGG TILL ANNONS</a></li>
+                    <li><a href="/Ads/Page2">HANTERA ANNONSER</a></li>
+                </ul>
+            <li class="nav-item"><a href="/Home/Index">MIN PROFIL</a></li>
+            </li>
+
+           
         </ul>
     </nav>
-    <h1>Eventstatistik</h1>
+    <h1>EVENTSTATISTIK</h1>
     <hr>
 
     <div class="ChooseEvent">
@@ -28,24 +60,67 @@
             <option value="event3">Event 3</option>
         </select>
     </div>
-    <div class="Views">
-        <h2>Visningar och totala anmälningar</h2>
-        <canvas id="ViewsChart"></canvas>
-    </div>
-    <div class="StarRating">
-        <h2>Stjärnbetyg</h2>
-        <canvas id="starRatingsChart"></canvas>
-    </div>
-    <div class="Gender">
-        <h2>Kön</h2>
+    <div class="chart-container">
+        <div class="chart-info">
+            <h2>KÖN</h2>
+            <p>Statistik för hur många av vardera kön som anmält sig.</p>
+        </div>
         <canvas id="genderChart"></canvas>
     </div>
-    <div class="Age">
-        <h2>Ålder</h2>
+
+    <div class="chart-container">
+        <div class="chart-info">
+            <h2>ÅLDER</h2>
+            <p>Statistik för hur många i varje åldersgrupp som anmält sig.</p>
+        </div>
         <canvas id="ageChart"></canvas>
     </div>
 
+    <div class="chart-container">
+        <div class="chart-info">
+            <h2>VISNINGAR, SPARNINGAR & ANMÄLNINGAR</h2>
+            <p>Statistik för hur många som sett eventet, sparat och anmält sig.</p>
+        </div>
+        <canvas id="ViewsChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-info">
+            <h2>STJÄRNBETYG</h2>
+            <p>Statistik för hur många stjärnor eventet fått.</p>
+        </div>
+        <canvas id="starRatingsChart"></canvas>
+    </div>
+
     <script>
+        // Hämta dropdown-länkarna för varje dropdown-meny
+        var dropdownToggles = document.querySelectorAll('.navbar-nav .dropdown-toggle');
+
+        // Hämta dropdown-menyerna för varje dropdown-länk
+        var dropdownMenus = document.querySelectorAll('.navbar-nav .dropdown-menu');
+
+        // Lägg till händelselyssnare för att visa dropdown-menyn när användaren hovrar över varje länk
+        dropdownToggles.forEach(function (dropdownToggle, index) {
+            dropdownToggle.addEventListener('mouseover', function () {
+                dropdownMenus[index].style.display = 'block';
+            });
+        });
+
+        // Lägg till en klickhändelse för att dölja dropdown-menyn när användaren klickar någon annanstans på sidan
+        document.addEventListener('click', function (event) {
+            dropdownToggles.forEach(function (dropdownToggle, index) {
+                var targetElement = event.target;
+
+                // Om klickhändelsen inte är på dropdown-länken eller dropdown-menyn, dölj dropdown-menyn
+                if (!targetElement.matches('.navbar-nav .dropdown-toggle') && !targetElement.matches('.navbar-nav .dropdown-menu')) {
+                    dropdownMenus[index].style.display = 'none';
+                }
+            });
+        });
+
+    
+
+
         var femaleSignups = @Html.Raw(ViewBag.femaleSignups);
         var maleSignups = @Html.Raw(ViewBag.maleSignups);
         var Signups16_30 = @Html.Raw(ViewBag.Signups16_30);
@@ -53,6 +128,7 @@
         var Signups50plus = @Html.Raw(ViewBag.Signups50plus);
         var views = @Html.Raw(ViewBag.Views);
         var totalSignups = @Html.Raw(ViewBag.TotalSignups);
+        var savedEvents = @Html.Raw(ViewBag.SavedEvents);
 
         var ctxGender = document.getElementById('genderChart').getContext('2d');
         var genderChart = new Chart(ctxGender, {
@@ -98,12 +174,20 @@
                     borderColor: '#FFFFFF',
                     borderWidth: 1
                 }, {
-                    label: 'Anmälningar',
-                    data: [totalSignups],
+                    label: 'Sparade',
+                    data: [savedEvents],
                     backgroundColor: '#999999',
                     borderColor: '#FFFFFF',
                     borderWidth: 1
-                }]
+                },
+                {
+                    label: 'Anmälningar',
+                    data: [totalSignups],
+                    backgroundColor: '#e9e9e9',
+                    borderColor: '#FFF',
+                    borderWidth: 1
+                }
+                ]
             },
             options: {
                 responsive: true,
@@ -150,7 +234,6 @@
                 }
             }
         });
-
     </script>
 </body>
 </html>
