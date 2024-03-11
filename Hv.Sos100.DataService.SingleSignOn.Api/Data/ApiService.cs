@@ -11,21 +11,21 @@ internal class ApiService
     private const string BaseUrl = "https://informatik3.ei.hv.se/KontoInloggAPI";
     private readonly LogService _logService = new();
 
-    internal async Task<User?> AuthAccount(string email, string password)
+    internal async Task<User?> AuthUser(string email, string password)
     {
         try
         {
-            var user = await AuthUser(email, password);
+            var user = await GetUserAuth(email, password);
             return user;
         }
         catch (Exception ex)
         {
-            await _logService.CreateLog("Sso.Api.AuthAccount", ex);
+            await _logService.CreateLog("Sso.Api.AuthUser", ex);
             return null;
         }
     }
 
-    private async Task<User?> AuthUser(string email, string password)
+    private async Task<User?> GetUserAuth(string email, string password)
     {
         var response = await _httpClient.PostAsync($"{BaseUrl}/api/UserAuths", new StringContent(JsonSerializer.Serialize(
             new { Email = email, Password = password }), Encoding.UTF8, "application/json"));

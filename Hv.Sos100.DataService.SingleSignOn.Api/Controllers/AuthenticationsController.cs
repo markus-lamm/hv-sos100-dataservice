@@ -100,13 +100,13 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
 
         // POST: api/Authentications/validateNewSession
         [HttpPost("validateNewSession")]
-        public async Task<ActionResult<Authentication>> ValidateNewSession(User inputAccount)
+        public async Task<ActionResult<Authentication>> ValidateNewSession(User clientUser)
         {
-            if (inputAccount.Email == null || inputAccount.Password == null) { return BadRequest("The sent data must include an email and password"); }
-            var apiAccount = await _apiService.AuthAccount(inputAccount.Email, inputAccount.Password);
-            if (apiAccount == null) { return NotFound("The api could not find any account matching the input"); }
+            if (clientUser.Email == null || clientUser.Password == null) { return BadRequest("The sent data must include an email and password"); }
+            var apiUser = await _apiService.AuthUser(clientUser.Email, clientUser.Password);
+            if (apiUser == null) { return NotFound("The api could not find any user matching the input"); }
 
-            var existingAuthentication = await _context.Authentication.FirstOrDefaultAsync(authentication => authentication.UserID == apiAccount.UserID.ToString());
+            var existingAuthentication = await _context.Authentication.FirstOrDefaultAsync(authentication => authentication.UserID == apiUser.UserID.ToString());
             if (existingAuthentication != null)
             {
                 existingAuthentication.LastActivity = DateTime.Now;
@@ -131,8 +131,8 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             
             var newAuthentication = new Authentication
             {
-                UserID = apiAccount.UserID.ToString(),
-                UserRole = apiAccount.Role,
+                UserID = apiUser.UserID.ToString(),
+                UserRole = apiUser.Role,
                 LastActivity = DateTime.Now,
                 Token = Guid.NewGuid().ToString(),
                 TokenExpiration = DateTime.Now.AddMonths(1),
@@ -192,13 +192,13 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
 
         // POST: api/Authentications/authenticate
         [HttpPost("authenticate")]
-        public async Task<ActionResult<User>> Authenticate(User inputAccount)
+        public async Task<ActionResult<User>> Authenticate(User clientUser)
         {
-            if (inputAccount.Email == null || inputAccount.Password == null) { return BadRequest(); }
-            var apiAccount = await _apiService.AuthAccount(inputAccount.Email, inputAccount.Password);
-            if (apiAccount == null) { return NotFound(); }
+            if (clientUser.Email == null || clientUser.Password == null) { return BadRequest(); }
+            var apiUser = await _apiService.AuthUser(clientUser.Email, clientUser.Password);
+            if (apiUser == null) { return NotFound(); }
 
-            return Ok(apiAccount);
+            return Ok(apiUser);
         }
     }
 }
