@@ -12,7 +12,6 @@
 <body>
     @{
         var isAuthenticated = ViewData["IsAuthenticated"] as string;
-        var accountId = ViewData["AccountId"] as string;
     }
     <header>
         <nav class="navbar bg-custom border-body">
@@ -100,9 +99,6 @@
                 else
                 {
                     <div class="row m-2">
-                        <div class="col-sm-6">
-                            Welcome, @accountId!
-                        </div>
                         <div class="col-sm-6">
                             <form asp-controller="Home" asp-action="Logout">
                                 <button type="submit" class="btn btn-primary">LOGGA UT</button>
