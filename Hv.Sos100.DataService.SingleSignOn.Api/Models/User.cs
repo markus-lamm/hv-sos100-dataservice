@@ -1,9 +1,9 @@
 ﻿namespace Hv.Sos100.DataService.SingleSignOn.Api.Models;
 
-public class Account
+public class User
 {
-    public int? Id { get; set; }
+    public int? UserID { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
-    public string? AccountType { get; set; }
+    public string? Role { get; set; }
 }
