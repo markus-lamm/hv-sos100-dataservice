@@ -11,25 +11,12 @@ internal class ApiService
     private const string BaseUrl = "https://informatik3.ei.hv.se/KontoInloggAPI";
     private readonly LogService _logService = new();
 
-    internal async Task<Account?> AuthAccount(string email, string password)
+    internal async Task<User?> AuthAccount(string email, string password)
     {
         try
         {
-            // Call all authentication endpoints simultaneously and return the first successful result
-            var userTask = AuthUser(email, password);
-            var orgTask = AuthOrganizations(email, password);
-            var adminTask = AuthAdmin(email, password);
-
-            var user = await userTask;
-            if (user != null) { return user; }
-
-            var org = await orgTask;
-            if (org != null) { return org; }
-
-            var admin = await adminTask;
-            if (admin != null) { return admin; }
-
-            return null;
+            var user = await AuthUser(email, password);
+            return user;
         }
         catch (Exception ex)
         {
@@ -38,42 +25,15 @@ internal class ApiService
         }
     }
 
-    private async Task<Account?> AuthUser(string email, string password)
+    private async Task<User?> AuthUser(string email, string password)
     {
-        var response = await _httpClient.PostAsync($"{BaseUrl}/api/AuthUsers", new StringContent(JsonSerializer.Serialize(
+        var response = await _httpClient.PostAsync($"{BaseUrl}/api/UserAuths", new StringContent(JsonSerializer.Serialize(
             new { Email = email, Password = password }), Encoding.UTF8, "application/json"));
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(content)) { return null; }
 
-        var user = JsonSerializer.Deserialize<Account>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        if (user != null) { user.AccountType = "User"; }
+        var user = JsonSerializer.Deserialize<User>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         return user;
-    }
-
-    private async Task<Account?> AuthOrganizations(string email, string password)
-    {
-        var response = await _httpClient.PostAsync($"{BaseUrl}/api/AuthOrgs", new StringContent(JsonSerializer.Serialize(
-            new { Email = email, Password = password }), Encoding.UTF8, "application/json"));
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        if (string.IsNullOrWhiteSpace(content)) { return null; }
-
-        var org = JsonSerializer.Deserialize<Account>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        if (org != null) { org.AccountType = "Organization"; }
-        return org;
-    }
-
-    private async Task<Account?> AuthAdmin(string email, string password)
-    {
-        var response = await _httpClient.PostAsync($"{BaseUrl}/api/AuthAdmins", new StringContent(JsonSerializer.Serialize(
-            new { Email = email, Password = password }), Encoding.UTF8, "application/json"));
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        if (string.IsNullOrWhiteSpace(content)) { return null; }
-
-        var admin = JsonSerializer.Deserialize<Account>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        if (admin != null) { admin.AccountType = "Admin"; }
-        return admin;
     }
 }
