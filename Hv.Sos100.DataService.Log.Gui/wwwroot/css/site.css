@@ -1,11 +1,5 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+  font-size: 1rem;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -18,33 +12,52 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 4rem;
 }
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-    padding: 0.8rem;
+.container {
+    text-align: center;
 }
 
-table{
-    width: 90vw;
-    margin-top: 5vh;
+.title {
+    font-size: 2rem;
+    margin-top: 2rem;
 }
-.tableStyle {
-    width: 10vw;
-}
-.tableStyle1 {
-    width: 5vw;
-}
-.tableStyle2 {
-    width: 25vw;
-}
-.tableHeader{
-    background-color: #F9F871
-}
-.showLogs{
+
+.logs-container {
+    margin-top: 2rem;
     display: flex;
-    justify-content:center;
+    justify-content: center;
 }
 
+.logs-table {
+    width: 100%;
+    max-width: 2000px;
+    border-collapse: collapse;
+}
+
+    .logs-table th,
+    .logs-table td {
+        border: 1px solid black;
+        padding: 0.8rem;
+    }
+
+    .logs-table th {
+        background-color: #F9F871;
+    }
+
+    .logs-table .id-column {
+        width: 5%;
+    }
+
+    .logs-table .time-column {
+        width: 20%;
+    }
+
+    .logs-table .severity-column {
+        width: 10%;
+    }
+
+    .logs-table .source-column {
+        width: 20%;
+    }

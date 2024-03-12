@@ -41,7 +41,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAuthentication(Guid id, Authentication authentication)
         {
-            if (id != authentication.AuthenticationId)
+            if (id != authentication.AuthenticationID)
             {
                 return BadRequest();
             }
@@ -74,7 +74,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             _context.Authentication.Add(authentication);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAuthentication", new { id = authentication.AuthenticationId }, authentication);
+            return CreatedAtAction("GetAuthentication", new { id = authentication.AuthenticationID }, authentication);
         }
 
         // DELETE: api/Authentications/5
@@ -95,18 +95,18 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
 
         private bool AuthenticationExists(Guid id)
         {
-            return _context.Authentication.Any(e => e.AuthenticationId == id);
+            return _context.Authentication.Any(e => e.AuthenticationID == id);
         }
 
         // POST: api/Authentications/validateNewSession
         [HttpPost("validateNewSession")]
-        public async Task<ActionResult<Authentication>> ValidateNewSession(Account inputAccount)
+        public async Task<ActionResult<Authentication>> ValidateNewSession(User clientUser)
         {
-            if (inputAccount.Email == null || inputAccount.Password == null) { return BadRequest("The sent data must include an email and password"); }
-            var apiAccount = await _apiService.AuthAccount(inputAccount.Email, inputAccount.Password);
-            if (apiAccount == null) { return NotFound("The api could not find any account matching the input"); }
+            if (clientUser.Email == null || clientUser.Password == null) { return BadRequest("The sent data must include an email and password"); }
+            var apiUser = await _apiService.AuthUser(clientUser.Email, clientUser.Password);
+            if (apiUser == null) { return NotFound("The api could not find any user matching the input"); }
 
-            var existingAuthentication = await _context.Authentication.FirstOrDefaultAsync(authentication => authentication.AccountId == apiAccount.Id.ToString());
+            var existingAuthentication = await _context.Authentication.FirstOrDefaultAsync(authentication => authentication.UserID == apiUser.UserID.ToString());
             if (existingAuthentication != null)
             {
                 existingAuthentication.LastActivity = DateTime.Now;
@@ -131,11 +131,11 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             
             var newAuthentication = new Authentication
             {
-                AccountId = apiAccount.Id.ToString(),
+                UserID = apiUser.UserID.ToString(),
+                UserRole = apiUser.Role,
                 LastActivity = DateTime.Now,
                 Token = Guid.NewGuid().ToString(),
                 TokenExpiration = DateTime.Now.AddMonths(1),
-                AccountType = apiAccount.AccountType
             };
 
             try
@@ -150,7 +150,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             }
 
             // Clear sensitive data before returning
-            newAuthentication.AuthenticationId = Guid.Empty;
+            newAuthentication.AuthenticationID = Guid.Empty;
             newAuthentication.LastActivity = null;
             newAuthentication.TokenExpiration = null;
 
@@ -183,7 +183,7 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             }
 
             // Clear sensitive data before returning
-            authentication.AuthenticationId = Guid.Empty;
+            authentication.AuthenticationID = Guid.Empty;
             authentication.LastActivity = null;
             authentication.TokenExpiration = null;
 
@@ -192,13 +192,13 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
 
         // POST: api/Authentications/authenticate
         [HttpPost("authenticate")]
-        public async Task<ActionResult<Account>> Authenticate(Account inputAccount)
+        public async Task<ActionResult<User>> Authenticate(User clientUser)
         {
-            if (inputAccount.Email == null || inputAccount.Password == null) { return BadRequest(); }
-            var apiAccount = await _apiService.AuthAccount(inputAccount.Email, inputAccount.Password);
-            if (apiAccount == null) { return NotFound(); }
+            if (clientUser.Email == null || clientUser.Password == null) { return BadRequest(); }
+            var apiUser = await _apiService.AuthUser(clientUser.Email, clientUser.Password);
+            if (apiUser == null) { return NotFound(); }
 
-            return Ok(apiAccount);
+            return Ok(apiUser);
         }
     }
 }
