@@ -7,38 +7,74 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Hv.Sos100.DataService.Statistics.AdminGui.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://informatik4.ei.hv.se/CSS/eventivoNavbar.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Hv.Sos100.DataService.Statistics.AdminGui</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+        <nav class="navbar bg-custom border-body">
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                <img src="~/images/logo_eventivo.png" alt="Logo" width="65" height="70" class="d-inline-block align-text-top">
+            </a>
+
+
+            <div class="d-flex justify-content-center">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        EVENT
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-action="Create" asp-controller="Events">Lägg till event</a></li>
+                        <li><a class="dropdown-item" asp-action="Index" asp-controller="Events">Hantera event</a></li>
+                    </ul>
+                </div>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        AKTIVITET
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-action="#" asp-controller="#">Lägg till aktivitet</a></li>
+                        <li><a class="dropdown-item" asp-action="#" asp-controller="#">Hantera aktivitet</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-list">
+                <a class="nav-link" asp-action="Trollhattan_Search" asp-controller="Cities"><img class="search-icon" src="~/images/searchglass.svg" />SÖK EVENT</a>
+                <div class="vr text-light" style="width: 3px;"></div>
+                <a class="nav-link" asp-action="MyProfile" asp-controller="Home">LOGGA UT</a> @*fixa logga ut skiten ba*@
+                <div class="vr text-light" style="width: 3px;"></div>
+
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        STAD
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-action="Trollhattan" asp-controller="Cities">Trollhättan</a></li>
+                        <li><a class="dropdown-item" asp-action="Vastervik" asp-controller="Cities">Västervik</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Hv.Sos100.DataService.Statistics.AdminGui - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer d-flex justify-content-between align-items-center py-3 my-4">
+        <div class="footer-icons d-flex flex-column align-items-start">
+            <a href="https://instagram.com" class="mb-2"><img class="logo-footer" src="~/images/logo-instagram.png" /><p class="footer-icon-text">Eventivo</p></a>
+            <a href="https://twitter.com" class="mb-2"><img class="logo-footer" src="~/images/logo-twitter.png" /><p class="footer-icon-text">Eventivo</p></a>
+            <a href="https://facebook.com" class="mb-2"><img class="logo-footer" src="~/images/logo-facebook.png" /></i><p class="footer-icon-text">Eventivo</p></a>
+        </div>
+        <div class="footer-nav">
+            <ul class="nav justify-content-center">
+                <li class="nav-item"><a href="#" class="nav-link">OM OSS</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">KONTAKT</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">SEKRETESS</a></li>
+            </ul>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
