@@ -46,7 +46,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdStatistics(int id, AdStatistics adStatistics)
         {
-            if (id != adStatistics.Id)
+            if (id != adStatistics.AdvertisementStatisticsID)
             {
                 return BadRequest();
             }
@@ -79,7 +79,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
             _context.Ads.Add(adStatistics);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdStatistics", new { id = adStatistics.Id }, adStatistics);
+            return CreatedAtAction("GetAdStatistics", new { id = adStatistics.AdvertisementStatisticsID }, adStatistics);
         }
 
         // DELETE: api/AdStatistics/5
@@ -100,7 +100,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
 
         private bool AdStatisticsExists(int id)
         {
-            return _context.Ads.Any(e => e.Id == id);
+            return _context.Ads.Any(e => e.AdvertisementStatisticsID == id);
         }
     }
 }
