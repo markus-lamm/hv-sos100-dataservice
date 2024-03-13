@@ -1,5 +1,4 @@
 ﻿body {
-    background-image: url('/lib/bilder/Bakgrund.png');
     background-size: cover;
     background-repeat: no-repeat;
     font-family: "Roboto", sans-serif;
@@ -37,6 +36,11 @@
     display: flex;
 }
 
+    .navbar-nav li {
+        margin-right: 50px;
+    }
+
+
 .nav-item {
     margin-right: 20px;
 }
@@ -52,31 +56,29 @@
             color: darkgoldenrod;
         }
 
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    background-color: #212121;
-    min-width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    border-radius: 8px;
-    z-index: 1;
-    list-style-type: none;
+.categorymenu {
+    width: 100vw;
+    height: 30px;
+    background-color: #181717;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center !important;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
 
-    .dropdown-menu li {
-        padding: 10px;
-        list-style-type: none;
-        text-align: left !important;
-    }
-
-        .dropdown-menu li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-            .dropdown-menu li a:hover {
-                color: darkgoldenrod;
-            }
+.gradienttext a {
+    font-size: 20px; /* Justera storleken efter behov */
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+    filter: saturate(200%);
+    text-decoration: none !important; /* Ta bort understrykning */
+}
 
 h1 {
     font-size: 50px;
@@ -90,12 +92,12 @@ h1 {
 }
 
 hr {
-    position: relative; 
-    width: 10%;
-    border: none; 
-    border-top: 5px solid #000000; 
-    right: 10.5%; 
-    bottom: 35px; 
+    position: relative;
+    width: 8%;
+    border: none;
+    border-top: 5px solid #000000;
+    right: 43%;
+    bottom: 29px;
 }
 
 h2 {
@@ -103,14 +105,13 @@ h2 {
 }
 
 .ChooseActivity {
+    margin-left: 40px;
     margin-bottom: 20px;
-}
-
-.ChooseActivity {
     font-size: 20px;
     position: relative;
-    left: 10%;
 }
+
+
 
 select {
     padding: 8px;
@@ -137,11 +138,29 @@ canvas {
 }
 
 
-
-.Views,
-.SavedEvents {
-    position: relative;
-    left: 9%; 
-    width: 50%; 
-    float: left; 
+.chart-container {
+    margin-left: 35px;
+    display: flex;
+    width: 95%;
+    margin-bottom: 60px;
+    background-color: #fff;
+    border-radius: 8px;
+    
 }
+
+.chart-info {
+    width: 50%;
+    padding-right: 40px;
+}
+
+    .chart-info h2 {
+        margin-top: 10;
+        margin-bottom: 0;
+        padding-left: 10px;
+    }
+
+    .chart-info p {
+        margin-top: 0;
+        padding-left: 10px;
+    }
+

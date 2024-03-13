@@ -23,26 +23,26 @@ namespace DataGui.Controllers
             ViewBag.Signups31_50 = Signups31_50;
             ViewBag.Signups50plus = Signups50plus;
 
-            int Views = 300;
+            
             int TotalSignups = 70;
-            int SavedEvents = 120;
+            
 
-            ViewBag.Views = Views;
+           
             ViewBag.TotalSignups = TotalSignups;
-            ViewBag.SavedEvents = SavedEvents;
+         
 
-            int oneRating = 10;
-            int twoRating = 15;
-            int threeRating = 20;
-            int fourRating = 25;
-            int fiveRating = 30;
+            int TotalEvents = 60;
+            int TotalEntertainmentEvents = 15;
+            int TotalFoodEvents = 20;
+            int TotalSportEvents = 25;
+         
 
 
-            ViewBag.oneRating = oneRating;
-            ViewBag.twoRating = twoRating;
-            ViewBag.threeRating = threeRating;
-            ViewBag.fourRating = fourRating;
-            ViewBag.fiveRating = fiveRating;
+            ViewBag.TotalEvents = TotalEvents;
+            ViewBag.TotalEntertainmentEvents = TotalEntertainmentEvents;
+            ViewBag.TotalFoodEvents = TotalFoodEvents;
+            ViewBag.TotalSportEvents = TotalSportEvents;
+          
 
             return View();
         }
