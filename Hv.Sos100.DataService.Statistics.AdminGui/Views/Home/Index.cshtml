@@ -1,13 +1,11 @@
-﻿<link href="~/css/site.css" rel="stylesheet" />
-
-<div>
-    <div class="dropdown">
-        <button class="dropbtn">Välj område</button>
-        <div class="dropdown-content">
-            <a asp-controller="ActivityStatistics" asp-action="Index">Aktiviteter</a>
-            <a asp-controller="AdStatistics" asp-action="Index">Annonser</a>
-            <a asp-controller="CountyStatistics" asp-action="Index">Kommuner</a>
-            <a asp-controller="EventStatistics" asp-action="Index">Evenemang</a>
-        </div>
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="secondNav">
+    <div class="secondNavText">
+        <a class="secondNavLink" asp-action="Index" asp-controller="ActivityStatistics">Aktiviteter</a>
+        <a class="secondNavLink" asp-action="Index" asp-controller="EventStatistics">Evenemang</a>
+        <a class="secondNavLink" asp-action="Index" asp-controller="AdStatistics">Annonser</a>
     </div>
 </div>
+

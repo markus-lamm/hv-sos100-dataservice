@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using Hv.Sos100.DataService.Statistics.Api.Models;
+using Hv.Sos100.DataService.Statistics.AdminGui.Models;
+using Hv.Sos100.Logger;
 
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
@@ -16,8 +17,8 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(_baseURL);
-                    HttpResponseMessage response = await client.GetAsync("Ads");
+                    var response = await client.GetAsync(_baseURL);
+                    //HttpResponseMessage response = await client.GetAsync();
                     if (response.IsSuccessStatusCode)
                     {
                         string content = await response.Content.ReadAsStringAsync();
@@ -30,7 +31,9 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Tyvärr gick något fel: " + ex.Message;
+                var logger = new LogService();
+
+                await logger.CreateLog("StatisticsAdminGui", ex);
             }
             return View(adList);
         }
