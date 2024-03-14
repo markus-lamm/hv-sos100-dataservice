@@ -6,11 +6,10 @@
 }
 
 <div class="container">
-    <h1 class="title">Logs</h1>
     <div class="logs-container">
         @if (isAuthenticated != "true")
         {
-            <p>Log in to view logs</p>
+            <i>Logga in för att se loggar</i>
         }
         else
         {
@@ -18,10 +17,10 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Severity</th>
-                        <th scope="col">Service</th>
-                        <th scope="col">Message</th>
+                        <th scope="col">Tid</th>
+                        <th scope="col">Allvarhet</th>
+                        <th scope="col">Tjänst</th>
+                        <th scope="col">Meddelande</th>
                     </tr>
                 </thead>
                 <tbody>

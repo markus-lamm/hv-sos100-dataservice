@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos100.DataService.Log.G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos100.DataService.SingleSignOn.Api", "Hv.Sos100.DataService.SingleSignOn.Api\Hv.Sos100.DataService.SingleSignOn.Api.csproj", "{31704A9E-72A1-4B32-9742-D935FE7B65C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hv.Sos100.DataService.Statistics.Api", "Hv.Sos100.DataService.Statistics.Api\Hv.Sos100.DataService.Statistics.Api.csproj", "{DB4A4202-BEAC-4EE8-BB42-A3B09FDD2256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos100.DataService.Statistics.Api", "Hv.Sos100.DataService.Statistics.Api\Hv.Sos100.DataService.Statistics.Api.csproj", "{DB4A4202-BEAC-4EE8-BB42-A3B09FDD2256}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncBackgroundJobs", "SyncBackgroundJobs\SyncBackgroundJobs.csproj", "{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hv.Sos100.DataService.Statistics.EnterpriseGui", "Hv.Sos100.DataService.Statistics.EnterpriseGui\Hv.Sos100.DataService.Statistics.EnterpriseGui.csproj", "{16AF8929-F4F5-44D0-BF60-E924011BC9F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos.DataService.Advertisement.Api", "Hv.Sos.DataService.Advertisement.Api\Hv.Sos.DataService.Advertisement.Api.csproj", "{9B8502D6-463F-4C6B-9923-236C09B23D5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hv.Sos100.DataService.Advertisement.Gui", "Hv.Sos100.DataService.Advertisement.Gui\Hv.Sos100.DataService.Advertisement.Gui.csproj", "{137D6C8D-B93B-472A-94F6-E19C60572ACA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +43,14 @@ Global
 		{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D6F50EC-8883-4DF1-8DA1-AD8C687BA475}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16AF8929-F4F5-44D0-BF60-E924011BC9F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B8502D6-463F-4C6B-9923-236C09B23D5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B8502D6-463F-4C6B-9923-236C09B23D5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B8502D6-463F-4C6B-9923-236C09B23D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B8502D6-463F-4C6B-9923-236C09B23D5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{137D6C8D-B93B-472A-94F6-E19C60572ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{137D6C8D-B93B-472A-94F6-E19C60572ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{137D6C8D-B93B-472A-94F6-E19C60572ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{137D6C8D-B93B-472A-94F6-E19C60572ACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

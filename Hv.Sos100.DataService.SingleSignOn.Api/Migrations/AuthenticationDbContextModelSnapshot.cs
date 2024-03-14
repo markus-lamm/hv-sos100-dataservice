@@ -24,15 +24,9 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Migrations
 
             modelBuilder.Entity("Hv.Sos100.DataService.SingleSignOn.Api.Models.Authentication", b =>
                 {
-                    b.Property<Guid>("AuthenticationId")
+                    b.Property<Guid>("AuthenticationID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AccountId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AccountType")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastActivity")
                         .HasColumnType("datetime2");
@@ -43,7 +37,13 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Migrations
                     b.Property<DateTime?>("TokenExpiration")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AuthenticationId");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserRole")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuthenticationID");
 
                     b.ToTable("Authentication");
                 });
