@@ -1,48 +1,47 @@
-﻿
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Hv.Sos100.SingleSignOn;
+using Microsoft.AspNetCore.Http;
+using Hv.Sos100.Logger;
+using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
 
 namespace DataGui.Controllers
 {
     public class EventController : Controller
     {
-        public ActionResult Index()
+        private readonly APIservice aPIservice = new();
+        public async Task<IActionResult> Index()
         {
+            var eventlist = await aPIservice.GetEvents();
 
-            int femaleSignups = 50;
-            int maleSignups = 30;
+            var authenticationService = new Hv.Sos100.SingleSignOn.AuthenticationService();
+            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
 
-            ViewBag.femaleSignups = femaleSignups;
-            ViewBag.maleSignups = maleSignups;
+            if (isAuthenticated == null)
+            {
+                var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
+                if (existingSession != null)
+                {
+                    var userId = HttpContext.Session.GetString("UserID");
+                    var userRole = HttpContext.Session.GetString("UserRole");
+                    if (isAuthenticated == "true")
+                    {
+                        return View();
+                    }
+                    else
+                    {
+                        //return RedirectToAction("Login", "Account");
+                        return View();
+                    }
 
-            int Signups16_30 = 30;
-            int Signups31_50 = 20;
-            int Signups50plus = 10;
+                }
+                else
+                {
+                    // Det fanns ingen giltig session att återuppta
+                    return RedirectToAction("Login", "Account");
+                }
 
-
-            ViewBag.Signups16_30 = Signups16_30;
-            ViewBag.Signups31_50 = Signups31_50;
-            ViewBag.Signups50plus = Signups50plus;
-
-            
-            int TotalSignups = 70;
-            
-
-           
-            ViewBag.TotalSignups = TotalSignups;
-         
-
-            int TotalEvents = 60;
-            int TotalEntertainmentEvents = 15;
-            int TotalFoodEvents = 20;
-            int TotalSportEvents = 25;
-         
-
-
-            ViewBag.TotalEvents = TotalEvents;
-            ViewBag.TotalEntertainmentEvents = TotalEntertainmentEvents;
-            ViewBag.TotalFoodEvents = TotalFoodEvents;
-            ViewBag.TotalSportEvents = TotalSportEvents;
-          
+            }
 
             return View();
         }

@@ -10,4 +10,13 @@
     <Folder Include="Views\Shared\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Hv.Sos100.Logger" Version="1.5.0" />
+    <PackageReference Include="Hv.Sos100.SingleSignOn" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hv.Sos100.DataService.Statistics.Api\Hv.Sos100.DataService.Statistics.Api.csproj" />
+  </ItemGroup>
+
 </Project>

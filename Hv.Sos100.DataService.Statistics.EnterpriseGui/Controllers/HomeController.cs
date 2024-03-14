@@ -7,7 +7,7 @@ namespace DataGui.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Event");
         }
     }
 }

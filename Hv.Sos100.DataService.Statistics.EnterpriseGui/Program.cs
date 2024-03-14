@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+
 namespace Hv.Sos100.DataService.Statistics.EnterpriseGui
 {
     public class Program
@@ -9,8 +11,12 @@ namespace Hv.Sos100.DataService.Statistics.EnterpriseGui
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddScoped<AuthenticationService>();
+            builder.Services.AddSession();
+
             var app = builder.Build();
 
+            app.UseSession();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
