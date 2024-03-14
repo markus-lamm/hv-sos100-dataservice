@@ -37,8 +37,18 @@ else
                 {
                     <tr>
                         <td>@ad.AdvertisementID</td>
-                        <td><img height="200" width="200" src="@ad.ImageSource"/></td>
-                        <td>@if (ad.TotalViews == null)
+                        <td>
+                            @if (ad.ImageDimension == "horizontal")
+                            {
+                                <img height="150" width="500" src="@ad.ImageSource" />
+                            }
+                            else
+                            {
+                                <img height="400" width="200" src="@ad.ImageSource" />
+                            }
+                            </td>
+                        <td>
+                            @if (ad.TotalViews == null)
                             {
                                 @Html.Raw(0)
                             }
@@ -50,7 +60,8 @@ else
                         <td>
                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@ad.AdvertisementID">Radera</a>
                         </td>
-                    </tr>
+                    </tr >
+                    
                 }
             }
         </tbody>
