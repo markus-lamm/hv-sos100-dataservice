@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hv.Sos.DataService.Advertisement.Api.Migrations
 {
     [DbContext(typeof(AdsDbContext))]
-    [Migration("20240312054118_initial")]
-    partial class initial
+    [Migration("20240314093830_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,19 +27,29 @@ namespace Hv.Sos.DataService.Advertisement.Api.Migrations
 
             modelBuilder.Entity("Hv.Sos.DataService.Advertisement.Api.Model.Ads", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("AdvertisementID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdvertisementID"));
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("ImageDimension")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Views")
+                    b.Property<string>("ImageLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageSource")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TotalViews")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("AdvertisementID");
 
                     b.ToTable("Ads");
                 });

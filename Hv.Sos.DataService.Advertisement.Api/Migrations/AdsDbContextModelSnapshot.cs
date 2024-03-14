@@ -24,22 +24,28 @@ namespace Hv.Sos.DataService.Advertisement.Api.Migrations
 
             modelBuilder.Entity("Hv.Sos.DataService.Advertisement.Api.Model.Ads", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AdvertisementID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdvertisementID"));
 
-                    b.Property<string>("ImageSize")
+                    b.Property<string>("ImageDimension")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Views")
+                    b.Property<string>("ImageSource")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TotalViews")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("AdvertisementID");
 
                     b.ToTable("Ads");
                 });

@@ -58,19 +58,19 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             }
 
             var random = new Random();
-            var randomObject = ads.Where(x => x.ImageSize == "vertical").OrderBy(x => random.Next()).FirstOrDefault();
+            var randomObject = ads.Where(x => x.ImageDimension == "vertical").OrderBy(x => random.Next()).FirstOrDefault();
 
             if (randomObject == null)
             {
                 return NotFound();
             }
-            if (randomObject.Views == null)
+            if (randomObject.TotalViews == null)
             {
-                randomObject.Views = 1;
+                randomObject.TotalViews = 1;
             }
             else
             {
-                randomObject.Views += 1;
+                randomObject.TotalViews += 1;
             }
             _context.Entry(randomObject).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -84,7 +84,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             var allAdvertisements = await _context.Ads.ToListAsync();
 
             var random = new Random();
-            var shuffledAdvertisements = allAdvertisements.Where(x => x.ImageSize == "vertical").OrderBy(x => random.Next()).ToList();
+            var shuffledAdvertisements = allAdvertisements.Where(x => x.ImageDimension == "vertical").OrderBy(x => random.Next()).ToList();
 
             var randomAdvertisements = shuffledAdvertisements.Take(number).ToList();
 
@@ -95,13 +95,13 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             foreach (var ad in randomAdvertisements)
             {
 
-                if (ad.Views == null)
+                if (ad.TotalViews == null)
                 {
-                    ad.Views = 1;
+                    ad.TotalViews = 1;
                 }
                 else
                 {
-                    ad.Views += 1;
+                    ad.TotalViews += 1;
                 }
 
                 _context.Entry(ad).State = EntityState.Modified;
@@ -122,19 +122,19 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             }
 
             var random = new Random();
-            var randomObject = ads.Where(x => x.ImageSize == "horizontal").OrderBy(x => random.Next()).FirstOrDefault();
+            var randomObject = ads.Where(x => x.ImageDimension == "horizontal").OrderBy(x => random.Next()).FirstOrDefault();
 
             if (randomObject == null)
             {
                 return NotFound();
             }
-            if (randomObject.Views == null)
+            if (randomObject.TotalViews == null)
             {
-                randomObject.Views = 1;
+                randomObject.TotalViews = 1;
             }
             else
             {
-                randomObject.Views += 1;
+                randomObject.TotalViews += 1;
             }
             _context.Entry(randomObject).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -148,7 +148,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             var allAdvertisements = await _context.Ads.ToListAsync();
 
             var random = new Random();
-            var shuffledAdvertisements = allAdvertisements.Where(x => x.ImageSize == "horizontal").OrderBy(x => random.Next()).ToList();
+            var shuffledAdvertisements = allAdvertisements.Where(x => x.ImageDimension == "horizontal").OrderBy(x => random.Next()).ToList();
 
             var randomAdvertisements = shuffledAdvertisements.Take(number).ToList();
 
@@ -158,13 +158,13 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             }
             foreach (var ad in randomAdvertisements)
             {
-                if (ad.Views == null)
+                if (ad.TotalViews == null)
                 {
-                    ad.Views = 1;
+                    ad.TotalViews = 1;
                 }
                 else
                 {
-                    ad.Views += 1;
+                    ad.TotalViews += 1;
                 }
                 _context.Entry(ad).State = EntityState.Modified;
             }
@@ -185,20 +185,20 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             }
 
             var random = new Random();
-            var randomObject = ads.Where(x => x.ImageSize == "square").OrderBy(x => random.Next()).FirstOrDefault();
+            var randomObject = ads.Where(x => x.ImageDimension == "square").OrderBy(x => random.Next()).FirstOrDefault();
 
             if (randomObject == null)
             {
                 return NotFound();
             }
 
-            if (randomObject.Views == null)
+            if (randomObject.TotalViews == null)
             {
-                randomObject.Views = 1;
+                randomObject.TotalViews = 1;
             }
             else
             {
-                randomObject.Views += 1;
+                randomObject.TotalViews += 1;
             }
 
             _context.Entry(randomObject).State = EntityState.Modified;
@@ -213,7 +213,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             var allAdvertisements = await _context.Ads.ToListAsync();
 
             var random = new Random();
-            var shuffledAdvertisements = allAdvertisements.Where(x => x.ImageSize == "square").OrderBy(x => random.Next()).ToList();
+            var shuffledAdvertisements = allAdvertisements.Where(x => x.ImageDimension == "square").OrderBy(x => random.Next()).ToList();
 
             var randomAdvertisements = shuffledAdvertisements.Take(number).ToList();
 
@@ -223,13 +223,13 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             }
             foreach (var ad in randomAdvertisements)
             {
-                if (ad.Views == null)
+                if (ad.TotalViews == null)
                 {
-                    ad.Views = 1;
+                    ad.TotalViews = 1;
                 }
                 else
                 {
-                    ad.Views += 1;
+                    ad.TotalViews += 1;
                 }
                 _context.Entry(ad).State = EntityState.Modified;
             }
@@ -243,7 +243,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAds(int id, Ads ads)
         {
-            if (id != ads.Id)
+            if (id != ads.AdvertisementID)
             {
                 return BadRequest();
             }
@@ -277,7 +277,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
             _context.Ads.Add(ads);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAds", new { ads.Id }, ads);
+            return CreatedAtAction("GetAds", new { id = ads.AdvertisementID }, ads);
         }
 
         // DELETE: api/Ads/5
@@ -298,7 +298,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Controllers
 
         private bool AdsExists(int id)
         {
-            return _context.Ads.Any(e => e.Id == id);
+            return _context.Ads.Any(e => e.AdvertisementID == id);
         }
     }
 }
