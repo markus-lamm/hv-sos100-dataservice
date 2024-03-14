@@ -5,37 +5,66 @@ using System.Diagnostics;
 using System.Net.Http;
 using Hv.Sos.DataService.Advertisement.Api.Model;
 using Azure;
+using System.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.IO.Compression;
+using Hv.Sos100.SingleSignOn;
+using Hv.Sos100.Logger;
+
 
 namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly HttpClient _httpClient = new();
         private readonly string _baseURL = "https://informatik6.ei.hv.se/advertisement/";
+        private readonly AuthenticationService _authenticationService;
+        private readonly LogService _logger = new();
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController( AuthenticationService authenticationService)
         {
-            _logger = logger;
+            _authenticationService = authenticationService;
+
         }
 
         public async Task<IActionResult> Index()
         {
+            await IsLoggedin();
+            
             _httpClient.BaseAddress = new Uri(_baseURL);
 
             var result = await _httpClient.GetAsync("api/Ads/getallads");
             var adsJsonString = await result.Content.ReadAsStringAsync();
             var deserialized = JsonConvert.DeserializeObject<IEnumerable<Ads>>(adsJsonString);
+
             return View(deserialized);
+
         }
 
-       
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var imageTypes = new List<string> { "square", "horizontal", "vertical" };
-            ViewData["ImageTypes"] = new SelectList(imageTypes);
+            if (!await IsLoggedin())
+            {
+                ViewBag.ShowLoginModal = true;
+                return View(nameof(Index));
+            }
+
+            var imageTypes = new List<string> { "Fyrkantig anonns", "Horizontell annons", "Vertikal annons" };
+            var imageTypesValues = new List<string> { "square", "horizontal", "vertical" };
+
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+
+            for (int i = 0; i < imageTypes.Count; i++)
+            {
+                selectListItems.Add(new SelectListItem
+                {
+                    Text = imageTypes[i],
+                    Value = imageTypesValues[i]
+                });
+            }
+            ViewData["ImageTypes"] = new SelectList(selectListItems, "Value", "Text");
 
             return View();
 
@@ -43,10 +72,19 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Id,ImageUrl,Views,ImageSize")] Ads ad)
+        public async Task<ActionResult> Create([Bind("AdvertisementID,ImageSource,ImageLink,TotalViews,TimeStamp,ImageDimension")] Ads ad, IFormCollection form)
         {
             try
             {
+                var file = Request.Form.Files[0];
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    var Content = memoryStream.ToArray();
+                    string byte64string = Convert.ToBase64String(Content);
+                    ad.ImageSource = $"data:{file.ContentType};base64,{byte64string}";
+                }
+                    
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
                 var responseTask = await _httpClient.PostAsJsonAsync("api/Ads", ad);
@@ -55,6 +93,7 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
             }
             catch
             {
+                await _logger.CreateLog("Create new advertisement", LogService.Severity.Error, "Failed to upload file or api is down");
                 return View();
             }
         }
@@ -62,13 +101,19 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
         // GET: MovieAPIController/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            if (!await IsLoggedin())
+            {
+                ViewBag.ShowLoginModal = true;
+                return View(nameof(Index));
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
             var Ads = await GetAds();
-            var movie = Ads?.Where(s => s.Id == id).FirstOrDefault();
+            var movie = Ads?.Where(s => s.AdvertisementID == id).FirstOrDefault();
 
             if (movie == null)
             {
@@ -92,6 +137,7 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
             }
             catch
             {
+                await _logger.CreateLog("Delete advertisement", LogService.Severity.Error, "Failed to delete ad perhaps the api is down");
                 return View();
             }
         }
@@ -108,6 +154,33 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
             return deserialized ?? new List<Ads>();
             
+        }
+
+        public async Task<bool> IsLoggedin()
+        {
+            var existingSession = await _authenticationService.ResumeSession(controllerBase: this, HttpContext);
+            if (existingSession)
+            {
+                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
+            }
+
+            return bool.TryParse(HttpContext.Session.GetString("IsAuthenticated"), out _);
+        }
+
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            var authenticationResult = await _authenticationService.CreateSession(email, password, controllerBase: this, HttpContext);
+            if (authenticationResult)
+            {
+                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Logout()
+        {
+            _authenticationService.EndSession(controllerBase: this, HttpContext);
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
