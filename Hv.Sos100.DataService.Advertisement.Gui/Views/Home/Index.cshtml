@@ -1,0 +1,69 @@
+﻿@using Hv.Sos.DataService.Advertisement.Api.Model
+@model List<Ads>
+@{
+    ViewData["Title"] = "Home Page";
+    var isAuthenticated = ViewData["IsAuthenticated"] as string;
+}
+
+@if (isAuthenticated != "true")
+{
+    <i>Logga in för att se alla annonser</i>
+}
+else
+{
+    <p class="mt-4">
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">bild på annonsen</th>
+                <th scope="col">Antal Visningar</th>
+                <th scope="col">Typ av annons</th>
+                <th scope="col">Alternativ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="5">Inga annons att visa</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var ad in Model)
+                {
+                    <tr>
+                        <td>@ad.AdvertisementID</td>
+                        <td>
+                            @if (ad.ImageDimension == "horizontal")
+                            {
+                                <img height="150" width="500" src="@ad.ImageSource" />
+                            }
+                            else
+                            {
+                                <img height="400" width="200" src="@ad.ImageSource" />
+                            }
+                            </td>
+                        <td>
+                            @if (ad.TotalViews == null)
+                            {
+                                @Html.Raw(0)
+                            }
+                            else
+                            {
+                                @ad.TotalViews
+                            }</td>
+                        <td>@ad.ImageDimension</td>
+                        <td>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@ad.AdvertisementID">Radera</a>
+                        </td>
+                    </tr >
+                    
+                }
+            }
+        </tbody>
+    </table>
+}
