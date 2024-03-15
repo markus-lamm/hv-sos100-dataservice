@@ -47,8 +47,7 @@
     </div>
 
     <script>
-        var views = @Html.Raw(ViewBag.Views);
-
+       
         var ctxViews = document.getElementById('ViewsChart').getContext('2d');
         var viewsChart = new Chart(ctxViews, {
             type: 'bar',
@@ -56,7 +55,7 @@
                 labels: [''],
                 datasets: [{
                     label: 'Visningar',
-                    data: [views],
+                    data: [45],
                     backgroundColor: '#CCCCCC',
                     borderColor: '#000',
                     borderWidth: 1

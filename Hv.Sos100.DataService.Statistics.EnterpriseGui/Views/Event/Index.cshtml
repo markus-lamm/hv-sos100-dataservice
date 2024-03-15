@@ -1,14 +1,18 @@
-﻿<!DOCTYPE html>
+﻿﻿@using Hv.Sos100.DataService.Statistics.Api.Models
+@model List<EventStatistics>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Event</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="~/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
+    
     <nav class="navbar">
         <div class="navbar-logo">
             <a href="https://informatik5.ei.hv.se/eventivo"> <img src="~/lib/Bilder/loggaEventivo.png" width="70" height="70"> </a>
@@ -28,15 +32,17 @@
     </nav>
     <h1>EVENTSTATISTIK</h1>
     <hr>
-
-    <div class="ChooseEvent">
+   
+    <div class="ChooseEvent"> 
         <label for="events">VÄLJ EVENT:</label>
         <select id="events" onchange="updateStatistics()">
-            <option value="event1">Event 1</option>
-            <option value="event2">Event 2</option>
-            <option value="event3">Event 3</option>
+            @foreach (var eventData in ViewBag.EventList)
+            {
+                <option value="@eventData.EventStatisticsID">@eventData.EventStatisticsID</option>
+            }
         </select>
     </div>
+
     <div class="chart-container">
         <div class="chart-info">
             <h2>KÖN</h2>
@@ -68,24 +74,17 @@
         </div>
         <canvas id="EventCategoryChart"></canvas>
     </div>
-
     <script>
        
-        var femaleSignups = @Html.Raw(ViewBag.femaleSignups);
-        var maleSignups = @Html.Raw(ViewBag.maleSignups);
-        var Signups16_30 = @Html.Raw(ViewBag.Signups16_30);
-        var Signups31_50 = @Html.Raw(ViewBag.Signups31_50);
-        var Signups50plus = @Html.Raw(ViewBag.Signups50plus);
-        var totalSignups = @Html.Raw(ViewBag.TotalSignups);
 
         var ctxGender = document.getElementById('GenderChart').getContext('2d');
         var genderChart = new Chart(ctxGender, {
             type: 'pie',
             data: {
-                labels: ['Kvinnor', 'Män'],
+                labels: ['Kvinnor', 'Männ'],
                 datasets: [{
-                    data: [femaleSignups, maleSignups],
-                    backgroundColor: ['#000000', '#999999']
+                    data: [15, 20],
+                    backgroundColor: ['#666666', '#000000']
                 }]
             },
             options: {
@@ -94,14 +93,18 @@
             }
         });
 
+
+      
+
+        // Skapa diagram för åldersgrupper
         var ctxAge = document.getElementById('AgeChart').getContext('2d');
         var ageChart = new Chart(ctxAge, {
             type: 'pie',
             data: {
-                labels: ['16-30', '31-50', '50+'],
+                labels: ['Under 16', '16-30', '31-50', 'Över 50'],
                 datasets: [{
-                    data: [Signups16_30, Signups31_50, Signups50plus],
-                    backgroundColor: ['#666666', '#000000', '#999999']
+                    data: [20, 23, 56, 43],
+                    backgroundColor: ['#666666', '#000000', '#999999', '#CCCCCC']
                 }]
             },
             options: {
@@ -110,20 +113,19 @@
             }
         });
 
+        // Skapa diagram för antal anmälningar
         var ctxViews = document.getElementById('SignupChart').getContext('2d');
         var viewsChart = new Chart(ctxViews, {
             type: 'bar',
             data: {
-                labels: [''],
-                datasets: [
-                {
-                    label: 'Anmälningar',
-                    data: [totalSignups],
+                labels: ['Totalt antal anmälningar'],
+                datasets: [{
+                    label: 'Totala anmälningar',
+                    data: [selectedEvent.totalSignups],
                     backgroundColor: '#e9e9e9',
                     borderColor: '#FFF',
                     borderWidth: 1
-                }
-                ]
+                }]
             },
             options: {
                 responsive: true,
@@ -138,21 +140,17 @@
             }
         });
 
-        var TotalEvents = @Html.Raw(Json.Serialize(ViewBag.TotalEvents));
-        var TotalEntertainmentEvents = @Html.Raw(Json.Serialize(ViewBag.TotalEntertainmentEvents));
-        var TotalFoodEvents = @Html.Raw(Json.Serialize(ViewBag.TotalFoodEvents));
-        var TotalSportEvents = @Html.Raw(Json.Serialize(ViewBag.TotalSportEvents));
-    
-        var ctx = document.getElementById('EventCategoryChart').getContext('2d');
-        var starRatingsChart = new Chart(ctx, {
+        // Skapa diagram för kategori av evenemang
+        var ctxCategory = document.getElementById('EventCategoryChart').getContext('2d');
+        var categoryChart = new Chart(ctxCategory, {
             type: 'bar',
             data: {
-                labels: ['Totala events', 'Entertainment events', 'Mat events', 'Sport events'],
+                labels: ['Kategori'],
                 datasets: [{
-                    label: 'Antal',
-                    data: [TotalEvents, TotalEntertainmentEvents, TotalFoodEvents, TotalSportEvents],
-                    backgroundColor: ['#999999', '#000000', '#666666', '#F3F3F3', '#CCCCCC'],
-                    borderColor: ['#000000', '#000000', '#000000', '#000000', '#000000'],
+                    label: 'Antal anmälningar per kategori',
+                    data: [selectedEvent.category],
+                    backgroundColor: ['#F3F3F3'],
+                    borderColor: '#000',
                     borderWidth: 1
                 }]
             },
@@ -169,6 +167,11 @@
                 }
             }
         });
+
     </script>
+
+
+    @* <script src="~/js/statistics.js"></script> *@
+   
 </body>
 </html>

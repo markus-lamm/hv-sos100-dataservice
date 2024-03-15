@@ -12,7 +12,11 @@ namespace DataGui.Controllers
         private readonly APIservice aPIservice = new();
         public async Task<IActionResult> Index()
         {
+
             var eventlist = await aPIservice.GetEvents();
+            ViewBag.EventList = eventlist;
+            var FemaleSignups = await aPIservice.GetEvents();
+            ViewBag.FemaleSignups = FemaleSignups;
 
             var authenticationService = new Hv.Sos100.SingleSignOn.AuthenticationService();
             var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
@@ -20,25 +24,16 @@ namespace DataGui.Controllers
             if (isAuthenticated == null)
             {
                 var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
-                if (existingSession != null)
+                if (existingSession != false)
                 {
                     var userId = HttpContext.Session.GetString("UserID");
                     var userRole = HttpContext.Session.GetString("UserRole");
-                    if (isAuthenticated == "true")
-                    {
-                        return View();
-                    }
-                    else
-                    {
-                        //return RedirectToAction("Login", "Account");
-                        return View();
-                    }
-
+                 
                 }
                 else
                 {
                     // Det fanns ingen giltig session att återuppta
-                    return RedirectToAction("Login", "Account");
+                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
                 }
 
             }
