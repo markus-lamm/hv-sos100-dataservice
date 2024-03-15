@@ -17,7 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hv.Sos100.DataService.Stati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos.DataService.Advertisement.Api", "Hv.Sos.DataService.Advertisement.Api\Hv.Sos.DataService.Advertisement.Api.csproj", "{9B8502D6-463F-4C6B-9923-236C09B23D5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hv.Sos100.DataService.Advertisement.Gui", "Hv.Sos100.DataService.Advertisement.Gui\Hv.Sos100.DataService.Advertisement.Gui.csproj", "{137D6C8D-B93B-472A-94F6-E19C60572ACA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos100.DataService.Advertisement.Gui", "Hv.Sos100.DataService.Advertisement.Gui\Hv.Sos100.DataService.Advertisement.Gui.csproj", "{137D6C8D-B93B-472A-94F6-E19C60572ACA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sos100.DataService.Statistics.EnterpriseGui", "Hv.Sos100.DataService.Statistics.EnterpriseGui\Hv.Sos100.DataService.Statistics.EnterpriseGui.csproj", "{67ED14B2-56A6-4A67-A38E-7E26A59575A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{688324CE-52C0-4AC6-96A3-9D2C9B07C799}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{688324CE-52C0-4AC6-96A3-9D2C9B07C799}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{688324CE-52C0-4AC6-96A3-9D2C9B07C799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67ED14B2-56A6-4A67-A38E-7E26A59575A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67ED14B2-56A6-4A67-A38E-7E26A59575A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67ED14B2-56A6-4A67-A38E-7E26A59575A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67ED14B2-56A6-4A67-A38E-7E26A59575A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
