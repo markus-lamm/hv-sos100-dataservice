@@ -1,0 +1,166 @@
+﻿body {
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    width: 100vw;
+    height: 100px;
+    background-color: #212121;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+.navbar-logo a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+    .navbar-nav li {
+        margin-right: 50px;
+    }
+
+
+.nav-item {
+    margin-right: 20px;
+}
+
+    .nav-item a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        transition: color 0.3s ease;
+    }
+
+        .nav-item a:hover {
+            color: darkgoldenrod;
+        }
+
+.categorymenu {
+    width: 100vw;
+    height: 30px;
+    background-color: #181717;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center !important;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.gradienttext a {
+    font-size: 20px; /* Justera storleken efter behov */
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+    filter: saturate(200%);
+    text-decoration: none !important; /* Ta bort understrykning */
+}
+
+h1 {
+    font-size: 50px;
+    background-image: linear-gradient(to right, #FE85B6,#FFBE74, #FEA8C4, #FFBE74); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+    filter: saturate(200%);
+    margin-top: 80px;
+    margin-left: 40px;
+}
+
+hr {
+    position: relative;
+    width: 8%;
+    border: none;
+    border-top: 5px solid #000000;
+    right: 43%;
+    bottom: 29px;
+}
+
+h2 {
+    color: #000000;
+}
+
+.ChooseActivity {
+    margin-left: 40px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    position: relative;
+}
+
+
+
+select {
+    padding: 8px;
+    border: 1px solid #FFA487; 
+    border-radius: 5px;
+    background-color: #fff; 
+    color: #000000; 
+    font-size: 20px;
+}
+
+
+
+    select:focus {
+        outline: none; 
+        border-color: #FF909F; 
+    }
+
+canvas {
+    max-width: 400px; 
+    max-height: 400px; 
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+
+.chart-container {
+    margin-left: 35px;
+    display: flex;
+    width: 95%;
+    margin-bottom: 60px;
+    background-color: #fff;
+    border-radius: 8px;
+    
+}
+
+.chart-info {
+    width: 50%;
+    padding-right: 40px;
+}
+
+    .chart-info h2 {
+        margin-top: 10;
+        margin-bottom: 0;
+        padding-left: 10px;
+    }
+
+    .chart-info p {
+        margin-top: 0;
+        padding-left: 10px;
+    }
+

@@ -1,35 +1,33 @@
-﻿@using Hv.Sos.DataService.Advertisement.Api.Model
+﻿@using Hv.Sos100.DataService.Advertisement.Api.Model
 @model Ads
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
-<h3>Är du säker att du vill tabort?</h3>
+<h3>Är du säker att du vill tabort denna annons?</h3>
 <div>
     <hr />
     <dl class="row">
         <dt class = "col-sm-12">
             @Html.Raw("Id: ")
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(model => model.AdvertisementID)
         </dt>
         <dt class = "col-sm-12">
-            @Html.Raw("Bild url: ") @Html.DisplayFor(model => model.ImageUrl)
+            @Html.Raw("Bild : ") <img height="200" width="250" src="@Model.ImageSource"/>
         </dt>
         <dt class = "col-sm-12">
             @Html.Raw("views: ")
-            @Html.DisplayFor(model => model.Views)
+            @Html.DisplayFor(model => model.TotalViews)
         </dt>
        
         <dt class="col-sm-12">
             @Html.Raw("Bild typ: ")
-            @Html.DisplayFor(model => model.ImageSize)
+            @Html.DisplayFor(model => model.ImageDimension)
         </dt>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="AdvertisementID" />
         <input type="submit" value="Ta bort" class="btn btn-danger" /> |
         <a asp-action="Index">Tillbaka</a>
     </form>

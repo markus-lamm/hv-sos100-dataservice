@@ -1,0 +1,106 @@
+﻿body {
+    background-image: url('/lib/bilder/Bakgrund.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    width: 100vw;
+    height: 100px;
+    background-color: #212121;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+.navbar-logo a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-item {
+    margin-right: 20px;
+}
+
+    .nav-item a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        transition: color 0.3s ease;
+    }
+
+        .nav-item a:hover {
+            color: darkgoldenrod;
+        }
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #212121;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 1;
+    list-style-type: none;
+}
+
+    .dropdown-menu li {
+        padding: 10px;
+        list-style-type: none;
+        text-align: left !important;
+    }
+
+        .dropdown-menu li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+            .dropdown-menu li a:hover {
+                color: darkgoldenrod;
+            }
+
+h1 {
+    font-size: 50px;
+    background-image: linear-gradient(to right, #FE85B6,#FFBE74, #FEA8C4, #FFBE74); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+    filter: saturate(200%);
+    margin-top: 80px;
+    margin-left: 40px;
+}
+
+
+hr {
+    position: relative;
+    width: 10%;
+    border: none;
+    border-top: 5px solid #000000;
+    right: 3.5%;
+    bottom: 35px;
+}
+
+h2 {
+    font-size: 30px;
+    color: #000000;
+    text-align: center;
+}
