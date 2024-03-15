@@ -1,0 +1,61 @@
+html {
+    font-size: 14px;
+    font-family: 'Istok Web', sans-serif;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.secondNav {
+    display: flex;
+    flex-direction: row;
+    background-color: #4E4E4E;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+.secondNavText {
+    display: flex;
+    flex-direction: row;
+    gap: 4vw;
+    padding: 3px;
+}
+.secondNavLink{
+    color: #FFFFFF;
+}
+table, th, td{
+    border: 1px solid;
+    width: 80vw;
+}
+.tableStyle{
+    padding: 10px;
+}
+.tableContainer{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20vh;
+    margin-top: 8vh;
+}
+.titelContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 8vh;
+    color: #212121;
+}
