@@ -1,0 +1,6 @@
+@Hv.Sos.DataService.Advertisement.Api_HostAddress = http://localhost:5264
+
+GET {{Hv.Sos.DataService.Advertisement.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
