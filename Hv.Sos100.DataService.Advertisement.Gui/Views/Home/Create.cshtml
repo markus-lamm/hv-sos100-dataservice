@@ -5,21 +5,25 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Skapa annons</h1>
+<h1 class="mt-4">Skapa annons</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form class="d-flex flex-column gap-md-3" asp-action="Create">
+        <form class="d-md-flex flex-column gap-md-2" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label">Url på annnons bilden</label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            <div class="form-group d-md-flex flex-column gap-2">
+                <label asp-for="ImageSource" class="control-label">Ladda upp bild/gif på annonsen</label>
+                <input asp-for="ImageSource" type="file" accept="image/png, image/jpeg, image/gif" />
             </div>
-            <div class="form-group">
-                <label asp-for="ImageSize" class="control-label">Annons typ</label>
-                <select asp-for="ImageSize" class="form-control" asp-items="ViewBag.ImageTypes"></select>
+            <div class="form-group d-md-flex flex-column gap-2">
+                <label asp-for="ImageLink" class="control-label">länk till annons hemsida</label>
+                <input asp-for="ImageLink" class="form-control" />
+                <span asp-validation-for="ImageLink" class="text-danger"></span>
+            </div>
+            <div class="form-group d-md-flex flex-column gap-2">
+                <label asp-for="ImageDimension" class="control-label">Annons typ</label>
+                <select asp-for="ImageDimension" class="form-control" asp-items="ViewBag.ImageTypes"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Skapa" class="btn btn-primary" />

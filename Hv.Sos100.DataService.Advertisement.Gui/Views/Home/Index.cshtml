@@ -2,43 +2,68 @@
 @model List<Ads>
 @{
     ViewData["Title"] = "Home Page";
+    var isAuthenticated = ViewData["IsAuthenticated"] as string;
 }
 
-<p class="mt-4">
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
-
-<table class="table">
-    <thead class="thead-light">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Annons url</th>
-            <th scope="col">Antal Visningar</th>
-            <th scope="col">Typ av annons</th>
-            <th scope="col">Alternativ</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Count == 0)
-        {
+@if (isAuthenticated != "true")
+{
+    <i>Logga in för att se alla annonser</i>
+}
+else
+{
+    <p class="mt-4">
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead class="thead-light">
             <tr>
-                <td colspan="5">Inga annons att visa</td>
+                <th scope="col">Id</th>
+                <th scope="col">bild på annonsen</th>
+                <th scope="col">Antal Visningar</th>
+                <th scope="col">Typ av annons</th>
+                <th scope="col">Alternativ</th>
             </tr>
-        }
-        else
-        {
-            @foreach (var ad in Model)
+        </thead>
+        <tbody>
+            @if (Model.Count == 0)
             {
                 <tr>
-                    <td>@ad.Id</td>
-                    <td>@ad.ImageUrl</td>
-                    <td>@if (ad.Views == null) { @Html.Raw(0) } else{ @ad.Views }</td>
-                    <td>@ad.ImageSize</td>
-                    <td>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@ad.Id">Radera</a>
-                    </td>
+                    <td colspan="5">Inga annons att visa</td>
                 </tr>
             }
-        }
-    </tbody>
-</table>
+            else
+            {
+                @foreach (var ad in Model)
+                {
+                    <tr>
+                        <td>@ad.AdvertisementID</td>
+                        <td>
+                            @if (ad.ImageDimension == "horizontal")
+                            {
+                                <img height="150" width="500" src="@ad.ImageSource" />
+                            }
+                            else
+                            {
+                                <img height="400" width="200" src="@ad.ImageSource" />
+                            }
+                            </td>
+                        <td>
+                            @if (ad.TotalViews == null)
+                            {
+                                @Html.Raw(0)
+                            }
+                            else
+                            {
+                                @ad.TotalViews
+                            }</td>
+                        <td>@ad.ImageDimension</td>
+                        <td>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@ad.AdvertisementID">Radera</a>
+                        </td>
+                    </tr >
+                    
+                }
+            }
+        </tbody>
+    </table>
+}

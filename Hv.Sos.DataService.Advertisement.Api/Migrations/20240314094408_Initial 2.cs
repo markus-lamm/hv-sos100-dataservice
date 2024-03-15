@@ -5,24 +5,18 @@
 namespace Hv.Sos.DataService.Advertisement.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Third : Migration
+    public partial class Initial2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "id",
-                table: "Ads",
-                newName: "Id");
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Ads",
-                newName: "id");
+
         }
     }
 }
