@@ -3,7 +3,7 @@ using Hv.Sos100.Logger;
 using Quartz;
 using System.Text.Json;
 
-namespace SyncBackgroundJobs.Jobs
+namespace Hv.Sos100.DataService.Sync.Jobs
 {
     public class AdvertisementStaticsJob : IJob
     {
@@ -33,7 +33,7 @@ namespace SyncBackgroundJobs.Jobs
             {
                 var logger = new LogService();
 
-                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
         }
     }

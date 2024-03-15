@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Hv.Sos.DataService.Advertisement.Api.Migrations
+namespace Hv.Sos100.DataService.Advertisement.Api.Migrations
 {
     [DbContext(typeof(AdsDbContext))]
-    [Migration("20240314093830_Initial")]
-    partial class Initial
+    [Migration("20240314094450_Initial 3")]
+    partial class Initial3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Hv.Sos.DataService.Advertisement.Api.Model.Ads", b =>
+            modelBuilder.Entity("Hv.Sos100.DataService.Advertisement.Api.Model.Ads", b =>
                 {
                     b.Property<int>("AdvertisementID")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,6 @@ namespace Hv.Sos.DataService.Advertisement.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TimeStamp")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TotalViews")

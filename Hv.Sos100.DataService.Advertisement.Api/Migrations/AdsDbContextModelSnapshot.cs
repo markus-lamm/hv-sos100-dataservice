@@ -4,19 +4,16 @@ using Hv.Sos100.DataService.Adsvertisement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Hv.Sos.DataService.Advertisement.Api.Migrations
+namespace Hv.Sos100.DataService.Advertisement.Api.Migrations
 {
     [DbContext(typeof(AdsDbContext))]
-    [Migration("20240314094408_Initial 2")]
-    partial class Initial2
+    partial class AdsDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace Hv.Sos.DataService.Advertisement.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Hv.Sos.DataService.Advertisement.Api.Model.Ads", b =>
+            modelBuilder.Entity("Hv.Sos100.DataService.Advertisement.Api.Model.Ads", b =>
                 {
                     b.Property<int>("AdvertisementID")
                         .ValueGeneratedOnAdd()

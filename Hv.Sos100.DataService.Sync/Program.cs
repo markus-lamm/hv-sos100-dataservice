@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Quartz;
-using SyncBackgroundJobs.Jobs;
-using SyncBackgroundJobs.Shared;
+using Hv.Sos100.DataService.Sync.Jobs;
+using Hv.Sos100.DataService.Sync.Shared;
 
-namespace SyncBackgroundJobs
+namespace Hv.Sos100.DataService.Sync
 {
     public class Program
     {

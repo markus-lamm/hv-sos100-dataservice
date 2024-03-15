@@ -1,4 +1,4 @@
-﻿using Hv.Sos.DataService.Advertisement.Api.Model;
+﻿using Hv.Sos100.DataService.Advertisement.Api.Model;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;

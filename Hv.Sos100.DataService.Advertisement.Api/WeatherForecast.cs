@@ -1,4 +1,4 @@
-namespace Hv.Sos.DataService.Advertisement.Api
+namespace Hv.Sos100.DataService.Advertisement.Api
 {
     public class WeatherForecast
     {

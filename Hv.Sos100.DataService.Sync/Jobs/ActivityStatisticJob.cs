@@ -3,10 +3,10 @@ using Quartz;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using SyncBackgroundJobs.Model;
+using Hv.Sos100.DataService.Sync.Model;
 using System.Diagnostics;
 
-namespace SyncBackgroundJobs.Jobs
+namespace Hv.Sos100.DataService.Sync.Jobs
 {
     public class ActivityStatisticJob : IJob
     {
@@ -43,7 +43,7 @@ namespace SyncBackgroundJobs.Jobs
             {
                 var logger = new LogService();
 
-                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
              try
@@ -62,7 +62,7 @@ namespace SyncBackgroundJobs.Jobs
             {
                 var logger = new LogService();
 
-                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
             foreach (var item in activities)
@@ -84,7 +84,7 @@ namespace SyncBackgroundJobs.Jobs
             {
                 var logger = new LogService();
 
-                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
             try
@@ -103,7 +103,7 @@ namespace SyncBackgroundJobs.Jobs
             {
                 var logger = new LogService();
 
-                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
         }
         

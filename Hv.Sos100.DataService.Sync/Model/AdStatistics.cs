@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SyncBackgroundJobs
+namespace Hv.Sos100.DataService.Sync
 {
     public class AdStatistics()
     {

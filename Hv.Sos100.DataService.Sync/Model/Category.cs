@@ -1,4 +1,4 @@
-﻿namespace SyncBackgroundJobs.Model
+﻿namespace Hv.Sos100.DataService.Sync.Model
 {
     public class Category
     {

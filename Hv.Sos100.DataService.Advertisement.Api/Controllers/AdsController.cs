@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hv.Sos.DataService.Advertisement.Api.Model;
+using Hv.Sos100.DataService.Advertisement.Api.Model;
 using Hv.Sos100.DataService.Adsvertisement.Data;
 
-namespace Hv.Sos.DataService.Advertisement.Api.Controllers
+namespace Hv.Sos100.DataService.Advertisement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

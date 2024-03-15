@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hv.Sos.DataService.Advertisement.Api.Model
+namespace Hv.Sos100.DataService.Advertisement.Api.Model
 {
     public class Ads
     {

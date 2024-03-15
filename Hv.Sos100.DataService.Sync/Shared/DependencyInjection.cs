@@ -1,7 +1,7 @@
 ﻿using Quartz;
-using SyncBackgroundJobs.Jobs;
+using Hv.Sos100.DataService.Sync.Jobs;
 
-namespace SyncBackgroundJobs.Shared
+namespace Hv.Sos100.DataService.Sync.Shared
 {
     public static class DependencyInjection
     {

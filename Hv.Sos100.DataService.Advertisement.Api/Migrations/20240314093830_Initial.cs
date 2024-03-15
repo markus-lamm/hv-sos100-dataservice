@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Hv.Sos.DataService.Advertisement.Api.Migrations
+namespace Hv.Sos100.DataService.Advertisement.Api.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

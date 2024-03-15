@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hv.Sos.DataService.Advertisement.Api\Hv.Sos.DataService.Advertisement.Api.csproj" />
+    <ProjectReference Include="..\Hv.Sos100.DataService.Advertisement.Api\Hv.Sos100.DataService.Advertisement.Api.csproj" />
   </ItemGroup>
 
 </Project>
