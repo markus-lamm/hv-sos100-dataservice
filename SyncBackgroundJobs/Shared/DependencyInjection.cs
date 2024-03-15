@@ -11,7 +11,6 @@ namespace SyncBackgroundJobs.Shared
             {
                 ConfigureAndAddJob<AdvertisementStaticsJob>(options, nameof(AdvertisementStaticsJob));
                 ConfigureAndAddJob<ActivityStatisticJob>(options, nameof(ActivityStatisticJob));
-                ConfigureAndAddJob<CountyStatisticJob>(options, nameof(CountyStatisticJob));
                 ConfigureAndAddJob<EventStatisticJob>(options, nameof(EventStatisticJob));
             });
             services.AddQuartzHostedService();
