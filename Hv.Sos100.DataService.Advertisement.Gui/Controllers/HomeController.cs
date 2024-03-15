@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http;
-using Hv.Sos.DataService.Advertisement.Api.Model;
+using Hv.Sos100.DataService.Advertisement.Api.Model;
 using Azure;
 using System.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
