@@ -147,6 +147,14 @@
             element.style.fontWeight = 'bold';
         }
     </script>
+    @if (ViewBag.ShowLoginModal != null && ViewBag.ShowLoginModal)
+    {
+        <script>
+            $(document).ready(function () {
+                $('#loginModal').modal('show');
+            });
+        </script>
+    }
 
 </body>
 </html>

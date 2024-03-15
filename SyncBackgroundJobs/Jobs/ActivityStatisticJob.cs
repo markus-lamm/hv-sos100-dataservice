@@ -1,12 +1,20 @@
 ﻿using Hv.Sos100.Logger;
 using Quartz;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using SyncBackgroundJobs.Model;
+using System.Diagnostics;
 
 namespace SyncBackgroundJobs.Jobs
 {
     public class ActivityStatisticJob : IJob
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseURL = "https://informatik6.ei.hv.se/statisticapi/";
+        private readonly string _baseURL = "https://informatik1.ei.hv.se/ActivityAPI/api/Activities";
+        private readonly string _baseURL2 = "https://informatik1.ei.hv.se/ActivityAPI/api/Categories";
+
+        //"https://informatik7.ei.hv.se/ProfilAPI/api/Citizens"
         public ActivityStatisticJob(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -14,51 +22,90 @@ namespace SyncBackgroundJobs.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var DemoObj = GetDemoData();
+
+            List<Model.Activity>? activities = new List<Model.Activity>();
+            List<Category>? categories = new List<Category>();
+            List<ActivityStatistics> activityList = new List<ActivityStatistics>();
 
             try
             {
                 _httpClient.BaseAddress = new Uri(_baseURL);
 
-                var result = await _httpClient.PostAsJsonAsync("api/ActivityStatistics", DemoObj);
+                HttpResponseMessage response = await _httpClient.GetAsync("");
 
-                if (!result.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
-                    var logger = new LogService();
-
-                    var logResult = await logger.CreateApiLog("Activity Statistic Sync Job", 3, "Anropet lyckades inte");
-
-                    if (!logResult)
-                    {
-                        logger.CreateLocalLog("Activity Statistic Sync Job", 3, "Anropet lyckades inte");
-
-                    }
+                    string content = await response.Content.ReadAsStringAsync();
+                    activities = JsonSerializer.Deserialize<List<Model.Activity>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
             }
             catch (Exception ex)
             {
                 var logger = new LogService();
 
-                var logResult = await logger.CreateApiLog("Activity Statistic Sync Job", 3, ex.Message);
+                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+            }
 
-                if (!logResult)
+             try
+            {
+                _httpClient.BaseAddress = new Uri(_baseURL2);
+
+                HttpResponseMessage response = await _httpClient.GetAsync("");
+
+                if (response.IsSuccessStatusCode)
                 {
-                    logger.CreateLocalLog("Activity Statistic Sync Job", 3, ex.Message);
-
+                    string content = await response.Content.ReadAsStringAsync();
+                    categories = JsonSerializer.Deserialize<List<Category>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
             }
-        }
-
-
-        public static ActivityStatistics GetDemoData()
-        {
-            Random rand = new Random();
-            return new ActivityStatistics
+            catch (Exception ex)
             {
-                TimeStamp = DateTime.Now,
-                MonthlyViews = rand.Next(100, 1000),
-                SavedActivity = rand.Next(10, 100)
-            };
+                var logger = new LogService();
+
+                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+            }
+
+            foreach (var item in activities)
+            {
+                var category = categories.FirstOrDefault(c => c.CategoryID == item.CategoryID);
+                var activityStatisticsItem = new ActivityStatistics { 
+                    ActivityID = item.ActivityID, 
+                    TimeStamp = item.TimeStamp,
+                    Category = category.Name,
+                };
+                activityList.Add(activityStatisticsItem); 
+            }
+            try
+            {
+                _httpClient.BaseAddress = new Uri("https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics/list");
+                var result = await _httpClient.PostAsJsonAsync("", activityList);
+            }
+            catch (Exception ex)
+            {
+                var logger = new LogService();
+
+                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+            }
+
+            try
+            {
+                _httpClient.BaseAddress = new Uri(_baseURL);
+
+                HttpResponseMessage response = await _httpClient.GetAsync("");
+
+                if (response.IsSuccessStatusCode) 
+                { 
+                    string content = await response.Content.ReadAsStringAsync();
+                    activityList = JsonSerializer.Deserialize<List<ActivityStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                var logger = new LogService();
+
+                await logger.CreateLog("Activity SyncBackgroundJobs", LogService.Severity.Error, ex.Message);
+            }
         }
+        
     }
 }

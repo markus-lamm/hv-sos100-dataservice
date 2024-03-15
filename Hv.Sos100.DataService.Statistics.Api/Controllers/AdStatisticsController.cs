@@ -82,6 +82,19 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
             return CreatedAtAction("GetAdStatistics", new { id = adStatistics.AdvertisementStatisticsID }, adStatistics);
         }
 
+        // POST: api/AdStatistics/list
+        [HttpPost ("/list")]
+        public async Task<ActionResult<AdStatistics>> PostAdStatisticsList(List<AdStatistics> adStatisticsList)
+        {
+            foreach (AdStatistics adStatistics in adStatisticsList)
+            {
+                _context.Ads.Add(adStatistics);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // DELETE: api/AdStatistics/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAdStatistics(int id)
