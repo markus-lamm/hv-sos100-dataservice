@@ -2,6 +2,8 @@ using Hv.Sos100.DataService.Statistics.AdminGui.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text.Json;
+using Hv.Sos100.SingleSignOn;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
 {
@@ -13,9 +15,11 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
         {
             _logger = logger;
         }
-        public IActionResult Index()
-        { 
-            return View();
+        public async Task<IActionResult> Index()
+        {
+            var authenticationService = new AuthenticationService();
+            var authenticatedSession = await authenticationService.CreateSession("ssoadmin@eventivo.com", "ssoadmin", controllerBase: this, HttpContext);
+            return RedirectToAction("Index", "EventStatistics");
         }
 
         public IActionResult Privacy()

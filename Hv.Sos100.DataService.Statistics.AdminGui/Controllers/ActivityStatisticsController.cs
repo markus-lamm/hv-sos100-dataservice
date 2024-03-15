@@ -11,6 +11,21 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
         string _baseURL = "https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics";
         public async Task<IActionResult> Index()
         {
+            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
+            if (isAuthenticated == null)
+            {
+                var authenticationService = new AuthenticationService();
+                var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
+                if (existingSession == false)
+                {
+                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                }
+                var userRole = HttpContext.Session.GetString("UserRole");
+                if (userRole != "Admin")
+                {
+                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                }
+            }
 
             List<ActivityStatistics>? activityList = new List<ActivityStatistics>();
             try
@@ -33,7 +48,7 @@ namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
             {
                 var logger = new LogService();
 
-                await logger.CreateLog("StatisticsAdminGui", ex);
+                await logger.CreateLog("StatisticsAdminGui.ActivityStatisticsController", ex);
             }
             return View(activityList);
         }
