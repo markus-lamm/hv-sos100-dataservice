@@ -43,7 +43,7 @@ namespace DataGui.Controllers
                 }
 
             }
-            return View();
+            return View(adlist);
         }
     }
 }

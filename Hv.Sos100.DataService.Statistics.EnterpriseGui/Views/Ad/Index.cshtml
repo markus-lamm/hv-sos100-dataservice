@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿﻿@using Hv.Sos100.DataService.Statistics.Api.Models
+@model List<AdStatistics>;
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Annons</title>
@@ -9,31 +12,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-logo">
-            <a href="https://informatik5.ei.hv.se/eventivo"> <img src="~/lib/Bilder/loggaEventivo.png" width="70" height="70"> </a>
-        </div>
-        <ul class="navbar-nav">
-
-            <li class="nav-item"><a href="/Home/Index">LOGGA UT</a></li>
-        </ul>
-    </nav>
+    @{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
     <nav class="categorymenu">
-        <ul class="navbar-nav">
-            <li class="nav-item"><a href="/Activity/Index">AKTIVITETER</a></li>
-            <li class="nav-item"><a href="/Event/Index">EVENEMANG</a></li>
-            <li class="gradienttext"><a href="/Ad/Index">ANNONSER</a></li>
+        <ul class="navbar-nav1">
+            <li class="nav-item1"><a href="@Url.Action("Index", "Activity")">AKTIVITETER</a></li>
+            <li class="nav-item1"><a href="@Url.Action("Index", "Event")">EVENEMANG</a></li>
+            <li class="gradienttext"><a href="@Url.Action("Index", "Ad")">ANNONSER</a></li>
         </ul>
     </nav>
+
     <h1>ANNONSSTATISTIK</h1>
     <hr>
     <div class="ChooseAd">
         <label for="ads">VÄLJ ANNONS:</label>
         <select id="ads" onchange="updateStatistics()">
-            <option value="annons1">Annons 1</option>
-            <option value="annons2">Annons 2</option>
-            <option value="annons3">Annons 3</option>
+            @foreach (var adData in Model)
+            {
+                <option value="@adData.AdvertisementStatisticsID">@adData.AdvertisementStatisticsID</option>
+            }
         </select>
     </div>
 
@@ -41,40 +40,20 @@
     <div class="chart-container">
         <div class="chart-info">
             <h2>VISNINGAR</h2>
-            <p>Statistik för hur många som visat annonsen.</p>
+            <p>Antal visningar: <span id="totalViews"></span> .</p>
         </div>
-        <canvas id="ViewsChart"></canvas>
     </div>
-
     <script>
-       
-        var ctxViews = document.getElementById('ViewsChart').getContext('2d');
-        var viewsChart = new Chart(ctxViews, {
-            type: 'bar',
-            data: {
-                labels: [''],
-                datasets: [{
-                    label: 'Visningar',
-                    data: [45],
-                    backgroundColor: '#CCCCCC',
-                    borderColor: '#000',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+        function updateStatistics() {
+            var selectedAdvertisementStatisticsID = parseInt(document.getElementById('ads').value);
+            var allAds = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+            var selectedAd = allAds.find(e => e.AdvertisementStatisticsID === selectedAdvertisementStatisticsID);
+
+            var totalViewsElement = document.getElementById('totalViews');
+            if (totalViewsElement && selectedAd) {
+                totalViewsElement.innerText = selectedAd.TotalViews;
             }
-        });
-
-
+        }
     </script>
 </body>
 </html>

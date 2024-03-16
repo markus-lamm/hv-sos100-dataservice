@@ -9,67 +9,44 @@
     padding: 0;
 }
 
-.navbar {
+
+.categorymenu {
     width: 100vw;
-    height: 100px;
-    background-color: #212121;
+    height: 40px;
+    background-color: #181717;
     padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-style: normal;
+    text-align: center; /* Centrera innehållet horisontellt */
 }
 
-
-.navbar-logo a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.navbar-nav {
-    list-style-type: none;
+.navbar-nav1 {
+    list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
-    .navbar-nav li {
-        margin-right: 50px;
+    .navbar-nav1 li {
+        display: inline-block; /* Visa elementen bredvid varandra */
+        margin-right: 20px; /* Justera avståndet mellan elementen */
     }
 
-
-.nav-item {
+.nav-item1 {
     margin-right: 20px;
 }
 
-    .nav-item a {
+    .nav-item1 a {
         color: #fff;
         text-decoration: none;
         font-size: 20px;
         transition: color 0.3s ease;
     }
 
-        .nav-item a:hover {
+        .nav-item1 a:hover {
             color: darkgoldenrod;
         }
 
-.categorymenu {
-    width: 100vw;
-    height: 30px;
-    background-color: #181717;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center !important;
-    justify-content: center;
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-}
 
 .gradienttext a {
     font-size: 20px; /* Justera storleken efter behov */
