@@ -1,6 +1,7 @@
 ﻿using Hv.Sos100.DataService.Sync.Model;
 using Hv.Sos100.Logger;
 using Quartz;
+using System.Net.WebSockets;
 using System.Text.Json;
 using static System.Net.WebRequestMethods;
 
@@ -112,42 +113,30 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             {
                 var organizer = organizerList.FirstOrDefault(o => o.OrganizerID == eventItem.OrganizerID);
                 var category = categoryList.FirstOrDefault(c => c.CategoryID == eventItem.CategoryID);
-                if (organizer != null)
-                {
-                    eventStatisticsList.Add(
-                        new EventStatistics
-                        {
-                            EventID = eventItem.EventID,
-                            UserID = organizer.UserID,
-                            Category = category.Name,
-                            TimeStamp = DateTime.Now, 
-                        });
-                }
+                var totalSignups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID));
+                var maleSignups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID) && c.Gender == "Male");
+                var femaleSignups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID) && c.Gender == "Female");
+                var ageBelow16Signups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID) && c.Age < 16);
+                var age16To30Signups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID) && c.Age >= 16 && c.Age <= 30);
+                var age31To50Signups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID) && c.Age > 30 && c.Age <= 50);
+                var ageAbove50Signups = citizenList.Count(c => c.EventList.Contains(eventItem.EventID) && c.Age > 50);
 
-                foreach (var citizenItem in citizenList)
-                {
-                    eventStatisticsList.Add(
-                        new EventStatistics
-                        {
-
-                            EventID = eventItem.EventID,
-
-                        }
-
-
-                        );
-                }
+                eventStatisticsList.Add(
+                    new EventStatistics
+                    {
+                        EventID = eventItem.EventID,
+                        UserID = organizer.UserID,
+                        Category = category.Name,
+                        TimeStamp = DateTime.Now,
+                        TotalSignups = totalSignups,
+                        FemaleSignups = femaleSignups,
+                        MaleSignups = maleSignups,
+                        AgeBelow16Signups = ageBelow16Signups,
+                        Age16To30Signups = age16To30Signups,
+                        Age31To50Signups = age31To50Signups,
+                        AgeAbove50Signups = ageAbove50Signups
+                    });
             }
-
-
-
-
-
-
-
-
-
-
             try
             {
                 _httpClient.BaseAddress = new Uri(_baseURL4);
