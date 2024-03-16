@@ -2,6 +2,11 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int? totalSignupsSum = 0;
+    foreach (var signup in Model)
+    {
+            totalSignupsSum += signup.TotalSignups;
+    }
 }
 <div class="secondNav">
     <div class="secondNavText">
@@ -12,15 +17,47 @@
 </div>
 <div class="titelContainer">
     <header>
-        <h1>Statistik om evenemang</h1>
+        <h1 class="titel">EVENEMANG</h1>
     </header>
+</div>
+<div class="totalContainer">
+    <div class="totalBox">
+        <p class="totalTitel">Totalt antal anmälningar</p>
+        <h2>@totalSignupsSum</h2>
+    </div>
+    @* Totalt antal av varje kategori *@
+    @* <div>
+        <canvas id="myPieChart"></canvas>
+    </div>
+    <script>
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'red',
+                        'blue',
+                        'yellow',
+                        'green',
+                        'purple',
+                        'orange'
+                    ],
+                    hoverOffset: 4
+                }]
+            }
+        });
+    </script> *@
 </div>
 <div class="tableContainer">
     <table>
         <thead>
             <tr>
                 <th class="tableStyle">ID</th>
-                <th class="tableStyle">Totalt antal anmälningar</th>
+                <th class="tableStyle">Antal anmälningar</th>
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
@@ -31,6 +68,8 @@
                 <td class="tableStyle">@activity.TotalSignups</td>
                 <td class="tableStyle">@activity.Category</td>
             </tr>
+            
+                totalSignupsSum += activity.TotalSignups;
         }
     </table>
 </div>

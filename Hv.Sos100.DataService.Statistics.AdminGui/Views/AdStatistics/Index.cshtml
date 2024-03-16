@@ -12,7 +12,7 @@
 </div>
 <div class="titelContainer">
     <header>
-        <h1>Statistik om annonser</h1>
+        <h1 class="titel">ANNONSER</h1>
     </header>
 </div>
 <div class="tableContainer">
@@ -20,13 +20,13 @@
         <thead>
             <tr>
                 <th class="tableStyle">ID</th>
-                <th class="tableStyle">Totalt antal visningar</th>
+                <th class="tableStyle">Antal visningar</th>
             </tr>
         </thead>
         @foreach (var activity in Model)
         {
             <tr>
-                <td class="tableStyle">@activity.AdvertisementID</td>
+                <td class="tableStyle">@activity.AdvertisementStatisticsID</td>
                 <td class="tableStyle">@activity.TotalViews</td>
             </tr>
         }

@@ -12,7 +12,7 @@
 </div>
 <div class="titelContainer">
     <header>
-        <h1>Statistik om aktiviteter</h1>
+        <h1 class="titel">AKTIVITETER</h1>
     </header>
 </div>
 <div class="tableContainer">
@@ -20,14 +20,14 @@
         <thead>
             <tr>
                 <th class="tableStyle">ID</th>
-                <th class="tableStyle">Totalt antal sparade</th>
+                <th class="tableStyle">Antal sparade</th>
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
         @foreach (var activity in Model)
         {
             <tr>
-                <td class="tableStyle">@activity.ActivityID</td>
+                <td class="tableStyle">@activity.ActivityStatisticsID</td>
                 <td class="tableStyle">@activity.TotalSaved</td>
                 <td class="tableStyle">@activity.Category</td>
             </tr>
