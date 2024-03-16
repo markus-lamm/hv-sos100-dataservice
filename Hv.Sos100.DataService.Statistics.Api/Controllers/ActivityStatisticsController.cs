@@ -82,6 +82,25 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
             return CreatedAtAction("GetActivityStatistics", new { id = activityStatistics.ActivityStatisticsID }, activityStatistics);
         }
 
+        // POST: api/ActivityStatistics/list
+        [HttpPost("activity/list")]
+        public async Task<ActionResult> PostActivityStatisticsList(List<ActivityStatistics> activityStatisticsList)
+        {
+            foreach(ActivityStatistics activityStatistics in activityStatisticsList)
+            {
+                var existingActivity = await _context.Activities.FirstOrDefaultAsync(a => a.ActivityID == activityStatistics.ActivityID);
+
+                if (existingActivity == null)
+                {
+                    // No existing ActivityStatistics found with the same activityID, so add it to the database
+                    _context.Activities.Add(activityStatistics);
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // DELETE: api/ActivityStatistics/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivityStatistics(int id)

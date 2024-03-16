@@ -17,7 +17,7 @@ namespace DatatserviceAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -82,6 +82,9 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("TotalViews")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("AdvertisementStatisticsID");
 
                     b.ToTable("Ads");
@@ -123,6 +126,9 @@ namespace DatatserviceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TotalSignups")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("EventStatisticsID");
