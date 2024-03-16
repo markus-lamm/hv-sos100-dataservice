@@ -86,25 +86,6 @@ namespace Hv.Sos100.DataService.Sync.Jobs
 
                 await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
-
-            try
-            {
-                _httpClient.BaseAddress = new Uri(_baseURL);
-
-                HttpResponseMessage response = await _httpClient.GetAsync("");
-
-                if (response.IsSuccessStatusCode) 
-                { 
-                    string content = await response.Content.ReadAsStringAsync();
-                    activityList = JsonSerializer.Deserialize<List<ActivityStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = new LogService();
-
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
-            }
         }
         
     }

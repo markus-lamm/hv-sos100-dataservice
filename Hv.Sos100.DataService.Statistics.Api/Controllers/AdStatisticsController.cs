@@ -83,12 +83,18 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
         }
 
         // POST: api/AdStatistics/list
-        [HttpPost ("/list")]
-        public async Task<ActionResult<AdStatistics>> PostAdStatisticsList(List<AdStatistics> adStatisticsList)
+        [HttpPost ("ad/list")]
+        public async Task<ActionResult> PostAdStatisticsList(List<AdStatistics> adStatisticsList)
         {
             foreach (AdStatistics adStatistics in adStatisticsList)
             {
-                _context.Ads.Add(adStatistics);
+                var existingActivity = await _context.Ads.FirstOrDefaultAsync(a => a.AdvertisementID == adStatistics.AdvertisementID);
+
+                if (existingActivity == null)
+                {
+                    // No existing ActivityStatistics found with the same activityID, so add it to the database
+                    _context.Ads.Add(adStatistics);
+                }
             }
             await _context.SaveChangesAsync();
 

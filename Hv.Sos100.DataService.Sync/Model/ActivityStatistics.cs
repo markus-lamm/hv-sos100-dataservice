@@ -6,6 +6,7 @@ namespace Hv.Sos100.DataService.Sync
     {
         [Key] public int ActivityStatisticsID { get; set; }
         public int ActivityID { get; set; }
+        public int UserID { get; set; }
         public DateTime TimeStamp { get; set; }
         public int? TotalSaved { get; set; }
         public int? FemaleSaved { get; set; }

@@ -1,6 +1,7 @@
 ﻿
 using Hv.Sos100.Logger;
 using Quartz;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Hv.Sos100.DataService.Sync.Jobs
@@ -27,7 +28,10 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     adList = JsonSerializer.Deserialize<List<AdStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }   
+                }
+
+                _httpClient.BaseAddress = new Uri("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics/list");
+                var result = await _httpClient.PostAsJsonAsync("", adList);
             }
             catch (Exception ex)
             {
