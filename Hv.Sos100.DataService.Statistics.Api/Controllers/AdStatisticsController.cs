@@ -83,7 +83,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
         }
 
         // POST: api/AdStatistics/list
-        [HttpPost ("/list")]
+        [HttpPost ("ad/list")]
         public async Task<ActionResult<AdStatistics>> PostAdStatisticsList(List<AdStatistics> adStatisticsList)
         {
             foreach (AdStatistics adStatistics in adStatisticsList)
