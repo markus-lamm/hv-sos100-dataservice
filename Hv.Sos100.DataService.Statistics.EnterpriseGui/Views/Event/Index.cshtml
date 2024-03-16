@@ -30,13 +30,14 @@
             <li class="nav-item"><a href="/Ad/Index">ANNONSER</a></li>
         </ul>
     </nav>
+
     <h1>EVENTSTATISTIK</h1>
     <hr>
    
     <div class="ChooseEvent"> 
         <label for="events">VÄLJ EVENT:</label>
         <select id="events" onchange="updateStatistics()">
-            @foreach (var eventData in ViewBag.EventList)
+            @foreach (var eventData in Model)
             {
                 <option value="@eventData.EventStatisticsID">@eventData.EventStatisticsID</option>
             }
@@ -81,9 +82,9 @@
         var genderChart = new Chart(ctxGender, {
             type: 'pie',
             data: {
-                labels: ['Kvinnor', 'Männ'],
+                labels: ['Kvinnor', 'Män'],
                 datasets: [{
-                    data: [15, 20],
+                    data: [0, 1],
                     backgroundColor: ['#666666', '#000000']
                 }]
             },
@@ -93,17 +94,13 @@
             }
         });
 
-
-      
-
-        // Skapa diagram för åldersgrupper
         var ctxAge = document.getElementById('AgeChart').getContext('2d');
         var ageChart = new Chart(ctxAge, {
             type: 'pie',
             data: {
                 labels: ['Under 16', '16-30', '31-50', 'Över 50'],
                 datasets: [{
-                    data: [20, 23, 56, 43],
+                    data: [0, 1, 2, 3],
                     backgroundColor: ['#666666', '#000000', '#999999', '#CCCCCC']
                 }]
             },
@@ -113,63 +110,59 @@
             }
         });
 
-        // Skapa diagram för antal anmälningar
-        var ctxViews = document.getElementById('SignupChart').getContext('2d');
-        var viewsChart = new Chart(ctxViews, {
-            type: 'bar',
-            data: {
-                labels: ['Totalt antal anmälningar'],
-                datasets: [{
-                    label: 'Totala anmälningar',
-                    data: [selectedEvent.totalSignups],
-                    backgroundColor: '#e9e9e9',
-                    borderColor: '#FFF',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+        // // Skapa diagram för antal anmälningar
+        // var ctxViews = document.getElementById('SignupChart').getContext('2d');
+        // var viewsChart = new Chart(ctxViews, {
+        //     type: 'bar',
+        //     data: {
+        //         labels: ['Totalt antal anmälningar'],
+        //         datasets: [{
+        //             label: 'Totala anmälningar',
+        //             data: [0],
+        //             backgroundColor: '#e9e9e9',
+        //             borderColor: '#FFF',
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         scales: {
+        //             yAxes: [{
+        //                 ticks: {
+        //                     beginAtZero: true
+        //                 }
+        //             }]
+        //         }
+        //     }
+        // });
 
-        // Skapa diagram för kategori av evenemang
-        var ctxCategory = document.getElementById('EventCategoryChart').getContext('2d');
-        var categoryChart = new Chart(ctxCategory, {
-            type: 'bar',
-            data: {
-                labels: ['Kategori'],
-                datasets: [{
-                    label: 'Antal anmälningar per kategori',
-                    data: [selectedEvent.category],
-                    backgroundColor: ['#F3F3F3'],
-                    borderColor: '#000',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 1
-                        }
-                    }]
-                }
-            }
-        });
+        // Längst upp presentera eventname, totalsignups, timestamp, category
+        // Under visa diagram på ålder, kön
+
+        function updateStatistics() {
+            var selectedEventStatisticsId = parseInt(document.getElementById('events').value);
+            var allEvents = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+            var selectedEvent = allEvents.find(e => e.eventStatisticsID === selectedEventStatisticsId);
+
+            // viewsChart.data.datasets[0].data = [selectedEvent.totalSignups];
+            ageChart.data.datasets[0].data = [
+                selectedEvent.ageBelow16Signups,
+                selectedEvent.age16To30Signups,
+                selectedEvent.age31To50Signups,
+                selectedEvent.ageAbove50Signups
+            ];
+            genderChart.data.datasets[0].data = [
+                selectedEvent.femaleSignups,
+                selectedEvent.maleSignups
+            ];
+            
+            // viewsChart.update();
+            genderChart.update();
+            ageChart.update();
+        }
 
     </script>
-
 
     @* <script src="~/js/statistics.js"></script> *@
    
