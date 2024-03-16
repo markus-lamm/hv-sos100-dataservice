@@ -4,6 +4,7 @@ using Hv.Sos100.DataService.Statistics.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatatserviceAPI.Migrations
 {
     [DbContext(typeof(StatisticsContext))]
-    partial class EventStatisticsContextModelSnapshot : ModelSnapshot
+    [Migration("20240316113241_Eigth")]
+    partial class Eigth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
