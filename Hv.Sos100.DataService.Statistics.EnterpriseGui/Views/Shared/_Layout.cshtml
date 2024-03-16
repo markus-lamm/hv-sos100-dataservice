@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ActivoWebPage</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+    @* <link rel="stylesheet" href="~/css/test.css" asp-append-version="true" /> *@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://informatik4.ei.hv.se/CSS/eventivoNavbarFinal.css" /> @*Länk till Navbar+Footer CSS från servern*@
+    <link rel="icon" href="/images/thumbnail.jpeg" type="image/jpeg"> @*thumbnail*@
+
+</head>
+
+<body>
+    <header class="header-trollhattan">
+        <nav class="navbar bg-custom border-body">
+            @*<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>*@
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                <img src="~/lib/Bilder/loggaEventivo.png" alt="Logo" id="index" width="70" height="70" class="d-inline-block align-text-top" />
+            </a>
+
+
+            <a id="eventLink" class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
+                EVENT
+            </a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">AKTIVITET</a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">ORGANISATION</a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">STATISTIK</a>
+
+
+
+
+
+            <div class="nav-list">
+
+                <div class="vr text-light" style="width: 3px;"></div>
+                <a class="nav-link" href="https://informatik5.ei.hv.se/eventivo/Home/Search">SÖK EVENT <img class="search-icon" src="~/lib/Bilder/searchglass.svg" /></a>
+                <div class="vr text-light" style="width: 3px;"></div>
+                <div id="loginStatus">
+
+                    @* <div id="skeleton-profile-placeholder"></div>  *@  @* FOHLINS CRAZY SHIT FÖR ATT CHECKA INLOGGNING TROR JAG *@
+
+                    <a class="nav-link line-profile" id="logged-out-menu" asp-action="Login" asp-controller="Home">LOGGA IN</a>
+
+                </div>
+
+
+
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        VÄLJ STAD
+                    </a>
+                    <ul class="dropdown-menu dropdown-cities">
+                        <h6 class="dropdown-header">VALBARA<br />STÄDER</h6>
+                        <div class="dropdown-divider bg-light"></div>
+                        <li class="dropdown-city"><a class="dropdown-item" href="https://informatik5.ei.hv.se/eventivo/Trollhattan/Home">Trollhättan</a></li>
+                        <li class="dropdown-city"><a class="dropdown-item" href="https://informatik5.ei.hv.se/eventivo/Vastervik/Home">Västervik</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </nav>
+        <nav class="navbar2 bg-custom border-body">
+            <div class="d-flex justify-content-center">
+                <div class="nav-btn nav-item dropdown">
+                    <a class="nav-link" asp-action="Index" asp-controller="Events">ÖVERSIKT EVENT</a>
+                    <a class="nav-link" asp-action="Create" asp-controller="Events">LÄGG TILL EVENT</a>
+
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hämta referens till "EVENT" knappen
+            var eventLink = document.getElementById('eventLink');
+
+            // Lägg till eventlyssnare på "EVENT" knappen
+            eventLink.addEventListener('click', function (event) {
+                event.preventDefault(); // Förhindra standardbeteende för länken
+
+                // Visa/dölj den andra navigeringsfältet
+                var navbar2 = document.querySelector('.navbar2');
+                navbar2.style.display = navbar2.style.display === 'none' ? 'block' : 'none';
+            });
+
+            // Lägg till ytterligare en eventlyssnare för att visa navbar2 vid första klicket
+            eventLink.addEventListener('click', function () {
+                var navbar2 = document.querySelector('.navbar2');
+                navbar2.style.display = 'block';
+                // Ta bort den här eventlyssnaren efter första klicket för att undvika duplicering
+                eventLink.removeEventListener('click', arguments.callee);
+            });
+        });
+    </script>
+
+
+    <script>
+        function changeFontAndText(element) {
+            var navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(function (navLink) {
+                navLink.style.fontWeight = 'normal';
+            });
+
+            element.style.fontWeight = 'bold';
+        }
+    </script>
+
+
+</body>
+</html>
