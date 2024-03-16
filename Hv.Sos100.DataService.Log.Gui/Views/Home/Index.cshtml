@@ -1,52 +1,43 @@
 ﻿@using Hv.Sos100.DataService.Log.Api.Models
 @model List<Log>
 @{
-    ViewData["Title"] = "Home Page";
     var isAuthenticated = ViewData["IsAuthenticated"] as string;
 }
 
 <div class="container">
     <div class="logs-container">
-        @if (isAuthenticated != "true")
-        {
-            <i>Logga in för att se loggar</i>
-        }
-        else
-        {
-            <table class="table">
-                <thead class="thead-light">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Tid</th>
+                    <th scope="col">Allvarhet</th>
+                    <th scope="col">Tjänst</th>
+                    <th scope="col">Meddelande</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Tid</th>
-                        <th scope="col">Allvarhet</th>
-                        <th scope="col">Tjänst</th>
-                        <th scope="col">Meddelande</th>
+                        <td colspan="5">Inga loggar att visa</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Count == 0)
+                }
+                else
+                {
+                    @foreach (var log in Model)
                     {
                         <tr>
-                            <td colspan="5">Inga loggar att visa</td>
+                            <td>@log.Id</td>
+                            <td>@log.TimeStamp</td>
+                            <td class="@GetSeverityClass(log.Severity ?? "Info")">@(log.Severity ?? "null")</td>
+                            <td>@log.SourceSystem</td>
+                            <td>@log.Message</td>
                         </tr>
                     }
-                    else
-                    {
-                        @foreach (var log in Model)
-                        {
-                            <tr>
-                                <td>@log.Id</td>
-                                <td>@log.TimeStamp</td>
-                                <td class="@GetSeverityClass(log.Severity ?? "Info")">@(log.Severity ?? "null")</td>
-                                <td>@log.SourceSystem</td>
-                                <td>@log.Message</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-
-        }
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 @functions {
