@@ -31,13 +31,30 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await IsLoggedin();
+            var isAuthenticated = await IsLoggedin();
             
+            List<Ads>? deserialized = new();
             _httpClient.BaseAddress = new Uri(_baseURL);
+            HttpResponseMessage result = new();
 
-            var result = await _httpClient.GetAsync("api/Ads/getallads");
-            var adsJsonString = await result.Content.ReadAsStringAsync();
-            var deserialized = JsonConvert.DeserializeObject<IEnumerable<Ads>>(adsJsonString);
+            if (isAuthenticated)
+            {
+                var currentSession = GetSession();
+                var userRole = currentSession!.GetString("UserRole");
+                var userId = currentSession!.GetString("UserID");
+                
+                if (userRole == "Admin")
+                {
+                    result = await _httpClient.GetAsync("api/Ads/getallads");
+                }
+                else if (userRole == "Organizer")
+                {
+                    result = await _httpClient.GetAsync($"api/Ads/getuserads/{userId}");
+                }
+
+                var adsJsonString = await result.Content.ReadAsStringAsync();
+                deserialized = JsonConvert.DeserializeObject<List<Ads>>(adsJsonString);
+            }
 
             return View(deserialized);
 
@@ -48,6 +65,12 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
             if (!await IsLoggedin())
             {
                 ViewBag.ShowLoginModal = true;
+                return View(nameof(Index));
+            }
+
+            var currentSession = GetSession();
+            if (currentSession!.GetString("UserRole") == "Citizen")
+            {
                 return View(nameof(Index));
             }
 
@@ -72,7 +95,7 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("AdvertisementID,ImageSource,ImageLink,TotalViews,TimeStamp,ImageDimension")] Ads ad, IFormCollection form)
+        public async Task<ActionResult> Create([Bind("AdvertisementID,ImageSource,ImageLink,TotalViews,TimeStamp,ImageDimension,UserID")] Ads ad, IFormCollection form)
         {
             try
             {
@@ -84,9 +107,12 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
                     string byte64string = Convert.ToBase64String(Content);
                     ad.ImageSource = $"data:{file.ContentType};base64,{byte64string}";
                 }
-                    
-                _httpClient.BaseAddress = new Uri(_baseURL);
 
+                var currentSession = GetSession();
+                var userId = currentSession!.GetString("UserID");
+                ad.UserID = int.Parse(userId!);
+
+                _httpClient.BaseAddress = new Uri(_baseURL);
                 var responseTask = await _httpClient.PostAsJsonAsync("api/Ads", ad);
 
                 return RedirectToAction(nameof(Index));
@@ -113,14 +139,14 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
             }
 
             var Ads = await GetAds();
-            var movie = Ads?.Where(s => s.AdvertisementID == id).FirstOrDefault();
+            var ad = Ads?.Where(s => s.AdvertisementID == id).FirstOrDefault();
 
-            if (movie == null)
+            if (ad == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(ad);
         }
 
 
@@ -165,6 +191,10 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
             }
 
             return bool.TryParse(HttpContext.Session.GetString("IsAuthenticated"), out _);
+        }
+        public ISession? GetSession()
+        {
+            return HttpContext.Session;
         }
 
         public async Task<IActionResult> Login(string email, string password)
