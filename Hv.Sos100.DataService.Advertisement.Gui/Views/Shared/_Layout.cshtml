@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Hv.Sos100.DataService.Log.Gui.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://informatik4.ei.hv.se/CSS/eventivoNavbar.css" />
+    <link rel="stylesheet" href="https://informatik4.ei.hv.se/CSS/eventivoNavbarFinal.css" />
 </head>
 <body>
     @{
@@ -15,101 +15,117 @@
     }
     <header>
         <nav class="navbar bg-custom border-body">
+            @*<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>*@
             <a class="navbar-brand" asp-action="Index" asp-controller="Home">
-                <img src="~/images/logo_eventivo.png" alt="Logo" width="65" height="70" class="d-inline-block align-text-top">
+                <img src="~/images/logo_eventivo.png" alt="Logo" id="index" width="70" height="70" class="d-inline-block align-text-top" />
             </a>
 
 
-            <div class="d-flex justify-content-center">
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    EVENT
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" asp-action="Create" asp-controller="Events">Lägg till event</a></li>
-                    <li><a class="dropdown-item" asp-action="Index" asp-controller="Events">Hantera event</a></li>
-                </ul>
-            </div>
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    AKTIVITET
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" asp-action="#" asp-controller="#">Lägg till aktivitet</a></li>
-                    <li><a class="dropdown-item" asp-action="#" asp-controller="#">Hantera aktivitet</a></li>
-                </ul>
-            </div>
-            </div>
+            <a id="eventLink" class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
+                EVENT
+            </a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">AKTIVITET</a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">ORGANISATION</a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">LOGGNING</a>
+            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">STATISTIK</a>
 
-           
+            <a class="nav-link" href="https://informatik5.ei.hv.se/monitoring">ÖVERVAKNING</a>>
+
+
+
 
             <div class="nav-list">
-                <a class="nav-link" asp-action="Trollhattan_Search" asp-controller="Cities"><img class="search-icon" src="~/images/searchglass.svg" />SÖK EVENT</a>
+
                 <div class="vr text-light" style="width: 3px;"></div>
-                <a class="nav-link" asp-action="MyProfile" asp-controller="Home">LOGGA UT</a> @*fixa logga ut skiten ba*@
+                <a class="nav-link" href="https://informatik5.ei.hv.se/eventivo/Home/Search">SÖK EVENT <img class="search-icon" src="~/images/searchglass.svg" /></a>
                 <div class="vr text-light" style="width: 3px;"></div>
+                <div id="loginStatus">
+
+                    @* <div id="skeleton-profile-placeholder"></div>  *@  @* FOHLINS CRAZY SHIT FÖR ATT CHECKA INLOGGNING TROR JAG *@
+
+                    <a class="nav-link line-profile" id="logged-out-menu" asp-action="Login" asp-controller="Home">LOGGA IN</a>
+
+                </div>
+
+
 
                 <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        STAD
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        VÄLJ STAD
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-action="Trollhattan" asp-controller="Cities">Trollhättan</a></li>
-                        <li><a class="dropdown-item" asp-action="Vastervik" asp-controller="Cities">Västervik</a></li>
+                    <ul class="dropdown-menu dropdown-cities">
+                        <h6 class="dropdown-header">VALBARA<br />STÄDER</h6>
+                        <div class="dropdown-divider bg-light"></div>
+                        <li class="dropdown-city"><a class="dropdown-item" href="https://informatik5.ei.hv.se/eventivo/Trollhattan/Home">Trollhättan</a></li>
+                        <li class="dropdown-city"><a class="dropdown-item" href="https://informatik5.ei.hv.se/eventivo/Vastervik/Home">Västervik</a></li>
                     </ul>
                 </div>
-            </div>
 
-            <div>
-                @if (isAuthenticated != "true")
-                {
-                    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        LOGGA IN
-                    </button>
-
-                    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="loginModalLabel">LOGGA IN</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-body">
-
-                                    <form asp-controller="Home" asp-action="Login">
-                                        <div class="form-group m-2">
-                                            <label for="inputEmail">E-post</label>
-                                            <input class="form-control" id="inputEmail" name="email" placeholder="Ange E-post">
-                                        </div>
-                                        <div class="form-group m-2">
-                                            <label for="inputPassword">Lösenord</label>
-                                            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Ange Lösenord">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary m-2">FORTSÄTT</button>
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="row m-2">
-                        <div class="col-sm-6">
-                            <form asp-controller="Home" asp-action="Logout">
-                                <button type="submit" class="btn btn-primary">LOGGA UT</button>
-                            </form>
-                        </div>
-                    </div>
-                }
             </div>
 
         </nav>
+        <nav class="navbar2 bg-custom border-body">
+            <div class="d-flex justify-content-center">
+                <div class="nav-btn nav-item dropdown">
+                    <a class="nav-link" asp-action="Index" asp-controller="Events">ÖVERSIKT EVENT</a>
+                    <a class="nav-link" asp-action="Create" asp-controller="Events">LÄGG TILL EVENT</a>
+
+
+                </div>
+            </div>
+        </nav>
+        <div>
+            @* Temporary until we have a proper login system *@
+            @if (isAuthenticated != "true")
+            {
+                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    LOGGA IN
+                </button>
+
+                <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loginModalLabel">LOGGA IN</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form asp-controller="Home" asp-action="Login">
+                                    <div class="form-group m-2">
+                                        <label for="inputEmail">E-post</label>
+                                        <input class="form-control" id="inputEmail" name="email" placeholder="Ange E-post">
+                                    </div>
+                                    <div class="form-group m-2">
+                                        <label for="inputPassword">Lösenord</label>
+                                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Ange Lösenord">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary m-2">FORTSÄTT</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row m-2">
+                    <div class="col-sm-6">
+                        <form asp-controller="Home" asp-action="Logout">
+                            <button type="submit" class="btn btn-primary">LOGGA UT</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -117,16 +133,20 @@
     </div>
 
     <footer class="footer d-flex justify-content-between align-items-center py-3 my-4">
-        <div class="footer-icons d-flex flex-column align-items-start">
-            <a href="https://instagram.com" class="mb-2"><img class="logo-footer" src="~/images/logo-instagram.png" /><p class="footer-icon-text">Eventivo</p></a>
-            <a href="https://twitter.com" class="mb-2"><img class="logo-footer" src="~/images/logo-twitter.png" /><p class="footer-icon-text">Eventivo</p></a>
-            <a href="https://facebook.com" class="mb-2"><img class="logo-footer" src="~/images/logo-facebook.png" /><p class="footer-icon-text">Eventivo</p></a>
+
+        <div class="footer-wrapper">
+            <div class="footer-icons d-flex flex-column align-items-start">
+                <a href="https://instagram.com" class="mb-2"><img class="logo-footer" src="~/images/logo-instagram.png" /><p class="footer-icon-text">Eventivo</p></a>
+                <a href="https://twitter.com" class="mb-2"><img class="logo-footer" src="~/images/logo-twitter.png" /><p class="footer-icon-text">Eventivo</p></a>
+                <a href="https://facebook.com" class="mb-2"><img class="logo-footer" src="~/images/logo-facebook.png" /><p class="footer-icon-text">Eventivo</p></a>
+            </div>
         </div>
+
         <div class="footer-nav">
             <ul class="nav justify-content-center">
-                <li class="nav-item"><a href="#" class="nav-link">OM OSS</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">KONTAKT</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">SEKRETESS</a></li>
+                <li class="nav-item-footer"><a class="nav-link-footer" asp-action="About" asp-controller="Home">OM OSS</a></li>
+                <li class="nav-item-footer"><a class="nav-link-footer" asp-action="Contact" asp-controller="Home">KONTAKT</a></li>
+                <li class="nav-item-footer"><a class="nav-link-footer" asp-action="Privacy" asp-controller="Home">SEKRETESS</a></li>
             </ul>
         </div>
     </footer>
@@ -136,14 +156,36 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
-        function changeFontAndText(element) {
-            // Reset all nav-link elements
-            var navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(function (navLink) {
-                navLink.style.fontWeight = 'normal'; // Reset font weight
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hämta referens till "EVENT" knappen
+            var eventLink = document.getElementById('eventLink');
+
+            // Lägg till eventlyssnare på "EVENT" knappen
+            eventLink.addEventListener('click', function (event) {
+                event.preventDefault(); // Förhindra standardbeteende för länken
+
+                // Visa/dölj den andra navigeringsfältet
+                var navbar2 = document.querySelector('.navbar2');
+                navbar2.style.display = navbar2.style.display === 'none' ? 'block' : 'none';
             });
 
-            // Set the clicked nav-link to bold font weight
+            // Lägg till ytterligare en eventlyssnare för att visa navbar2 vid första klicket
+            eventLink.addEventListener('click', function () {
+                var navbar2 = document.querySelector('.navbar2');
+                navbar2.style.display = 'block';
+                // Ta bort den här eventlyssnaren efter första klicket för att undvika duplicering
+                eventLink.removeEventListener('click', arguments.callee);
+            });
+        });
+    </script>
+
+    <script>
+        function changeFontAndText(element) {
+            var navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(function (navLink) {
+                navLink.style.fontWeight = 'normal';
+            });
+
             element.style.fontWeight = 'bold';
         }
     </script>
@@ -155,6 +197,6 @@
             });
         </script>
     }
-
 </body>
 </html>
+
