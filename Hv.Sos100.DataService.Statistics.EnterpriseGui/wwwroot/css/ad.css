@@ -9,67 +9,44 @@
     padding: 0;
 }
 
-.navbar {
+
+.categorymenu {
     width: 100vw;
-    height: 100px;
-    background-color: #212121;
+    height: 40px;
+    background-color: #181717;
     padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-style: normal;
+    text-align: center; /* Centrera innehållet horisontellt */
 }
 
-
-.navbar-logo a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.navbar-nav {
-    list-style-type: none;
+.navbar-nav1 {
+    list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
-    .navbar-nav li {
-        margin-right: 50px;
+    .navbar-nav1 li {
+        display: inline-block; /* Visa elementen bredvid varandra */
+        margin-right: 20px; /* Justera avståndet mellan elementen */
     }
 
-
-.nav-item {
+.nav-item1 {
     margin-right: 20px;
 }
 
-    .nav-item a {
+    .nav-item1 a {
         color: #fff;
         text-decoration: none;
         font-size: 20px;
         transition: color 0.3s ease;
     }
 
-        .nav-item a:hover {
+        .nav-item1 a:hover {
             color: darkgoldenrod;
         }
 
-.categorymenu {
-    width: 100vw;
-    height: 30px;
-    background-color: #181717;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center !important;
-    justify-content: center;
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-}
 
 .gradienttext a {
     font-size: 20px; /* Justera storleken efter behov */
@@ -106,11 +83,17 @@ h2 {
     color: #000000;
 }
 
-.ChooseAd {
+.ChooseAdvertisement {
     margin-left: 40px;
     margin-bottom: 20px;
     font-size: 20px;
     position: relative;
+}
+
+.Adname {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 select {
@@ -128,6 +111,39 @@ select {
         outline: none; 
         border-color: #FF909F; 
     }
+.signup-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 200px; /* Justera storleken på den yttre rutan efter behov */
+    height: 200px; /* Justera storleken på den yttre rutan efter behov */
+    background-color: #fff; /* Bakgrundsfärg på den yttre rutan */
+    padding: 20px;
+}
+
+.signup-label {
+    flex: 1; /* Ta upp all tillgänglig plats i flexboxen */
+    border: 1px solid #000;
+    width: 200px;
+    height: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #e8e8e8;
+    text-align: center;
+}
+
+.signup-count {
+    width: 200px; /* Justera storleken på den inre rutan efter behov */
+    height: 150px; /* Justera storleken på den inre rutan efter behov */
+    background-color: #fff; /* Bakgrundsfärg på den inre rutan */
+    border: 1px solid #333; /* Ram runt den inre rutan */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-align: center; /* Centrera texten */
+    line-height: 40px; /* Centrera texten vertikalt */
+    font-size: 72px;
+    padding-top: 40px; /* Flytta ner texten med 20px */
+}
 
 canvas {
     max-width: 400px; 
@@ -136,6 +152,20 @@ canvas {
     height: auto;
     margin-bottom: 20px;
 }
+.chart-container1 {
+    margin-left: 40px;
+    margin-top: 50px;
+    display: flex;
+    width: 95%;
+    margin-bottom: 60px;
+    background-color: #fff;
+    border-radius: 8px;
+    align-items: center;
+}
+
+    .chart-container1 > * {
+        margin-right: 200px; /* Justera avståndet mellan objekten */
+    }
 
 .chart-container {
     margin-left: 35px;
