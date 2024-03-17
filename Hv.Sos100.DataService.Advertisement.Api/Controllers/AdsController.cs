@@ -48,20 +48,6 @@ namespace Hv.Sos100.DataService.Advertisement.Api.Controllers
             return ads;
         }
 
-        [HttpGet("getallads/{TimeStamp}")]
-        public async Task<ActionResult<IEnumerable<Ads>>> GetAllAds(DateTime TimeStamp)
-        {
-
-            var ads = await _context.Ads
-                .Where(ad => ad.TimeStamp > TimeStamp)
-                .ToListAsync();
-            if (ads == null)
-            {
-                return NotFound();
-            }
-            return ads;
-        }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<Ads>> GetAds(int id)
         {
