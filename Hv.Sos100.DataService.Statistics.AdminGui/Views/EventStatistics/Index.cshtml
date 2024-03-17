@@ -3,9 +3,25 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? totalSignupsSum = 0;
-    foreach (var signup in Model)
+    int totalKulturNoje = 0;
+    int totalAtaDricka = 0;
+    int totalSportFriluft = 0;
+
+    foreach (var activity in Model)
     {
-            totalSignupsSum += signup.TotalSignups;
+        totalSignupsSum += activity.TotalSignups;
+        if(activity.Category == "KULTUR & NÖJE")
+        {
+            totalKulturNoje++;
+        }
+        else if(activity.Category == "ÄTA & DRICKA")
+        {
+            totalAtaDricka++;
+        }
+        else if(activity.Category == "SPORT & FRILUFT")
+        {
+            totalSportFriluft++;
+        }
     }
 }
 <div class="secondNav">
@@ -25,8 +41,8 @@
         <p class="totalTitel">Totalt antal anmälningar</p>
         <h2>@totalSignupsSum</h2>
     </div>
-    @* Totalt antal av varje kategori *@
-    @* <div>
+@*     Totalt antal av varje kategori
+ *@    <div>
         <canvas id="myPieChart"></canvas>
     </div>
     <script>
@@ -34,23 +50,20 @@
         var myPieChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ['Kultur & Nöje', 'Äta & Dricka', 'Sport & Friluft'],
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: 'Antal',
+                    data: [@totalKulturNoje, @totalAtaDricka, @totalSportFriluft],
                     backgroundColor: [
-                        'red',
-                        'blue',
-                        'yellow',
-                        'green',
-                        'purple',
-                        'orange'
+                        "#FF6C95",
+                        "#FFF167",
+                        "#FB8E5F"
                     ],
                     hoverOffset: 4
                 }]
             }
         });
-    </script> *@
+    </script>
 </div>
 <div class="tableContainer">
     <table>
@@ -58,6 +71,12 @@
             <tr>
                 <th class="tableStyle">ID</th>
                 <th class="tableStyle">Antal anmälningar</th>
+                <th class="tableStyle">Anmälningar kvinnor</th>
+                <th class="tableStyle">Anmälningar män</th>
+                <th class="tableStyle">Anmälningar under 16 år</th>
+                <th class="tableStyle">Anmälningar 16-30 år</th>
+                <th class="tableStyle">Anmälningar 31-50 år</th>
+                <th class="tableStyle">Anmälningar över 50 år</th>
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
@@ -66,6 +85,12 @@
             <tr>
                 <td class="tableStyle">@activity.EventStatisticsID</td>
                 <td class="tableStyle">@activity.TotalSignups</td>
+                <td class="tableStyle">@activity.FemaleSignups</td>
+                <td class="tableStyle">@activity.MaleSignups</td>
+                <td class="tableStyle">@activity.AgeBelow16Signups</td>
+                <td class="tableStyle">@activity.Age16To30Signups</td>
+                <td class="tableStyle">@activity.Age31To50Signups</td>
+                <td class="tableStyle">@activity.AgeAbove50Signups</td>
                 <td class="tableStyle">@activity.Category</td>
             </tr>
             

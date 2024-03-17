@@ -63,6 +63,7 @@ table, th, td{
 .totalContainer{
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10vw;
 }
 .totalBox {
@@ -85,4 +86,12 @@ table, th, td{
     font-size: 1.2em;
     font-weight: bold;
     padding-bottom: 3vh;
+}
+.totalCategoryActivity{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    width: 100vw;
 }
