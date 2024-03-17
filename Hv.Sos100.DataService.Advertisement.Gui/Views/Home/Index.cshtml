@@ -3,11 +3,16 @@
 @{
     ViewData["Title"] = "Home Page";
     var isAuthenticated = ViewData["IsAuthenticated"] as string;
+    var UserRole = ViewData["UserRole"] as string;
 }
 
 @if (isAuthenticated != "true")
 {
     <i>Logga in för att se alla annonser</i>
+}
+else if (UserRole == "Citizen")
+{
+    <i>Du har inte behörighet för denna sidan</i>
 }
 else
 {
@@ -41,6 +46,10 @@ else
                             @if (ad.ImageDimension == "horizontal")
                             {
                                 <img height="150" width="500" src="@ad.ImageSource" />
+                            }
+                            else if (ad.ImageDimension == "square")
+                            {
+                                <img height="250" width="350" src="@ad.ImageSource" />
                             }
                             else
                             {
