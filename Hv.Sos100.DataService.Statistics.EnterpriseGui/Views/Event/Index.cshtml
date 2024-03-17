@@ -35,14 +35,22 @@
                 <option value="@eventData.EventStatisticsID">@eventData.EventStatisticsID</option>
             }
         </select>
+        <div class="Eventname"> <h3>Eventnamn</h3></div>
     </div>
-    <div class="chart-container">
-        <div class="chart-info">
-            <h2>ANMÄLNINGAR</h2>
-            <p>Antal anmälda: <span id="totalSignups"></span> </p>
-        </div>
 
+    <div class="chart-container1">
+    <div class="signup-wrapper">
+    <div class="signup-label">Kategori:</div>
+            <div class="signup-count" id="category"></div>
     </div>
+        <div class="chart-info">
+            <div class="signup-wrapper">
+                <div class="signup-label">Antal anmälda:</div>
+                <div class="signup-count" id="totalSignups"></div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="chart-container">
         <div class="chart-info">
@@ -108,6 +116,11 @@
             var totalSignupsElement = document.getElementById('totalSignups');
             if (totalSignupsElement) {
                 totalSignupsElement.innerText = selectedEvent.totalSignups;
+            }
+
+            var categoryElement = document.getElementById('category');
+            if (categoryElement) {
+                categoryElement.innerText = selectedEvent.category;
             }
 
             ageChart.data.datasets[0].data = [
