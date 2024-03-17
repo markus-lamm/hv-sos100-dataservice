@@ -12,5 +12,6 @@ namespace Hv.Sos100.DataService.Advertisement.Api.Model
         public int? TotalViews { get; set; }
         public DateTime? TimeStamp { get; set; } = DateTime.Now;
         public string? ImageDimension { get; set; }
+        public int? UserID { get; set; }
     }
 }
