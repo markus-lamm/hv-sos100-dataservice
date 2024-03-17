@@ -35,17 +35,73 @@
                 <option value="@activityData.ActivityStatisticsID">@activityData.ActivityStatisticsID</option>
             }
         </select>
+        <div class="Activityname"> <h3>Aktivitetsnamn</h3></div>
+    </div>
+
+    <div class="chart-container1">
+        <div class="signup-wrapper">
+            <div class="signup-label">Kategori:</div>
+            <div class="signup-count" id="category"></div>
+        </div>
+        <div class="chart-info">
+            <div class="signup-wrapper">
+                <div class="signup-label">Antal sparningar:</div>
+                <div class="signup-count" id="totalSaved"></div>
+            </div>
+        </div>
+    </div>
+
+ 
+
+    <div class="chart-container">
+        <div class="chart-info">
+            <h2>KÖN</h2>
+            <p>Statistik för hur många av vardera kön som sparat aktiviteten.</p>
+        </div>
+        <canvas id="GenderChart"></canvas>
     </div>
 
     <div class="chart-container">
         <div class="chart-info">
-            <h2>SPARNINGAR</h2>
-            <p>Antal sparningar: <span id="totalSaved"></span></p>
+            <h2>ÅLDER</h2>
+            <p>Statistik för hur många i varje åldersgrupp som sparat aktiviteten.</p>
         </div>
-       
+        <canvas id="AgeChart"></canvas>
     </div>
   
     <script>
+
+        var ctxGender = document.getElementById('GenderChart').getContext('2d');
+        var genderChart = new Chart(ctxGender, {
+            type: 'pie',
+            data: {
+                labels: ['Kvinnor', 'Män'],
+                datasets: [{
+                    data: [0, 1],
+                    backgroundColor: ['#666666', '#000000']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var ctxAge = document.getElementById('AgeChart').getContext('2d');
+        var ageChart = new Chart(ctxAge, {
+            type: 'pie',
+            data: {
+                labels: ['Under 16', '16-30', '31-50', 'Över 50'],
+                datasets: [{
+                    data: [0, 1, 2, 3],
+                    backgroundColor: ['#666666', '#000000', '#999999', '#CCCCCC']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
         function updateStatistics() {
             var selectedActivityStatisticsId = parseInt(document.getElementById('activitys').value);
             var allActivitys = JSON.parse('@Html.Raw(Json.Serialize(Model))');
@@ -56,7 +112,28 @@
             if (totalSavedElement) {
                 totalSavedElement.innerText = selectedActivity.totalSaved;
             }
+
+            var categoryElement = document.getElementById('category');
+            if (categoryElement) {
+                categoryElement.innerText = selectedActivity.category;
+            }
+
+            ageChart.data.datasets[0].data = [
+                selectedActivity.ageBelow16Saved,
+                selectedActivity.age16To30Saved,
+                selectedActivity.age31To50Saved,
+                selectedActivity.ageAbove50Saved
+            ];
+            genderChart.data.datasets[0].data = [
+                selectedActivity.femaleSaved,
+                selectedActivity.maleSaved
+            ];
+
+            genderChart.update();
+            ageChart.update();
         }
+
+
 
     </script>
 </body>

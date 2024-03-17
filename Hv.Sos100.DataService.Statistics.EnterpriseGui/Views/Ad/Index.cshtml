@@ -26,32 +26,38 @@
 
     <h1>ANNONSSTATISTIK</h1>
     <hr>
-    <div class="ChooseAd">
-        <label for="ads">VÄLJ ANNONS:</label>
-        <select id="ads" onchange="updateStatistics()">
-            @foreach (var adData in Model)
+
+    <div class="ChooseAdvertisement">
+        <label for="advertisement">VÄLJ ANNONS:</label>
+        <select id="advertisement" onchange="updateStatistics()">
+            @foreach (var advertisementData in Model)
             {
-                <option value="@adData.AdvertisementStatisticsID">@adData.AdvertisementStatisticsID</option>
+                <option value="@advertisementData.AdvertisementStatisticsID">@advertisementData.AdvertisementStatisticsID</option>
             }
         </select>
+        <div class="Adname"> <h3>Annonsnamn</h3></div>
     </div>
 
 
-    <div class="chart-container">
+    <div class="chart-container1">
         <div class="chart-info">
-            <h2>VISNINGAR</h2>
-            <p>Antal visningar: <span id="totalViews"></span> .</p>
+            <div class="signup-wrapper">
+                <div class="signup-label">Antal visningar:</div>
+                <div class="signup-count" id="totalViews"></div>
+            </div>
         </div>
     </div>
+
     <script>
         function updateStatistics() {
-            var selectedAdvertisementStatisticsID = parseInt(document.getElementById('ads').value);
-            var allAds = JSON.parse('@Html.Raw(Json.Serialize(Model))');
-            var selectedAd = allAds.find(e => e.AdvertisementStatisticsID === selectedAdvertisementStatisticsID);
+            var selectedAdvertisementStatisticsID = parseInt(document.getElementById('Advertisements').value);
+            var allAdvertisements = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+            var selectedAdvertisement = allAdvertisement.find(e => e.AdvertisementStatisticsID === selectedAdvertisementStatisticsId);
 
+            
             var totalViewsElement = document.getElementById('totalViews');
-            if (totalViewsElement && selectedAd) {
-                totalViewsElement.innerText = selectedAd.TotalViews;
+            if (totalViewsElement) {
+                totalViewsElement.innerText = selectedAdvertisement.totalViews;
             }
         }
     </script>
