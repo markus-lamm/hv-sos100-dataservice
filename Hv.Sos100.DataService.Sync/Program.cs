@@ -1,8 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Quartz;
-using Hv.Sos100.DataService.Sync.Jobs;
 using Hv.Sos100.DataService.Sync.Shared;
-using System.Net.Http.Headers;
 
 namespace Hv.Sos100.DataService.Sync
 {

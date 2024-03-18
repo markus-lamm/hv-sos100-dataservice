@@ -1,57 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using Hv.Sos100.DataService.Statistics.AdminGui.Models;
-using Hv.Sos100.Logger;
-using Hv.Sos100.SingleSignOn;
+using Hv.Sos100.DataService.Statistics.AdminGui.Data;
 
+namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers;
 
-namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
+public class EventStatisticsController : Controller
 {
-    public class EventStatisticsController : Controller
+    private readonly Authenticate _authenticate;
+    private readonly ApiService _apiService;
+
+    public EventStatisticsController(Authenticate authenticate, ApiService apiService)
     {
-        string _baseURL = "https://informatik6.ei.hv.se/statisticapi/api/EventStatistics";
-        public async Task<IActionResult> Index()
+        _authenticate = authenticate;
+        _apiService = apiService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var isAuthenticatedAdmin = await _authenticate.IsAuthenticatedAdmin(controller: this, HttpContext);
+        if (isAuthenticatedAdmin == false)
         {
-            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
-            if(isAuthenticated == null)
-            {
-                var authenticationService = new AuthenticationService();
-                var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
-                if(existingSession == false)
-                {
-                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
-                }
-                var userRole = HttpContext.Session.GetString("UserRole");
-                if(userRole != "Admin")
-                {
-                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
-                }
-            }
-
-            List<EventStatistics>? eventList = new List<EventStatistics>();
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    var response = await client.GetAsync(_baseURL);
-                    //HttpResponseMessage response = await client.GetAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        eventList = JsonSerializer.Deserialize<List<EventStatistics>>(content,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    }
-                    else
-                        ViewBag.Message = "Tyvärr gick något fel: " + response.ReasonPhrase;
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = new LogService();
-
-                await logger.CreateLog("StatisticsAdminGui.EventStatisticsController", ex);
-            }
-            return View(eventList);
+            return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
         }
+
+        List<EventStatistics>? eventList = await _apiService.GetApiRequest<EventStatistics>("https://informatik6.ei.hv.se/statisticapi/api/EventStatistics");
+        if (eventList == null)
+        {
+            ViewBag.Message = "Tyvärr gick något fel";
+            return View();
+        }
+
+        return View(eventList);
     }
 }
