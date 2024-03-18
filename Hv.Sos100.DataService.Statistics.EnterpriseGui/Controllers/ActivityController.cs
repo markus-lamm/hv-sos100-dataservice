@@ -28,12 +28,12 @@ namespace DataGui.Controllers
                     var userRole = HttpContext.Session.GetString("UserRole");
                     if (isAuthenticated == "true")
                     {
-                        return View();
+                        return View(activitylist);
                     }
                     else
                     {
                         //return RedirectToAction("Login", "Account");
-                        return View();
+                        return View(activitylist);
                     }
 
                 }
