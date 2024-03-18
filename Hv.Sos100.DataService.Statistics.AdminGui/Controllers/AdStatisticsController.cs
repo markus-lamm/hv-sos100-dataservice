@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Hv.Sos100.DataService.Statistics.AdminGui.Models;
 using Hv.Sos100.DataService.Statistics.AdminGui.Data;
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers;
 
 public class AdStatisticsController : Controller
 {
-    private readonly Authenticate _authenticate;
+    private readonly AuthenticationUtils _authenticate;
     private readonly ApiService _apiService;
 
-    public AdStatisticsController(Authenticate authenticate, ApiService apiService)
+    public AdStatisticsController(AuthenticationUtils authenticate, ApiService apiService)
     {
         _authenticate = authenticate;
         _apiService = apiService;
@@ -23,7 +22,7 @@ public class AdStatisticsController : Controller
             return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
         }
 
-        List<AdStatistics>? adList = await _apiService.GetApiRequest<AdStatistics>("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics");
+        List<Api.Models.AdStatistics>? adList = await _apiService.GetApiRequest<Api.Models.AdStatistics>("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics");
         if (adList == null)
         {
             ViewBag.Message = "Tyvärr gick något fel";

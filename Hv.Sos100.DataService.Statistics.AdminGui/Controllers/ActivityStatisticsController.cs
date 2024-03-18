@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Hv.Sos100.DataService.Statistics.AdminGui.Models;
 using Hv.Sos100.DataService.Statistics.AdminGui.Data;
+using Hv.Sos100.DataService.Statistics.AdminGui.Models;
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers;
 
 public class ActivityStatisticsController : Controller
 {
-    private readonly Authenticate _authenticate;
+    private readonly AuthenticationUtils _authenticate;
     private readonly ApiService _apiService;
 
-    public ActivityStatisticsController(Authenticate authenticate, ApiService apiService)
+    public ActivityStatisticsController(AuthenticationUtils authenticate, ApiService apiService)
     {
         _authenticate = authenticate;
         _apiService = apiService;
@@ -23,13 +23,26 @@ public class ActivityStatisticsController : Controller
             return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
         }
 
-        List<ActivityStatistics>? activityList = await _apiService.GetApiRequest<ActivityStatistics>("https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics");
+        List<Api.Models.ActivityStatistics>? activityList = await _apiService.GetApiRequest<Api.Models.ActivityStatistics>("https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics");
         if (activityList == null)
         {
             ViewBag.Message = "Tyvärr gick något fel";
             return View();
         }
 
-        return View(activityList);
+        List<Category>? categoryList = await _apiService.GetApiRequest<Category>("https://informatik1.ei.hv.se/ActivityAPI/api/Categories");
+        if (categoryList == null)
+        {
+            ViewBag.Message = "Tyvärr gick något fel";
+            return View();
+        }
+
+        var viewModel = new ActivityStatisticsViewModel
+        {
+            ActivityList = activityList,
+            CategoryList = categoryList
+        };
+
+        return View(viewModel);
     }
 }

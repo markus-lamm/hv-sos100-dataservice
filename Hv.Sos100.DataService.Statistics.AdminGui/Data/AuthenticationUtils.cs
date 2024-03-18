@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Data;
 
-public class Authenticate
+public class AuthenticationUtils
 {
     private readonly AuthenticationService _authenticationService;
 
-    public Authenticate(AuthenticationService authenticationService)
+    public AuthenticationUtils(AuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
