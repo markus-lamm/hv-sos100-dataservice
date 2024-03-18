@@ -1,86 +1,58 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Hv.Sos100.SingleSignOn;
-using Microsoft.AspNetCore.Http;
-using Hv.Sos100.Logger;
+﻿using Microsoft.AspNetCore.Mvc;
 using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Net.Http;
+using Hv.Sos100.DataService.Statistics.EnterpriseGui.Models;
 
 namespace DataGui.Controllers
 {
     public class EventController : Controller
     {
-        private readonly Hv.Sos100.SingleSignOn.AuthenticationService _authenticationService;
-        private readonly APIservice aPIservice = new();
+        private readonly AuthenticationUtils _authenticate;
+        private readonly ApiService _apiService;
 
-        public EventController(Hv.Sos100.SingleSignOn.AuthenticationService authenticationService)
+        public EventController(AuthenticationUtils authenticate, ApiService apiService)
         {
-            _authenticationService = authenticationService;
-
+            _authenticate = authenticate;
+            _apiService = apiService;
         }
+
         public async Task<IActionResult> Index()
         {
-
-            var isAuthenticated = await IsLoggedin();
-
-
-            var eventlist = await aPIservice.GetEvents();
-
-
-            if (isAuthenticated)
+            var isAuthenticatedNonCitizen = await _authenticate.IsAuthenticatedNonCitizen(controller: this, HttpContext);
+            if (isAuthenticatedNonCitizen == false)
             {
-              
-                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
-
-                var userId = HttpContext.Session.GetString("UserID");
-                var userRole = HttpContext.Session.GetString("UserRole");
-
-                if (userRole == "Organizer")
-                {
-                    eventlist = eventlist.Where(d => d.UserID == int.Parse(userId)).ToList();
-                }
-                //else if (userRole == "Organizer")
-                //{
-                //    result = await _httpClient.GetAsync($"api/Ads/getuserads/{userId}");
-                //}
-                // Det fanns ingen giltig session att återuppta
-                //return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
-                
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
-            return View(eventlist);
-        }
-
-        public async Task<bool> IsLoggedin()
-        {
-            var existingSession = await _authenticationService.ResumeSession(controllerBase: this, HttpContext);
-            if (existingSession)
+            List<Hv.Sos100.DataService.Statistics.Api.Models.EventStatistics>? eventList = await _apiService.GetApiRequest<Hv.Sos100.DataService.Statistics.Api.Models.EventStatistics>("https://informatik6.ei.hv.se/statisticapi/api/EventStatistics");
+            if (eventList == null)
             {
-                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
+                ViewBag.Message = "Tyvärr gick något fel";
+                return View();
             }
 
-            return bool.TryParse(HttpContext.Session.GetString("IsAuthenticated"), out _);
-        }
-        public ISession? GetSession()
-        {
-            return HttpContext.Session;
-        }
+            var userId = HttpContext.Session.GetString("UserID");
+            var userRole = HttpContext.Session.GetString("UserRole");
 
-        public async Task<IActionResult> Login(string email, string password)
-        {
-            var authenticationResult = await _authenticationService.CreateSession(email, password, controllerBase: this, HttpContext);
-            if (authenticationResult)
+            // Prune the list of events to only show the events that the user is allowed to see
+            if (userRole == "Organizer")
             {
-                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
+                eventList = eventList.Where(d => d.UserID == int.Parse(userId!)).ToList();
             }
-            return RedirectToAction("Index");
-        }
 
-        public IActionResult Logout()
-        {
-            _authenticationService.EndSession(controllerBase: this, HttpContext);
-            return RedirectToAction("Index");
+            List<Category>? categoryList = await _apiService.GetApiRequest<Category>("https://informatik1.ei.hv.se/ActivityAPI/api/Categories");
+            if (categoryList == null)
+            {
+                ViewBag.Message = "Tyvärr gick något fel";
+                return View();
+            }
+
+            var viewModel = new EventStatisticsViewModel
+            {
+                EventList = eventList,
+                CategoryList = categoryList
+            };
+
+            return View(viewModel);
         }
     }
 }

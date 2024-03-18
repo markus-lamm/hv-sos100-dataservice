@@ -1,46 +1,31 @@
 ﻿using Hv.Sos100.Logger;
+using System.Text.Json;
 
 namespace Hv.Sos100.DataService.Statistics.EnterpriseGui.Data
 {
-    public class APIservice
+    public class ApiService
     {
-        private readonly LogService _logService = new();
-        private readonly HttpClient _httpClient = new();
-        private const string BaseUrl = "https://informatik6.ei.hv.se/statisticapi";
+        private readonly LogService _logService;
 
-        public async Task<List<Api.Models.ActivityStatistics>?> GetActivities()
+        public ApiService(LogService logService)
         {
-            var response = await _httpClient.GetAsync($"{BaseUrl}/api/ActivityStatistics");
-            if (!response.IsSuccessStatusCode)
-            {
-                await _logService.CreateLog("StatisticsEnterpriseGUI", LogService.Severity.Error, response.ReasonPhrase ?? "Unknown api call error");
-                return null;
-            }
-
-            return await response.Content.ReadFromJsonAsync<List<Api.Models.ActivityStatistics>>();
-        }
-        public async Task<List<Api.Models.EventStatistics>?> GetEvents()
-        {
-            var response = await _httpClient.GetAsync($"{BaseUrl}/api/EventStatistics");
-            if (!response.IsSuccessStatusCode)
-            {
-                await _logService.CreateLog("StatisticsEnterpriseGUI", LogService.Severity.Error, response.ReasonPhrase ?? "Unknown api call error");
-                return null;
-            }
-
-            return await response.Content.ReadFromJsonAsync<List<Api.Models.EventStatistics>>();
+            _logService = logService;
         }
 
-        public async Task<List<Api.Models.AdStatistics>?> GetAds()
+        public async Task<List<T>?> GetApiRequest<T>(string url)
         {
-            var response = await _httpClient.GetAsync($"{BaseUrl}/api/AdStatistics");
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                await _logService.CreateLog("StatisticsEnterpriseGUI", LogService.Severity.Error, response.ReasonPhrase ?? "Unknown api call error");
+                HttpClient client = new();
+                var response = await client.GetAsync(url);
+                string content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<T>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                await _logService.CreateLog("Hv.Sos100.DataService.Statistics.AdminGui.GetApiRequest", ex);
                 return null;
             }
-
-            return await response.Content.ReadFromJsonAsync<List<Api.Models.AdStatistics>>();
         }
     }
 }

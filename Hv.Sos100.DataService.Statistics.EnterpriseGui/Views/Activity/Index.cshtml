@@ -1,5 +1,5 @@
-﻿﻿@using Hv.Sos100.DataService.Statistics.Api.Models
-@model List<ActivityStatistics>
+﻿@using Hv.Sos100.DataService.Statistics.EnterpriseGui.Models;
+@model ActivityStatisticsViewModel;
 
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,7 @@
     <div class="ChooseActivity">
         <label for="actvitys">VÄLJ AKTIVITET:</label>
         <select id="activitys" onchange="updateStatistics()">
-            @foreach (var activityData in Model)
+            @foreach (var activityData in Model.ActivityList!)
             {
                 <option value="@activityData.ActivityStatisticsID">@activityData.ActivityStatisticsID</option>
             }
@@ -70,7 +70,6 @@
     </div>
   
     <script>
-
         var ctxGender = document.getElementById('GenderChart').getContext('2d');
         var genderChart = new Chart(ctxGender, {
             type: 'pie',
@@ -102,20 +101,25 @@
                 maintainAspectRatio: false
             }
         });
+
         function updateStatistics() {
             var selectedActivityStatisticsId = parseInt(document.getElementById('activitys').value);
-            var allActivitys = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+            var allActivitys = JSON.parse('@Html.Raw(Json.Serialize(Model.ActivityList))');
             var selectedActivity = allActivitys.find(e => e.activityStatisticsID === selectedActivityStatisticsId);
 
-            // Uppdatera HTML-innehållet med totalSaved för vald aktivitet
             var totalSavedElement = document.getElementById('totalSaved');
             if (totalSavedElement) {
                 totalSavedElement.innerText = selectedActivity.totalSaved;
             }
 
+            var allCategories = JSON.parse('@Html.Raw(Json.Serialize(Model.CategoryList))');
+            console.log(allCategories);
+            var selectedCategory = allCategories.find(c => c.CategoryID === selectedActivity.CategoryID);
+            console.log(selectedCategory);
+
             var categoryElement = document.getElementById('category');
             if (categoryElement) {
-                categoryElement.innerText = selectedActivity.category;
+                categoryElement.innerText = selectedCategory ? selectedCategory.name : 'Unknown';
             }
 
             ageChart.data.datasets[0].data = [
@@ -132,9 +136,7 @@
             genderChart.update();
             ageChart.update();
         }
-
-
-
     </script>
+
 </body>
 </html>
