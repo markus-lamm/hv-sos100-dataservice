@@ -18,12 +18,7 @@ namespace Hv.Sos100.DataService.Sync.Shared
         static void ConfigureAndAddJob<T>(IServiceCollectionQuartzConfigurator options, string jobName) where T : IJob
         {
             options.AddJob<T>(jobBuilder => jobBuilder.WithIdentity(JobKey.Create(jobName)))
-                   .AddTrigger(trigger => trigger.ForJob(jobName).WithDailyTimeIntervalSchedule
-                      (s =>
-                         s.WithIntervalInHours(24)
-                        .OnEveryDay()
-                        .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(17, 0))
-                      ));
+                   .AddTrigger(trigger => trigger.ForJob(jobName).StartNow());
         }
     }
 }

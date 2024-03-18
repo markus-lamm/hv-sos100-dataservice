@@ -1,4 +1,5 @@
-﻿using Hv.Sos100.DataService.Sync.Model;
+﻿using Azure;
+using Hv.Sos100.DataService.Sync.Model;
 using Hv.Sos100.Logger;
 using Quartz;
 using System.Net.Http;
@@ -51,7 +52,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("event Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
             try
@@ -67,7 +68,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("event Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
             try
@@ -83,7 +84,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("event Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
             try
@@ -98,7 +99,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("event Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
 
             foreach (var eventItem in eventList)
@@ -132,7 +133,6 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             try
             {
                 var result = await statisticClient.PostAsJsonAsync("api/EventStatistics/event/list", eventStatisticsList);
-
             }
             catch (Exception ex)
             {
