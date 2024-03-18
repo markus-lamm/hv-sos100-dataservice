@@ -8,36 +8,49 @@ namespace Hv.Sos100.DataService.Sync.Jobs
 {
     public class AdvertisementStaticsJob : IJob
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
+
         private readonly string _baseURL = "https://informatik6.ei.hv.se/advertisement/api/Ads/getallads";
-        public AdvertisementStaticsJob( HttpClient httpClient)
+        public AdvertisementStaticsJob(  IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            
-            List<AdStatistics> adList = new List<AdStatistics>();
+            List<AdStatistics>? adList = new();
+            var logger = new LogService();
+
             try
             {
-                _httpClient.BaseAddress = new Uri(_baseURL);
+                var adsClient = _httpClientFactory.CreateClient("adsapi");
+                var statisticClient = _httpClientFactory.CreateClient("statisticapi");
 
-                HttpResponseMessage response = await _httpClient.GetAsync("");
-
-                if (response.IsSuccessStatusCode)
+                HttpResponseMessage adsResponse = await adsClient.GetAsync("api/Ads/getallads");
+                if (adsResponse.IsSuccessStatusCode)
                 {
-                    string content = await response.Content.ReadAsStringAsync();
+                    string content = await adsResponse.Content.ReadAsStringAsync();
                     adList = JsonSerializer.Deserialize<List<AdStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
+                else { await logger.CreateLog("ads Hv.Sos100.DataService.Sync", LogService.Severity.Error, "anrop till annons api fungerar inte"); }
 
-                _httpClient.BaseAddress = new Uri("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics/list");
-                var result = await _httpClient.PostAsJsonAsync("", adList);
+                var postAdStatisticResponse = await statisticClient.PostAsJsonAsync("api/AdStatistics/ad/list", adList);
+                if (!postAdStatisticResponse.IsSuccessStatusCode) { await logger.CreateLog("ads Hv.Sos100.DataService.Sync", LogService.Severity.Error, "Post till annons statistik api fungerar inte"); }
+                //_httpClient.BaseAddress = new Uri(_baseURL);
+
+                //HttpResponseMessage response = await _httpClient.GetAsync("");
+
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    string content = await response.Content.ReadAsStringAsync();
+                //    adList = JsonSerializer.Deserialize<List<AdStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                //}
+
+                //_httpClient.BaseAddress = new Uri("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics/list");
+                //var result = await _httpClient.PostAsJsonAsync("", adList);
             }
             catch (Exception ex)
             {
-                var logger = new LogService();
-
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await logger.CreateLog("ads Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
             }
         }
     }

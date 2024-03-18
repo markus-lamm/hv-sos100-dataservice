@@ -2,6 +2,25 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int totalKulturNoje = 0;
+    int totalAtaDricka = 0;
+    int totalSportFriluft = 0;
+
+    foreach (var activity in Model)
+    {
+        if (activity.Category == "KULTUR & NÖJE")
+        {
+            totalKulturNoje++;
+        }
+        else if (activity.Category == "ÄTA & DRICKA")
+        {
+            totalAtaDricka++;
+        }
+        else if (activity.Category == "SPORT & FRILUFT")
+        {
+            totalSportFriluft++;
+        }
+    }
 }
 <div class="secondNav">
     <div class="secondNavText">
@@ -12,23 +31,57 @@
 </div>
 <div class="titelContainer">
     <header>
-        <h1>Statistik om aktiviteter</h1>
+        <h1 class="titel">AKTIVITETER</h1>
     </header>
 </div>
+<div class="totalCategoryActivity">
+    <canvas id="myPieChart"></canvas>
+</div>
+<script>
+    var ctx = document.getElementById('myPieChart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Kultur & Nöje', 'Äta & Dricka', 'Sport & Friluft'],
+            datasets: [{
+                label: 'Antal',
+                data: [@totalKulturNoje, @totalAtaDricka, @totalSportFriluft],
+                backgroundColor: [
+                    "#FF6C95",
+                    "#FFF167",
+                    "#FB8E5F"
+                ],
+                hoverOffset: 4
+            }]
+        }
+    });
+</script>
 <div class="tableContainer">
     <table>
         <thead>
             <tr>
                 <th class="tableStyle">ID</th>
-                <th class="tableStyle">Totalt antal sparade</th>
+@*                 <th class="tableStyle">Antal sparade</th>
+                <th class="tableStyle">Sparat av kvinnor</th>
+                <th class="tableStyle">Sparat av män</th>
+                <th class="tableStyle">Sparad av under 16 år</th>
+                <th class="tableStyle">Sparad av 16-30 år</th>
+                <th class="tableStyle">Sparad av 31-50 år</th>
+                <th class="tableStyle">Sparad av över 50 år</th> *@
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
         @foreach (var activity in Model)
         {
             <tr>
-                <td class="tableStyle">@activity.ActivityID</td>
-                <td class="tableStyle">@activity.TotalSaved</td>
+                <td class="tableStyle">@activity.ActivityStatisticsID</td>
+@*                 <td class="tableStyle">@activity.TotalSaved</td>
+                <td class="tableStyle">@activity.FemaleSaved</td>
+                <td class="tableStyle">@activity.MaleSaved</td>
+                <td class="tableStyle">@activity.AgeBelow16Saved</td>
+                <td class="tableStyle">@activity.Age16To30Saved</td>
+                <td class="tableStyle">@activity.Age31To50Saved</td>
+                <td class="tableStyle">@activity.AgeAbove50Saved</td> *@
                 <td class="tableStyle">@activity.Category</td>
             </tr>
         }
