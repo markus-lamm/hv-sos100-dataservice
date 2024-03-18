@@ -2,17 +2,10 @@ using Hv.Sos100.DataService.Advertisement.Gui.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Net.Http;
 using Hv.Sos100.DataService.Advertisement.Api.Model;
-using Azure;
-using System.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
-using System.IO.Compression;
 using Hv.Sos100.SingleSignOn;
 using Hv.Sos100.Logger;
-
 
 namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 {
@@ -31,6 +24,12 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Create a new session for localhost
+            if (HttpContext.Request.Host.Host == "localhost")
+            {
+                await _authenticationService.CreateSession("ssoadmin@eventivo.com", "ssoadmin", controllerBase: this, HttpContext);
+            }
+
             var isAuthenticated = await IsLoggedin();
             
             List<Ads>? deserialized = new();
@@ -74,7 +73,7 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
                 return View(nameof(Index));
             }
 
-            var imageTypes = new List<string> { "Fyrkantig anonns", "Horizontell annons", "Vertikal annons" };
+            var imageTypes = new List<string> { "Fyrkantig annons", "Horizontell annons", "Vertikal annons" };
             var imageTypesValues = new List<string> { "square", "horizontal", "vertical" };
 
             List<SelectListItem> selectListItems = new List<SelectListItem>();

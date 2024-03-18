@@ -18,4 +18,8 @@
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hv.Sos100.DataService.Statistics.Api\Hv.Sos100.DataService.Statistics.Api.csproj" />
+  </ItemGroup>
+
 </Project>

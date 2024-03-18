@@ -1,25 +1,15 @@
-﻿@model List<Hv.Sos100.DataService.Statistics.AdminGui.Models.ActivityStatistics>;
+﻿@model ActivityStatisticsViewModel;
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int totalKulturNoje = 0;
-    int totalAtaDricka = 0;
-    int totalSportFriluft = 0;
 
-    foreach (var activity in Model)
+    var categoryCounts = new Dictionary<string, int>();
+
+    foreach (var category in Model.CategoryList!)
     {
-        if (activity.Category == "KULTUR & NÖJE")
-        {
-            totalKulturNoje++;
-        }
-        else if (activity.Category == "ÄTA & DRICKA")
-        {
-            totalAtaDricka++;
-        }
-        else if (activity.Category == "SPORT & FRILUFT")
-        {
-            totalSportFriluft++;
-        }
+        var count = Model.ActivityList!.Count(e => e.CategoryID == category.CategoryID);
+
+        categoryCounts[category.Name!] = count;
     }
 }
 <div class="secondNav">
@@ -42,14 +32,15 @@
     var myPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ['Kultur & Nöje', 'Äta & Dricka', 'Sport & Friluft'],
+            labels: @Html.Raw(Json.Serialize(Model.CategoryList.Select(c => c.Name))),
             datasets: [{
                 label: 'Antal',
-                data: [@totalKulturNoje, @totalAtaDricka, @totalSportFriluft],
+                data: @Html.Raw(Json.Serialize(Model.CategoryList.Select(c => categoryCounts[c.Name!]))),
                 backgroundColor: [
                     "#FF6C95",
                     "#FFF167",
-                    "#FB8E5F"
+                    "#FB8E5F",
+                    // Add more colors if you have more than 3 categories
                 ],
                 hoverOffset: 4
             }]
@@ -71,8 +62,9 @@
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
-        @foreach (var activity in Model)
+        @foreach (var activity in Model.ActivityList!)
         {
+            var category = Model.CategoryList!.FirstOrDefault(c => c.CategoryID == activity.CategoryID);
             <tr>
                 <td class="tableStyle">@activity.ActivityStatisticsID</td>
 @*                 <td class="tableStyle">@activity.TotalSaved</td>
@@ -82,7 +74,7 @@
                 <td class="tableStyle">@activity.Age16To30Saved</td>
                 <td class="tableStyle">@activity.Age31To50Saved</td>
                 <td class="tableStyle">@activity.AgeAbove50Saved</td> *@
-                <td class="tableStyle">@activity.Category</td>
+                <td class="tableStyle">@category?.Name</td>
             </tr>
         }
     </table>

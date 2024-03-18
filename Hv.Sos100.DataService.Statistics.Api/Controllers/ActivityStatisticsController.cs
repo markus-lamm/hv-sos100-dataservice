@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Statistics.Api.Models;
 using Hv.Sos100.DataService.Statistics.Api.Data;
@@ -94,6 +89,11 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
                 {
                     // No existing ActivityStatistics found with the same activityID, so add it to the database
                     _context.Activities.Add(activityStatistics);
+                }
+                else
+                {
+                    // Existing ActivityStatistics found with the same activityID, so update it
+                    _context.Entry(existingActivity).CurrentValues.SetValues(activityStatistics);
                 }
             }
             await _context.SaveChangesAsync();

@@ -20,6 +20,12 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Create a new session for localhost
+            if (HttpContext.Request.Host.Host == "localhost")
+            {
+                await _authenticationService.CreateSession("ssoadmin@eventivo.com", "ssoadmin", controllerBase: this, HttpContext);
+            }
+
             var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
             if (isAuthenticated == null)
             {

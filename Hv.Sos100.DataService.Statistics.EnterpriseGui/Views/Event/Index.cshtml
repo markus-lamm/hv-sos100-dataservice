@@ -1,5 +1,5 @@
-﻿﻿@using Hv.Sos100.DataService.Statistics.Api.Models
-@model List<EventStatistics>
+﻿@using Hv.Sos100.DataService.Statistics.EnterpriseGui.Models;
+@model EventStatisticsViewModel;
 
 <!DOCTYPE html>
 <html>
@@ -15,57 +15,6 @@
     @{
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
-    @{
-        var isAuthenticated = ViewData["IsAuthenticated"] as string;
-    }
-    <div>
-        @* Temporary until we have a proper login system *@
-        @if (isAuthenticated != "true")
-        {
-            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-                LOGGA IN
-            </button>
-
-            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="loginModalLabel">LOGGA IN</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-
-                            <form asp-controller="Event" asp-action="Login">
-                                <div class="form-group m-2">
-                                    <label for="inputEmail">E-post</label>
-                                    <input class="form-control" id="inputEmail" name="email" placeholder="Ange E-post">
-                                </div>
-                                <div class="form-group m-2">
-                                    <label for="inputPassword">Lösenord</label>
-                                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Ange Lösenord">
-                                </div>
-                                <button type="submit" class="btn btn-primary m-2">FORTSÄTT</button>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="row m-2">
-                <div class="col-sm-6">
-                    <form asp-controller="Home" asp-action="Logout">
-                        <button type="submit" class="btn btn-primary">LOGGA UT</button>
-                    </form>
-                </div>
-            </div>
-        }
-    </div>
 
     <nav class="categorymenu">
         <ul class="navbar-nav1">
@@ -81,7 +30,7 @@
     <div class="ChooseEvent"> 
         <label for="events">VÄLJ EVENT:</label>
         <select id="events" onchange="updateStatistics()">
-            @foreach (var eventData in Model)
+            @foreach (var eventData in Model.EventList!)
             {
                 <option value="@eventData.EventStatisticsID">@eventData.EventStatisticsID</option>
             }
@@ -102,7 +51,6 @@
         </div>
     </div>
 
-
     <div class="chart-container">
         <div class="chart-info">
             <h2>KÖN</h2>
@@ -119,12 +67,7 @@
         <canvas id="AgeChart"></canvas>
     </div>
 
-
-
- 
     <script>
-       
-
         var ctxGender = document.getElementById('GenderChart').getContext('2d');
         var genderChart = new Chart(ctxGender, {
             type: 'pie',
@@ -157,24 +100,24 @@
             }
         });
 
-      
         function updateStatistics() {
             var selectedEventStatisticsId = parseInt(document.getElementById('events').value);
-            console.log(selectedEventStatisticsId);
-            var allEvents = JSON.parse('@Html.Raw(Json.Serialize(Model))');
-            console.log(allEvents);
+            var allEvents = JSON.parse('@Html.Raw(Json.Serialize(Model.EventList))');
             var selectedEvent = allEvents.find(e => e.eventStatisticsID === selectedEventStatisticsId);
-            console.log(selectedEvent);
 
-            // Uppdatera HTML-innehållet med totalSignups
             var totalSignupsElement = document.getElementById('totalSignups');
             if (totalSignupsElement) {
                 totalSignupsElement.innerText = selectedEvent.totalSignups;
             }
 
+            var allCategories = JSON.parse('@Html.Raw(Json.Serialize(Model.CategoryList))');
+            console.log(allCategories);
+            var selectedCategory = allCategories.find(c => c.CategoryID === selectedEvent.CategoryID);
+            console.log(selectedCategory);
+
             var categoryElement = document.getElementById('category');
             if (categoryElement) {
-                categoryElement.innerText = selectedEvent.category;
+                categoryElement.innerText = selectedCategory ? selectedCategory.name : 'Unknown';
             }
 
             ageChart.data.datasets[0].data = [
@@ -191,10 +134,7 @@
             genderChart.update();
             ageChart.update();
         }
-      
-
     </script>
-
 
 </body>
 </html>

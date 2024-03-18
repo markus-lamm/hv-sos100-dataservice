@@ -1,7 +1,6 @@
 ﻿
 using Hv.Sos100.Logger;
 using Quartz;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace Hv.Sos100.DataService.Sync.Jobs
@@ -9,49 +8,60 @@ namespace Hv.Sos100.DataService.Sync.Jobs
     public class AdvertisementStaticsJob : IJob
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly LogService _logger;
 
-        private readonly string _baseURL = "https://informatik6.ei.hv.se/advertisement/api/Ads/getallads";
-        public AdvertisementStaticsJob(  IHttpClientFactory httpClientFactory)
+        public AdvertisementStaticsJob(  IHttpClientFactory httpClientFactory, LogService logger)
         {
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
+
         public async Task Execute(IJobExecutionContext context)
         {
-            List<AdStatistics>? adList = new();
-            var logger = new LogService();
+            List<Statistics.Api.Models.AdStatistics>? adStatisticsList = await GetAdvertisements();
+            if(adStatisticsList == null) 
+            {
+                await _logger.CreateLog("Hv.Sos100.DataService.Sync.AdExecute", LogService.Severity.Warning, "GetAdvertisements returns null");
+                return; 
+            }
 
+            await PostAdvertisementStatistics(adStatisticsList);
+        }
+
+        private async Task<List<Statistics.Api.Models.AdStatistics>?> GetAdvertisements()
+        {
             try
             {
-                var adsClient = _httpClientFactory.CreateClient("adsapi");
-                var statisticClient = _httpClientFactory.CreateClient("statisticapi");
+                var client = _httpClientFactory.CreateClient("adsapi");
+                HttpResponseMessage response = await client.GetAsync("api/Ads/getallads");
 
-                HttpResponseMessage adsResponse = await adsClient.GetAsync("api/Ads/getallads");
-                if (adsResponse.IsSuccessStatusCode)
-                {
-                    string content = await adsResponse.Content.ReadAsStringAsync();
-                    adList = JsonSerializer.Deserialize<List<AdStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }
-                else { await logger.CreateLog("ads Hv.Sos100.DataService.Sync", LogService.Severity.Error, "anrop till annons api fungerar inte"); }
-
-                var postAdStatisticResponse = await statisticClient.PostAsJsonAsync("api/AdStatistics/ad/list", adList);
-                if (!postAdStatisticResponse.IsSuccessStatusCode) { await logger.CreateLog("ads Hv.Sos100.DataService.Sync", LogService.Severity.Error, "Post till annons statistik api fungerar inte"); }
-                //_httpClient.BaseAddress = new Uri(_baseURL);
-
-                //HttpResponseMessage response = await _httpClient.GetAsync("");
-
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    string content = await response.Content.ReadAsStringAsync();
-                //    adList = JsonSerializer.Deserialize<List<AdStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                //}
-
-                //_httpClient.BaseAddress = new Uri("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics/list");
-                //var result = await _httpClient.PostAsJsonAsync("", adList);
+                string content = await response.Content.ReadAsStringAsync();
+                var ads = JsonSerializer.Deserialize<List<Statistics.Api.Models.AdStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return ads;
             }
             catch (Exception ex)
             {
-                await logger.CreateLog("ads Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetAdvertisements", ex);
+                return null;
             }
         }
+
+        private async Task PostAdvertisementStatistics(List<Statistics.Api.Models.AdStatistics> adList)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("statisticapi");
+                var response = await client.PostAsJsonAsync("api/AdStatistics/ad/list", adList);
+                if (!response.IsSuccessStatusCode)
+                {
+                    await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostAdvertisementStatistics", LogService.Severity.Error, "Post to AdStatistics api creates error");
+                }
+            }
+            catch (Exception ex)
+            {
+                await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostAdvertisementStatistics", ex);
+            }
+        }
+
     }
 }
