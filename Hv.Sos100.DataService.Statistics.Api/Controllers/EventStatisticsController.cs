@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Statistics.Api.Models;
 using Hv.Sos100.DataService.Statistics.Api.Data;
@@ -89,12 +84,17 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
         {
             foreach (EventStatistics eventStatistics in eventStatisticsList)
             {
-                var existingActivity = await _context.Events.FirstOrDefaultAsync(a => a.EventID == eventStatistics.EventID);
+                var existingEvent = await _context.Events.FirstOrDefaultAsync(a => a.EventID == eventStatistics.EventID);
 
-                if (existingActivity == null)
+                if (existingEvent == null)
                 {
-                    // No existing ActivityStatistics found with the same activityID, so add it to the database
+                    // No existing EventStatistics found with the same eventID, so add it to the database
                     _context.Events.Add(eventStatistics);
+                }
+                else
+                {
+                    // Existing EventStatistics found with the same eventID, so update it
+                    _context.Entry(existingEvent).CurrentValues.SetValues(eventStatistics);
                 }
             }
             await _context.SaveChangesAsync();
