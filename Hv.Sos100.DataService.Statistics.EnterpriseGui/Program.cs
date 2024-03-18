@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Authentication;
+
+using Hv.Sos100.SingleSignOn;
 
 namespace Hv.Sos100.DataService.Statistics.EnterpriseGui
 {
