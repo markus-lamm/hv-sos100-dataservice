@@ -29,7 +29,7 @@ namespace DataGui.Controllers
                 else
                 {
                     // Det fanns ingen giltig session att återuppta
-                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                    //return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
                 }
             }
 

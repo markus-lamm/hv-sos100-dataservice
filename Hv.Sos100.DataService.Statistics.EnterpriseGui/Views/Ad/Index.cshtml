@@ -50,10 +50,9 @@
 
     <script>
         function updateStatistics() {
-            var selectedAdvertisementStatisticsID = parseInt(document.getElementById('Advertisements').value);
+            var selectedAdvertisementStatisticsID = parseInt(document.getElementById('advertisement').value);
             var allAdvertisements = JSON.parse('@Html.Raw(Json.Serialize(Model))');
-            var selectedAdvertisement = allAdvertisement.find(e => e.AdvertisementStatisticsID === selectedAdvertisementStatisticsId);
-
+            var selectedAdvertisement = allAdvertisements.find(e => e.advertisementStatisticsID === selectedAdvertisementStatisticsID);
             
             var totalViewsElement = document.getElementById('totalViews');
             if (totalViewsElement) {
