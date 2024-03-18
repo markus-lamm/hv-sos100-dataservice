@@ -93,6 +93,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
                 else
                 {
                     // Existing AdStatistics found with the same advertisementID, so update it
+                    adStatistics.AdvertisementStatisticsID = existingAd.AdvertisementStatisticsID;
                     _context.Entry(existingAd).CurrentValues.SetValues(adStatistics);
                 }
             }

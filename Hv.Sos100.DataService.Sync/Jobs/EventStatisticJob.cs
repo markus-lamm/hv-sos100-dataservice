@@ -8,12 +8,11 @@ namespace Hv.Sos100.DataService.Sync.Jobs
     public class EventStatisticJob : IJob
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly LogService _logger;
+        private readonly LogService _logger = new();
 
-        public EventStatisticJob(IHttpClientFactory httpClientFactory, LogService logger)
+        public EventStatisticJob(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-            _logger = logger;
         }
 
         public async Task Execute(IJobExecutionContext context)

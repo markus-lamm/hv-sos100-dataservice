@@ -93,6 +93,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
                 else
                 {
                     // Existing ActivityStatistics found with the same activityID, so update it
+                    activityStatistics.ActivityStatisticsID = existingActivity.ActivityStatisticsID;
                     _context.Entry(existingActivity).CurrentValues.SetValues(activityStatistics);
                 }
             }
