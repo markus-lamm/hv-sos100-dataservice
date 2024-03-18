@@ -15,6 +15,57 @@
     @{
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
+    @{
+        var isAuthenticated = ViewData["IsAuthenticated"] as string;
+    }
+    <div>
+        @* Temporary until we have a proper login system *@
+        @if (isAuthenticated != "true")
+        {
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                LOGGA IN
+            </button>
+
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="loginModalLabel">LOGGA IN</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form asp-controller="Event" asp-action="Login">
+                                <div class="form-group m-2">
+                                    <label for="inputEmail">E-post</label>
+                                    <input class="form-control" id="inputEmail" name="email" placeholder="Ange E-post">
+                                </div>
+                                <div class="form-group m-2">
+                                    <label for="inputPassword">Lösenord</label>
+                                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Ange Lösenord">
+                                </div>
+                                <button type="submit" class="btn btn-primary m-2">FORTSÄTT</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row m-2">
+                <div class="col-sm-6">
+                    <form asp-controller="Home" asp-action="Logout">
+                        <button type="submit" class="btn btn-primary">LOGGA UT</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
 
     <nav class="categorymenu">
         <ul class="navbar-nav1">
