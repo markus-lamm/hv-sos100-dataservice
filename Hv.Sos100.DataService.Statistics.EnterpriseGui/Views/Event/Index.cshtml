@@ -109,8 +109,11 @@
       
         function updateStatistics() {
             var selectedEventStatisticsId = parseInt(document.getElementById('events').value);
+            console.log(selectedEventStatisticsId);
             var allEvents = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+            console.log(allEvents);
             var selectedEvent = allEvents.find(e => e.eventStatisticsID === selectedEventStatisticsId);
+            console.log(selectedEvent);
 
             // Uppdatera HTML-innehållet med totalSignups
             var totalSignupsElement = document.getElementById('totalSignups');
