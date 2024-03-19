@@ -4,36 +4,36 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1 class="mt-4">Skapa annons</h1>
-
+<div class="titelContainer">
+    <h1>Skapa annons</h1>
+</div>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="createContainer">
+    <div class="createBox">
         <form class="d-md-flex flex-column gap-md-2" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group d-md-flex flex-column gap-2">
-                <label asp-for="ImageSource" class="control-label">Ladda upp bild/gif på annonsen</label>
+                <label asp-for="ImageSource" class="control-label">Ladda upp bild/gif till annonsen</label>
                 <input asp-for="ImageSource" type="file" accept="image/png, image/jpeg, image/gif" />
             </div>
             <div class="form-group d-md-flex flex-column gap-2">
-                <label asp-for="ImageLink" class="control-label">länk till annons hemsida</label>
+                <label asp-for="ImageLink" class="control-label">Länk till annonsens hemsida</label>
                 <input asp-for="ImageLink" class="form-control" />
                 <span asp-validation-for="ImageLink" class="text-danger"></span>
             </div>
             <div class="form-group d-md-flex flex-column gap-2">
-                <label asp-for="ImageDimension" class="control-label">Annons typ</label>
+                <label asp-for="ImageDimension" class="control-label">Annonsformat</label>
                 <select asp-for="ImageDimension" class="form-control" asp-items="ViewBag.ImageTypes"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Skapa" class="btn btn-primary" />
+                <input type="submit" value="Skapa" class="btnCreate" />
             </div>
         </form>
     </div>
-</div>
+    </div>
 
 <div>
-    <a asp-action="Index">Tillbaka till listan</a>
+    <a class="btnCreate" asp-action="Index">Tillbaka till listan</a>
 </div>
 
 @section Scripts {
