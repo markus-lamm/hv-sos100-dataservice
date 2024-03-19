@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
 
-namespace DataGui.Controllers
+namespace Hv.Sos100.DataService.Statistics.EnterpriseGui.Controllers
 {
     public class AdController : Controller
     {
@@ -22,7 +22,7 @@ namespace DataGui.Controllers
                 return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
-            List<Hv.Sos100.DataService.Statistics.Api.Models.AdStatistics>? adList = await _apiService.GetApiRequest<Hv.Sos100.DataService.Statistics.Api.Models.AdStatistics>("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics");
+            List<Api.Models.AdStatistics>? adList = await _apiService.GetApiRequest<Api.Models.AdStatistics>("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics");
             if (adList == null)
             {
                 ViewBag.Message = "Tyvärr gick något fel";

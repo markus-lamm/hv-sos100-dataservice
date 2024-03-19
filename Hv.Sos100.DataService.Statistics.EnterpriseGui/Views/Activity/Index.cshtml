@@ -4,9 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aktivitet</title>
+    <title>Eventivo AktivitetStatistik</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="~/css/activity.css">
+    <link rel="stylesheet" href="~/css/site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -24,49 +25,52 @@
         </ul>
     </nav>
 
-    <h1>AKTIVITETSSTATISTIK</h1>
-    <hr>
+    <div class="statistics-container">
 
-    <div class="ChooseActivity">
-        <label for="actvitys">VÄLJ AKTIVITET:</label>
-        <select id="activitys" onchange="updateStatistics()">
-            @foreach (var activityData in Model.ActivityList!)
-            {
-                <option value="@activityData.ActivityStatisticsID">@activityData.ActivityStatisticsID</option>
-            }
-        </select>
-        <div class="Activityname"> <h3>Aktivitetsnamn</h3></div>
-    </div>
+        <h1>AKTIVITETSSTATISTIK</h1>
 
-    <div class="chart-container1">
-        <div class="signup-wrapper">
-            <div class="signup-label">Kategori:</div>
-            <div class="signup-count" id="category"></div>
+        <div class="statistics-itemselector-container">
+            <div class="statistics-itemselector-select">
+                <label for="actvitys">VÄLJ AKTIVITET:</label>
+                <select id="activitys" onchange="updateStatistics()">
+                    @foreach (var activityData in Model.ActivityList!)
+                    {
+                        <option value="@activityData.ActivityStatisticsID">@activityData.ActivityStatisticsID</option>
+                    }
+                </select>
+            </div>
+            <div class="statistics-itemselector-name">Aktivitetsnamn</div> @* Change to display selected name *@
         </div>
-        <div class="chart-info">
-            <div class="signup-wrapper">
-                <div class="signup-label">Antal sparningar:</div>
-                <div class="signup-count" id="totalSaved"></div>
+
+        <div class="statistics-data-general-container">
+            <div class="statistics-data-general-category">
+                <div class="">Kategori:</div>
+                <div class="" id="category"></div>
+            </div>
+            <div class="statistics-data-general-count">
+                <div class="">Antal Sparningar:</div>
+                <div class="" id="totalSaved"></div>
             </div>
         </div>
-    </div>
 
- 
+        <div class="statistics-charts-container">
+            <div class="chart-container-gender">
+                <div class="chart-info">
+                    <h2>KÖN</h2>
+                    <p>Statistik för hur många av vardera kön som sparat aktiviteten.</p>
+                </div>
+                <canvas id="GenderChart"></canvas>
+            </div>
 
-    <div class="chart-container">
-        <div class="chart-info">
-            <h2>KÖN</h2>
-            <p>Statistik för hur många av vardera kön som sparat aktiviteten.</p>
+            <div class="chart-container-age">
+                <div class="chart-info">
+                    <h2>ÅLDER</h2>
+                    <p>Statistik för hur många i varje åldersgrupp som sparat aktiviteten.</p>
+                </div>
+                <canvas id="AgeChart"></canvas>
+            </div>
         </div>
-        <canvas id="GenderChart"></canvas>
-    </div>
 
-    <div class="chart-container">
-        <div class="chart-info">
-            <h2>ÅLDER</h2>
-            <p>Statistik för hur många i varje åldersgrupp som sparat aktiviteten.</p>
-        </div>
-        <canvas id="AgeChart"></canvas>
     </div>
   
     <script>
