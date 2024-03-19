@@ -61,6 +61,7 @@
         <thead>
             <tr>
                 <th class="tableStyle">ID</th>
+                <th class="tableStyle">Namn</th>
                 <th class="tableStyle">Antal anmälningar</th>
                 <th class="tableStyle">Anmälningar kvinnor</th>
                 <th class="tableStyle">Anmälningar män</th>
@@ -76,6 +77,7 @@
             var category = Model.CategoryList!.FirstOrDefault(c => c.CategoryID == activity.CategoryID);
             <tr>
                 <td class="tableStyle">@activity.EventStatisticsID</td>
+                <td class="tableStyle">@activity?.Name</td>
                 <td class="tableStyle">@activity.TotalSignups</td>
                 <td class="tableStyle">@activity.FemaleSignups</td>
                 <td class="tableStyle">@activity.MaleSignups</td>
