@@ -94,6 +94,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
                 else
                 {
                     // Existing EventStatistics found with the same eventID, so update it
+                    eventStatistics.EventStatisticsID = existingEvent.EventStatisticsID;
                     _context.Entry(existingEvent).CurrentValues.SetValues(eventStatistics);
                 }
             }
