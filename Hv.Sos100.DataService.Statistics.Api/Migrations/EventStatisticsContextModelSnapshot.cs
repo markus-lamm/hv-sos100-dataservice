@@ -17,7 +17,7 @@ namespace DatatserviceAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -45,8 +45,8 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("AgeBelow16Saved")
                         .HasColumnType("int");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
 
                     b.Property<int?>("FemaleSaved")
                         .HasColumnType("int");
@@ -82,6 +82,9 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("TotalViews")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("AdvertisementStatisticsID");
 
                     b.ToTable("Ads");
@@ -107,8 +110,8 @@ namespace DatatserviceAPI.Migrations
                     b.Property<int?>("AgeBelow16Signups")
                         .HasColumnType("int");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
 
                     b.Property<int>("EventID")
                         .HasColumnType("int");
@@ -123,6 +126,9 @@ namespace DatatserviceAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TotalSignups")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("EventStatisticsID");

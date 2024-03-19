@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Statistics.Api.Models;
 using Hv.Sos100.DataService.Statistics.Api.Data;
@@ -80,6 +75,32 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEventStatistics", new { id = eventStatistics.EventStatisticsID }, eventStatistics);
+        }
+
+
+        // POST: api/EventStatistics/list
+        [HttpPost("event/list")]
+        public async Task<ActionResult> PostEventStatisticsList(List<EventStatistics> eventStatisticsList)
+        {
+            foreach (EventStatistics eventStatistics in eventStatisticsList)
+            {
+                var existingEvent = await _context.Events.FirstOrDefaultAsync(a => a.EventID == eventStatistics.EventID);
+
+                if (existingEvent == null)
+                {
+                    // No existing EventStatistics found with the same eventID, so add it to the database
+                    _context.Events.Add(eventStatistics);
+                }
+                else
+                {
+                    // Existing EventStatistics found with the same eventID, so update it
+                    eventStatistics.EventStatisticsID = existingEvent.EventStatisticsID;
+                    _context.Entry(existingEvent).CurrentValues.SetValues(eventStatistics);
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // DELETE: api/EventStatistics/5

@@ -1,111 +1,76 @@
 ﻿using Hv.Sos100.Logger;
 using Quartz;
-using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using Hv.Sos100.DataService.Sync.Model;
-using System.Diagnostics;
 
 namespace Hv.Sos100.DataService.Sync.Jobs
 {
     public class ActivityStatisticJob : IJob
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseURL = "https://informatik1.ei.hv.se/ActivityAPI/api/Activities";
-        private readonly string _baseURL2 = "https://informatik1.ei.hv.se/ActivityAPI/api/Categories";
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly LogService _logger = new();
 
-        //"https://informatik7.ei.hv.se/ProfilAPI/api/Citizens"
-        public ActivityStatisticJob(HttpClient httpClient)
+        public ActivityStatisticJob(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-
-            List<Model.Activity>? activities = new List<Model.Activity>();
-            List<Category>? categories = new List<Category>();
-            List<ActivityStatistics> activityList = new List<ActivityStatistics>();
-
-            try
+            List<Activity>? activityList = await GetActivities();
+            if(activityList == null) 
             {
-                _httpClient.BaseAddress = new Uri(_baseURL);
-
-                HttpResponseMessage response = await _httpClient.GetAsync("");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    activities = JsonSerializer.Deserialize<List<Model.Activity>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = new LogService();
-
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await _logger.CreateLog("Hv.Sos100.DataService.Sync.ActivityExecute", LogService.Severity.Warning, "GetActivities returns null");
+                return; 
             }
 
-             try
+            List<Statistics.Api.Models.ActivityStatistics> activityStatisticsList = new();
+            foreach (var activityItem in activityList)
             {
-                _httpClient.BaseAddress = new Uri(_baseURL2);
-
-                HttpResponseMessage response = await _httpClient.GetAsync("");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    categories = JsonSerializer.Deserialize<List<Category>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = new LogService();
-
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
-            }
-
-            foreach (var item in activities)
-            {
-                var category = categories.FirstOrDefault(c => c.CategoryID == item.CategoryID);
-                var activityStatisticsItem = new ActivityStatistics { 
-                    ActivityID = item.ActivityID, 
-                    TimeStamp = item.TimeStamp,
-                    Category = category.Name,
+                var activityStatisticsItem = new Statistics.Api.Models.ActivityStatistics { 
+                    ActivityID = activityItem.ActivityID, 
+                    TimeStamp = activityItem.TimeStamp,
+                    CategoryID = activityItem.CategoryID,
                 };
-                activityList.Add(activityStatisticsItem); 
+                activityStatisticsList.Add(activityStatisticsItem); 
             }
+
+            await PostActivityStatistics(activityStatisticsList);
+        }
+
+        private async Task<List<Activity>?> GetActivities()
+        {
             try
             {
-                _httpClient.BaseAddress = new Uri("https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics/list");
-                var result = await _httpClient.PostAsJsonAsync("", activityList);
+                var client = _httpClientFactory.CreateClient("activityapi");
+                HttpResponseMessage response = await client.GetAsync("api/Activities");
+
+                string content = await response.Content.ReadAsStringAsync();
+                var activities = JsonSerializer.Deserialize<List<Activity>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return activities;
             }
             catch (Exception ex)
             {
-                var logger = new LogService();
-
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
-            }
-
-            try
-            {
-                _httpClient.BaseAddress = new Uri(_baseURL);
-
-                HttpResponseMessage response = await _httpClient.GetAsync("");
-
-                if (response.IsSuccessStatusCode) 
-                { 
-                    string content = await response.Content.ReadAsStringAsync();
-                    activityList = JsonSerializer.Deserialize<List<ActivityStatistics>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = new LogService();
-
-                await logger.CreateLog("Activity Hv.Sos100.DataService.Sync", LogService.Severity.Error, ex.Message);
+                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetActivities", ex);
+                return null;
             }
         }
-        
+
+        private async Task PostActivityStatistics(List<Statistics.Api.Models.ActivityStatistics> activityList)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("statisticapi");
+                var response = await client.PostAsJsonAsync("api/ActivityStatistics/activity/list", activityList);
+                if (!response.IsSuccessStatusCode) { 
+                    await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostActivityStatistics", LogService.Severity.Error, "Post to ActivityStatistics api creates error"); 
+                }
+            }
+            catch (Exception ex)
+            {
+                await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostActivityStatistics", ex);
+            }
+        }
+
     }
 }

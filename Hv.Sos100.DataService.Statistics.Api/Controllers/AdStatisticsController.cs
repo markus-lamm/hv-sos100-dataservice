@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Statistics.Api.Models;
 using Hv.Sos100.DataService.Statistics.Api.Data;
@@ -83,12 +78,24 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
         }
 
         // POST: api/AdStatistics/list
-        [HttpPost ("/list")]
-        public async Task<ActionResult<AdStatistics>> PostAdStatisticsList(List<AdStatistics> adStatisticsList)
+        [HttpPost ("ad/list")]
+        public async Task<ActionResult> PostAdStatisticsList(List<AdStatistics> adStatisticsList)
         {
             foreach (AdStatistics adStatistics in adStatisticsList)
             {
-                _context.Ads.Add(adStatistics);
+                var existingAd = await _context.Ads.FirstOrDefaultAsync(a => a.AdvertisementID == adStatistics.AdvertisementID);
+
+                if (existingAd == null)
+                {
+                    // No existing AdStatistics found with the same advertisementID, so add it to the database
+                    _context.Ads.Add(adStatistics);
+                }
+                else
+                {
+                    // Existing AdStatistics found with the same advertisementID, so update it
+                    adStatistics.AdvertisementStatisticsID = existingAd.AdvertisementStatisticsID;
+                    _context.Entry(existingAd).CurrentValues.SetValues(adStatistics);
+                }
             }
             await _context.SaveChangesAsync();
 

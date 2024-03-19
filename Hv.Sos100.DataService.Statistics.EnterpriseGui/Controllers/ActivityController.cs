@@ -1,53 +1,49 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Hv.Sos100.SingleSignOn;
-using Microsoft.AspNetCore.Http;
-using Hv.Sos100.Logger;
+﻿using Microsoft.AspNetCore.Mvc;
 using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
+using Hv.Sos100.DataService.Statistics.EnterpriseGui.Models;
 
 namespace DataGui.Controllers
 {
     public class ActivityController : Controller
     {
-        private readonly APIservice aPIservice=new ();
+        private readonly AuthenticationUtils _authenticate;
+        private readonly ApiService _apiService;
 
+        public ActivityController(AuthenticationUtils authenticate, ApiService apiService)
+        {
+            _authenticate = authenticate;
+            _apiService = apiService;
+        }
 
         public async Task<IActionResult> Index()
         {
-            var activitylist=await aPIservice.GetActivities();
-
-            var authenticationService = new Hv.Sos100.SingleSignOn.AuthenticationService();
-            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
-
-            if (isAuthenticated == null)
+            var isAuthenticatedNonCitizen = await _authenticate.IsAuthenticatedNonCitizen(controller: this, HttpContext);
+            if (isAuthenticatedNonCitizen == false)
             {
-                var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
-                if (existingSession != null)
-                {
-                    var userId = HttpContext.Session.GetString("UserID");
-                    var userRole = HttpContext.Session.GetString("UserRole");
-                    if (isAuthenticated == "true")
-                    {
-                        return View();
-                    }
-                    else
-                    {
-                        //return RedirectToAction("Login", "Account");
-                        return View();
-                    }
-
-                }
-                else
-                {
-                    // Det fanns ingen giltig session att återuppta
-                    return RedirectToAction("Login", "Account");
-                }
-
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
-            return View();
+
+            List<Hv.Sos100.DataService.Statistics.Api.Models.ActivityStatistics>? activityList = await _apiService.GetApiRequest<Hv.Sos100.DataService.Statistics.Api.Models.ActivityStatistics>("https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics");
+            if (activityList == null)
+            {
+                ViewBag.Message = "Tyvärr gick något fel";
+                return View();
+            }
+
+            List<Category>? categoryList = await _apiService.GetApiRequest<Category>("https://informatik1.ei.hv.se/ActivityAPI/api/Categories");
+            if (categoryList == null)
+            {
+                ViewBag.Message = "Tyvärr gick något fel";
+                return View();
+            }
+
+            var viewModel = new ActivityStatisticsViewModel
+            {
+                ActivityList = activityList,
+                CategoryList = categoryList
+            };
+
+            return View(viewModel);
         }
-         
     }
-
 }
-

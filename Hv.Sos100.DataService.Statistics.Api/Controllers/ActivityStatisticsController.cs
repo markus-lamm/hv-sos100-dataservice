@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Statistics.Api.Models;
 using Hv.Sos100.DataService.Statistics.Api.Data;
@@ -83,12 +78,24 @@ namespace Hv.Sos100.DataService.Statistics.Api.Controllers
         }
 
         // POST: api/ActivityStatistics/list
-        [HttpPost("/list")]
+        [HttpPost("activity/list")]
         public async Task<ActionResult> PostActivityStatisticsList(List<ActivityStatistics> activityStatisticsList)
         {
             foreach(ActivityStatistics activityStatistics in activityStatisticsList)
             {
-                _context.Activities.Add(activityStatistics);
+                var existingActivity = await _context.Activities.FirstOrDefaultAsync(a => a.ActivityID == activityStatistics.ActivityID);
+
+                if (existingActivity == null)
+                {
+                    // No existing ActivityStatistics found with the same activityID, so add it to the database
+                    _context.Activities.Add(activityStatistics);
+                }
+                else
+                {
+                    // Existing ActivityStatistics found with the same activityID, so update it
+                    activityStatistics.ActivityStatisticsID = existingActivity.ActivityStatisticsID;
+                    _context.Entry(existingActivity).CurrentValues.SetValues(activityStatistics);
+                }
             }
             await _context.SaveChangesAsync();
 

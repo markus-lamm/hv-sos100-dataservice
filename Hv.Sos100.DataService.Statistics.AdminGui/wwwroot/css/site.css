@@ -1,4 +1,4 @@
-html {
+html body {
     font-size: 14px;
     font-family: 'Istok Web', sans-serif;
     max-width: 100%;
@@ -56,6 +56,42 @@ table, th, td{
 .titelContainer {
     display: flex;
     justify-content: center;
-    margin-top: 8vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
     color: #212121;
+}
+.totalContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10vw;
+}
+.totalBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    height: 25vh;
+    border-radius: 10px 10px;
+    padding: 2%;
+    text-align: center;
+    background-image: linear-gradient(to right bottom, #d95786, #ff7273, #ff9b5a, #ffcc48, #ffff54);
+    margin-bottom: 0;
+    box-shadow: #AEAEAE 5px 5px 10px;
+}
+.totalBox h2, p{
+    margin: 0;
+}
+.totalTitel{
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-bottom: 3vh;
+}
+.totalCategoryActivity{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    width: 100vw;
 }

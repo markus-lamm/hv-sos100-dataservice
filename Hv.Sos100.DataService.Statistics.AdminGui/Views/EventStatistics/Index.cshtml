@@ -1,7 +1,18 @@
-﻿@model List<Hv.Sos100.DataService.Statistics.AdminGui.Models.EventStatistics>;
+﻿@model EventStatisticsViewModel;
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var totalSignupsSum = Model.EventList!.Sum(e => e.TotalSignups);
+    var categoryCounts = new Dictionary<string, int>();
+
+    foreach (var category in Model.CategoryList!)
+    {
+        var count = Model.EventList!.Count(e => e.CategoryID == category.CategoryID);
+
+        categoryCounts[category.Name!] = count;
+    }
+
 }
 <div class="secondNav">
     <div class="secondNavText">
@@ -12,24 +23,67 @@
 </div>
 <div class="titelContainer">
     <header>
-        <h1>Statistik om evenemang</h1>
+        <h1 class="titel">EVENEMANG</h1>
     </header>
+</div>
+<div class="totalContainer">
+    <div class="totalBox">
+        <p class="totalTitel">Totalt antal anmälningar</p>
+        <h2>@totalSignupsSum</h2>
+    </div>
+@*     Totalt antal av varje kategori
+ *@    <div>
+        <canvas id="myPieChart"></canvas>
+    </div>
+    <script>
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.CategoryList.Select(c => c.Name))),
+                datasets: [{
+                    label: 'Antal',
+                    data: @Html.Raw(Json.Serialize(Model.CategoryList.Select(c => categoryCounts[c.Name!]))),
+                    backgroundColor: [
+                        "#FF6C95",
+                        "#FFF167",
+                        "#FB8E5F",
+                        // Add more colors if you have more than 3 categories
+                    ],
+                    hoverOffset: 4
+                }]
+            }
+        });
+    </script>
 </div>
 <div class="tableContainer">
     <table>
         <thead>
             <tr>
                 <th class="tableStyle">ID</th>
-                <th class="tableStyle">Totalt antal anmälningar</th>
+                <th class="tableStyle">Antal anmälningar</th>
+                <th class="tableStyle">Anmälningar kvinnor</th>
+                <th class="tableStyle">Anmälningar män</th>
+                <th class="tableStyle">Anmälningar under 16 år</th>
+                <th class="tableStyle">Anmälningar 16-30 år</th>
+                <th class="tableStyle">Anmälningar 31-50 år</th>
+                <th class="tableStyle">Anmälningar över 50 år</th>
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
-        @foreach (var activity in Model)
+        @foreach (var activity in Model.EventList!)
         {
+            var category = Model.CategoryList!.FirstOrDefault(c => c.CategoryID == activity.CategoryID);
             <tr>
-                <td class="tableStyle">@activity.EventID</td>
+                <td class="tableStyle">@activity.EventStatisticsID</td>
                 <td class="tableStyle">@activity.TotalSignups</td>
-                <td class="tableStyle">@activity.Category</td>
+                <td class="tableStyle">@activity.FemaleSignups</td>
+                <td class="tableStyle">@activity.MaleSignups</td>
+                <td class="tableStyle">@activity.AgeBelow16Signups</td>
+                <td class="tableStyle">@activity.Age16To30Signups</td>
+                <td class="tableStyle">@activity.Age31To50Signups</td>
+                <td class="tableStyle">@activity.AgeAbove50Signups</td>
+                <td class="tableStyle">@category?.Name</td>
             </tr>
         }
     </table>

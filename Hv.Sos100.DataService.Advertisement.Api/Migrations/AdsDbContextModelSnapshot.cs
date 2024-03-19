@@ -17,7 +17,7 @@ namespace Hv.Sos100.DataService.Advertisement.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -43,6 +43,9 @@ namespace Hv.Sos100.DataService.Advertisement.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TotalViews")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("AdvertisementID");

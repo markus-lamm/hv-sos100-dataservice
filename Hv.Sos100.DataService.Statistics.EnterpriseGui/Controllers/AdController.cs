@@ -1,49 +1,44 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Hv.Sos100.SingleSignOn;
-using Microsoft.AspNetCore.Http;
-using Hv.Sos100.Logger;
+﻿using Microsoft.AspNetCore.Mvc;
 using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
 
 namespace DataGui.Controllers
 {
     public class AdController : Controller
     {
-        private readonly APIservice aPIservice = new();
+        private readonly AuthenticationUtils _authenticate;
+        private readonly ApiService _apiService;
+
+        public AdController(AuthenticationUtils authenticate, ApiService apiService)
+        {
+            _authenticate = authenticate;
+            _apiService = apiService;
+        }
 
         public async Task<IActionResult> Index()
         {
-            var adlist = await aPIservice.GetAds();
-
-            var authenticationService = new Hv.Sos100.SingleSignOn.AuthenticationService();
-            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
-
-            if (isAuthenticated == null)
+            var isAuthenticatedNonCitizen = await _authenticate.IsAuthenticatedNonCitizen(controller: this, HttpContext);
+            if (isAuthenticatedNonCitizen == false)
             {
-                var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
-                if (existingSession != null)
-                {
-                    var userId = HttpContext.Session.GetString("UserID");
-                    var userRole = HttpContext.Session.GetString("UserRole");
-                    if (isAuthenticated == "true")
-                    {
-                        return View();
-                    }
-                    else
-                    {
-                        //return RedirectToAction("Login", "Account");
-                        return View();
-                    }
-
-                }
-                else
-                {
-                    // Det fanns ingen giltig session att återuppta
-                    return RedirectToAction("Login", "Account");
-                }
-
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
-            return View();
+
+            List<Hv.Sos100.DataService.Statistics.Api.Models.AdStatistics>? adList = await _apiService.GetApiRequest<Hv.Sos100.DataService.Statistics.Api.Models.AdStatistics>("https://informatik6.ei.hv.se/statisticapi/api/AdStatistics");
+            if (adList == null)
+            {
+                ViewBag.Message = "Tyvärr gick något fel";
+                return View();
+            }
+
+            var userId = HttpContext.Session.GetString("UserID");
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            // Prune the list of events to only show the events that the user is allowed to see
+            if (userRole == "Organizer")
+            {
+                adList = adList.Where(d => d.UserID == int.Parse(userId!)).ToList();
+            }
+
+            return View(adList);
         }
     }
 }

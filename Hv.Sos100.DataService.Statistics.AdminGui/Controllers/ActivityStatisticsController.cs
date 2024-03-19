@@ -1,56 +1,48 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using Hv.Sos100.DataService.Statistics.AdminGui.Data;
 using Hv.Sos100.DataService.Statistics.AdminGui.Models;
-using Hv.Sos100.Logger;
-using Hv.Sos100.SingleSignOn;
 
-namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
+namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers;
+
+public class ActivityStatisticsController : Controller
 {
-    public class ActivityStatisticsController : Controller
+    private readonly AuthenticationUtils _authenticate;
+    private readonly ApiService _apiService;
+
+    public ActivityStatisticsController(AuthenticationUtils authenticate, ApiService apiService)
     {
-        string _baseURL = "https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics";
-        public async Task<IActionResult> Index()
+        _authenticate = authenticate;
+        _apiService = apiService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var isAuthenticatedAdmin = await _authenticate.IsAuthenticatedAdmin(controller: this, HttpContext);
+        if (isAuthenticatedAdmin == false)
         {
-            var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
-            if (isAuthenticated == null)
-            {
-                var authenticationService = new AuthenticationService();
-                var existingSession = await authenticationService.ResumeSession(controllerBase: this, HttpContext);
-                if (existingSession == false)
-                {
-                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
-                }
-                var userRole = HttpContext.Session.GetString("UserRole");
-                if (userRole != "Admin")
-                {
-                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
-                }
-            }
-
-            List<ActivityStatistics>? activityList = new List<ActivityStatistics>();
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    var response = await client.GetAsync(_baseURL);
-                    //HttpResponseMessage response = await client.GetAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        activityList = JsonSerializer.Deserialize<List<ActivityStatistics>>(content,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    }
-                    else
-                        ViewBag.Message = "Tyvärr gick något fel: " + response.ReasonPhrase;
-                }
-            }
-            catch (Exception ex)
-            {
-                var logger = new LogService();
-
-                await logger.CreateLog("StatisticsAdminGui.ActivityStatisticsController", ex);
-            }
-            return View(activityList);
+            return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
         }
+
+        List<Api.Models.ActivityStatistics>? activityList = await _apiService.GetApiRequest<Api.Models.ActivityStatistics>("https://informatik6.ei.hv.se/statisticapi/api/ActivityStatistics");
+        if (activityList == null)
+        {
+            ViewBag.Message = "Tyvärr gick något fel";
+            return View();
+        }
+
+        List<Category>? categoryList = await _apiService.GetApiRequest<Category>("https://informatik1.ei.hv.se/ActivityAPI/api/Categories");
+        if (categoryList == null)
+        {
+            ViewBag.Message = "Tyvärr gick något fel";
+            return View();
+        }
+
+        var viewModel = new ActivityStatisticsViewModel
+        {
+            ActivityList = activityList,
+            CategoryList = categoryList
+        };
+
+        return View(viewModel);
     }
 }

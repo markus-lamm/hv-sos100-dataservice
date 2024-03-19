@@ -1,4 +1,6 @@
-using Microsoft.AspNetCore.Authentication;
+using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
+using Hv.Sos100.Logger;
+using Hv.Sos100.SingleSignOn;
 
 namespace Hv.Sos100.DataService.Statistics.EnterpriseGui
 {
@@ -10,8 +12,10 @@ namespace Hv.Sos100.DataService.Statistics.EnterpriseGui
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
             builder.Services.AddScoped<AuthenticationService>();
+            builder.Services.AddScoped<LogService>();
+            builder.Services.AddScoped<ApiService>();
+            builder.Services.AddScoped<AuthenticationUtils>();
             builder.Services.AddSession();
 
             var app = builder.Build();

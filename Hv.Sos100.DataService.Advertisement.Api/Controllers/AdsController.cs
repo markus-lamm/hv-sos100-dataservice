@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hv.Sos100.DataService.Advertisement.Api.Model;
 using Hv.Sos100.DataService.Adsvertisement.Data;
+using NuGet.Packaging.Signing;
 
 namespace Hv.Sos100.DataService.Advertisement.Api.Controllers
 {
@@ -25,6 +26,20 @@ namespace Hv.Sos100.DataService.Advertisement.Api.Controllers
         public async Task<ActionResult<IEnumerable<Ads>>> GetAllAds()
         {
             var ads = await _context.Ads.ToListAsync(); // Fetch all ads from the database
+
+            if (ads == null)
+            {
+                return NotFound();
+            }
+            return ads;
+        }
+
+        [HttpGet("getuserads/{userId}")]
+        public async Task<ActionResult<IEnumerable<Ads>>> GetAllAds(int userId)
+        {
+            var ads = await _context.Ads
+                .Where(ad => ad.UserID == userId)
+                .ToListAsync();
 
             if (ads == null)
             {

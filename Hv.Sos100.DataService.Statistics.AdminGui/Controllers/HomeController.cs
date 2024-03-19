@@ -1,30 +1,28 @@
 using Hv.Sos100.DataService.Statistics.AdminGui.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Text.Json;
 using Hv.Sos100.SingleSignOn;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Hv.Sos100.DataService.Statistics.AdminGui.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AuthenticationService _authenticationService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AuthenticationService authenticationService)
         {
-            _logger = logger;
+            _authenticationService = authenticationService;
         }
+
         public async Task<IActionResult> Index()
         {
-            var authenticationService = new AuthenticationService();
-            var authenticatedSession = await authenticationService.CreateSession("ssoadmin@eventivo.com", "ssoadmin", controllerBase: this, HttpContext);
-            return RedirectToAction("Index", "EventStatistics");
-        }
+            //Create a new session for localhost
+            if (HttpContext.Request.Host.Host == "localhost")
+            {
+                await _authenticationService.CreateSession("ssoadmin@eventivo.com", "ssoadmin", controllerBase: this, HttpContext);
+            }
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return RedirectToAction("Index", "EventStatistics");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
