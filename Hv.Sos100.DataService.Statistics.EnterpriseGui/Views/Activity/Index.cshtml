@@ -6,7 +6,6 @@
 <head>
     <title>Eventivo AktivitetStatistik</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="~/css/activity.css">
     <link rel="stylesheet" href="~/css/site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,14 +35,14 @@
                     <option selected disabled>Select</option>
                     @foreach (var activityData in Model.ActivityList!)
                     {
-                        <option value="@activityData.ActivityStatisticsID">@activityData.ActivityStatisticsID</option>
+                        <option value="@activityData.ActivityStatisticsID">@activityData.ActivityStatisticsID - @(string.IsNullOrEmpty(activityData.Name) ? "Unknown" : activityData.Name)</option>
                     }
                 </select>
             </div>
-            <div class="statistics-itemselector-name">Aktivitetsnamn</div> @* Change to display selected name *@
+            <div class="statistics-itemselector-name" id="statistics-itemselector-name">Aktivitetsnamn</div>
         </div>
 
-        <div class="statistics-data-general-container">
+        <div class="statistics-data-general-container hidden">
             <div class="statistics-data-general-category">
                 <div class="">Kategori:</div>
                 <div class="" id="category"></div>
@@ -54,7 +53,7 @@
             </div>
         </div>
 
-        <div class="statistics-charts-container">
+        <div class="statistics-charts-container hidden">
             <div class="chart-container-gender">
                 <div class="chart-info">
                     <h2>KÖN</h2>
@@ -112,15 +111,23 @@
             var allActivitys = JSON.parse('@Html.Raw(Json.Serialize(Model.ActivityList))');
             var selectedActivity = allActivitys.find(e => e.activityStatisticsID === selectedActivityStatisticsId);
 
+            var statisticsItemName = document.getElementById('statistics-itemselector-name');
+            if (statisticsItemName) {
+                if (selectedActivity.name === null) {
+                    statisticsItemName.innerText = "Unknown";
+                }
+                else {
+                    statisticsItemName.innerText = selectedActivity.name;
+                }
+            }
+
             var totalSavedElement = document.getElementById('totalSaved');
             if (totalSavedElement) {
                 totalSavedElement.innerText = selectedActivity.totalSaved;
             }
 
             var allCategories = JSON.parse('@Html.Raw(Json.Serialize(Model.CategoryList))');
-            console.log(allCategories);
             var selectedCategory = allCategories.find(c => c.CategoryID === selectedActivity.CategoryID);
-            console.log(selectedCategory);
 
             var categoryElement = document.getElementById('category');
             if (categoryElement) {
@@ -140,6 +147,11 @@
 
             genderChart.update();
             ageChart.update();
+
+            var generalContainer = document.querySelector('.statistics-data-general-container');
+            var chartsContainer = document.querySelector('.statistics-charts-container');
+            generalContainer.classList.remove('hidden');
+            chartsContainer.classList.remove('hidden');
         }
     </script>
 
