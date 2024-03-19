@@ -32,6 +32,7 @@
             <div class="statistics-itemselector-select">
                 <label for="advertisement">VÄLJ ANNONS:</label>
                 <select id="advertisement" onchange="updateStatistics()">
+                    <option selected disabled>Select</option>
                     @foreach (var advertisementData in Model)
                     {
                         <option value="@advertisementData.AdvertisementStatisticsID">@advertisementData.AdvertisementStatisticsID</option>
