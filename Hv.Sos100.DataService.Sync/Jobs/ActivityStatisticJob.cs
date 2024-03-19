@@ -31,6 +31,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                     ActivityID = activityItem.ActivityID, 
                     TimeStamp = activityItem.TimeStamp,
                     CategoryID = activityItem.CategoryID,
+                    Name = activityItem.Name,
                 };
                 activityStatisticsList.Add(activityStatisticsItem); 
             }
