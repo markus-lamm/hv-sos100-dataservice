@@ -39,11 +39,10 @@
                     }
                 </select>
             </div>
-            <div class="statistics-itemselector-name">Annonsnamn</div> @* Change to display selected name *@
         </div>
 
 
-        <div class="statistics-data-general-container">
+        <div class="statistics-data-general-container hidden">
             <div class="statistics-data-general-count-ad">
                 <div class="">Antal Visningar:</div>
                 <div class="" id="totalViews"></div>
@@ -62,6 +61,9 @@
             if (totalViewsElement) {
                 totalViewsElement.innerText = selectedAdvertisement.totalViews;
             }
+
+            var generalContainer = document.querySelector('.statistics-data-general-container');
+            generalContainer.classList.remove('hidden');
         }
     </script>
 </body>
