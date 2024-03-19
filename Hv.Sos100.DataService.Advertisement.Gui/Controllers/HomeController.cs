@@ -116,9 +116,9 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                await _logger.CreateLog("Create new advertisement", LogService.Severity.Error, "Failed to upload file or api is down");
+                await _logger.CreateLog("DataService.Advertisement.Gui.HomeController.Create", ex);
                 return View();
             }
         }
@@ -160,9 +160,9 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
                 var responseTask = await _httpClient.DeleteAsync($"api/Ads/{id}");
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                await _logger.CreateLog("Delete advertisement", LogService.Severity.Error, "Failed to delete ad perhaps the api is down");
+                await _logger.CreateLog("DataService.Advertisement.Gui.HomeController.Delete", ex);
                 return View();
             }
         }

@@ -20,7 +20,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             List<Statistics.Api.Models.AdStatistics>? adStatisticsList = await GetAdvertisements();
             if(adStatisticsList == null) 
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.AdExecute", LogService.Severity.Warning, "GetAdvertisements returns null");
+                await _logger.CreateLog("DataService.Statistics.Sync.AdvertisementStaticsJob.Execute", LogService.Severity.Warning, "GetAdvertisements returns null");
                 return; 
             }
 
@@ -40,7 +40,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetAdvertisements", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.AdvertisementStaticsJob.GetAdvertisements", ex);
                 return null;
             }
         }
@@ -53,12 +53,12 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                 var response = await client.PostAsJsonAsync("api/AdStatistics/ad/list", adList);
                 if (!response.IsSuccessStatusCode)
                 {
-                    await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostAdvertisementStatistics", LogService.Severity.Error, "Post to AdStatistics api creates error");
+                    await _logger.CreateLog("DataService.Statistics.Sync.AdvertisementStaticsJob.PostAdvertisementStatistics", LogService.Severity.Error, "Post to AdStatistics api creates error");
                 }
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostAdvertisementStatistics", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.AdvertisementStaticsJob.PostAdvertisementStatistics", ex);
             }
         }
 

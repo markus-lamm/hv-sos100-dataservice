@@ -20,7 +20,7 @@ internal class ApiService
         }
         catch (Exception ex)
         {
-            await _logService.CreateLog("Sso.Api.AuthUser", ex);
+            await _logService.CreateLog("DataService.SingleSignOn.Api.ApiService.AuthUser", ex);
             return null;
         }
     }
