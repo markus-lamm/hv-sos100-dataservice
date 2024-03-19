@@ -15,46 +15,53 @@
     <link rel="icon" href="/images/thumbnail.jpeg" type="image/jpeg"> @*thumbnail*@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
+    @{
+        var isAuthenticated = ViewData["IsAuthenticated"] as string;
+        var userId = ViewData["UserID"] as string;
+        var userRole = ViewData["UserRole"] as string;
+    }
     <header class="header-trollhattan">
         <nav class="navbar bg-custom border-body">
-            @*<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>*@
+
             <a class="navbar-brand" asp-action="Index" asp-controller="Home">
                 <img src="~/images/logo_eventivo.png" alt="Logo" id="index" width="70" height="70" class="d-inline-block align-text-top" />
             </a>
 
+            <a class="btn btn-primary my-2 my-sm-0" asp-action="LoginForm" asp-controller="Events">Login</a>
 
-            <a id="eventLink" class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
-                EVENT
-            </a>
-            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">AKTIVITET</a>
-            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">ORGANISATION</a>
-            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">LOGGNING</a>
-            <a class="nav-link" asp-action="MyProfile" asp-controller="Home">STATISTIK</a>
-
-            <a class="nav-link" href="https://informatik5.ei.hv.se/monitoring">ÖVERVAKNING</a>>
-
-
-
-
+            @if (userRole == "Admin")
+            {
+                <a class="nav-link" href="https://informatik4.ei.hv.se/EVENTADMIN/Events/Index">EVENT</a>
+                <a class="nav-link" href="https://informatik1.ei.hv.se/ActivityWEB/FixedEvents">AKTIVITET</a>
+                <a class="nav-link" href="https://informatik6.ei.hv.se/adsgui">ANNONSER</a>
+                <a class="nav-link" href="https://informatik3.ei.hv.se/konto/UsersWebAPIs">KONTON</a>
+                <a class="nav-link" href="https://informatik6.ei.hv.se/loggui">LOGGNING</a>
+                <a class="nav-link" href="https://informatik2.ei.hv.se/Organizer">ORGANISATION</a>
+                <a class="nav-link" href="https://informatik8.ei.hv.se/places/places/Crudindex">PLATSER</a>
+                <a class="nav-link" href="https://informatik6.ei.hv.se/StatisticAdminGui">STATISTIK</a>
+                <a class="nav-link" href="https://informatik5.ei.hv.se/monitoring">ÖVERVAKNING</a>
+                <a class="btn btn-danger my-2 my-sm-0" asp-action="Logout" asp-controller="Events">Logout</a>
+            }
+            else if (userRole == "Organizer")
+            {
+                <a id="eventLink" class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">EVENT</a>
+                <a class="nav-link" href="https://informatik1.ei.hv.se/ActivityWEB/FixedEvents">AKTIVITET</a>
+                <a class="nav-link" href="https://informatik6.ei.hv.se/StatisticEnterpriseGui">STATISTIK</a>
+                <a class="btn btn-danger my-2 my-sm-0" asp-action="Logout" asp-controller="Events">Logout</a>
+            }
+            else
+            {
+                <h3 style="color: white;">Login as Admin or Organizer to view navbar</h3>
+            }
             <div class="nav-list">
-
                 <div class="vr text-light" style="width: 3px;"></div>
                 <a class="nav-link" href="https://informatik5.ei.hv.se/eventivo/Home/Search">SÖK EVENT <img class="search-icon" src="~/images/searchglass.svg" /></a>
                 <div class="vr text-light" style="width: 3px;"></div>
                 <div id="loginStatus">
-
-                    @* <div id="skeleton-profile-placeholder"></div>  *@  @* FOHLINS CRAZY SHIT FÖR ATT CHECKA INLOGGNING TROR JAG *@
-
+                    @* <div id="skeleton-profile-placeholder"></div>  *@
                     <a class="nav-link line-profile" id="logged-out-menu" asp-action="Login" asp-controller="Home">LOGGA IN</a>
-
                 </div>
-
-
-
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         VÄLJ STAD
@@ -66,26 +73,12 @@
                         <li class="dropdown-city"><a class="dropdown-item" href="https://informatik5.ei.hv.se/eventivo/Vastervik/Home">Västervik</a></li>
                     </ul>
                 </div>
-
-            </div>
-
-        </nav>
-        <nav class="navbar2 bg-custom border-body">
-            <div class="d-flex justify-content-center">
-                <div class="nav-btn nav-item dropdown">
-                    <a class="nav-link" asp-action="Index" asp-controller="Events">ÖVERSIKT EVENT</a>
-                    <a class="nav-link" asp-action="Create" asp-controller="Events">LÄGG TILL EVENT</a>
-
-
-                </div>
             </div>
         </nav>
     </header>
-
     <div class="content">
         @RenderBody()
     </div>
-
     <footer class="footer d-flex justify-content-between align-items-center py-3 my-4">
 
         <div class="footer-wrapper">
@@ -95,7 +88,6 @@
                 <a href="https://facebook.com" class="mb-2"><img class="logo-footer" src="~/images/logo-facebook.png" /><p class="footer-icon-text">Eventivo</p></a>
             </div>
         </div>
-
         <div class="footer-nav">
             <ul class="nav justify-content-center">
                 <li class="nav-item-footer"><a class="nav-link-footer" asp-action="About" asp-controller="Home">OM OSS</a></li>
@@ -133,7 +125,6 @@
         });
     </script>
 
-
     <script>
         function changeFontAndText(element) {
             var navLinks = document.querySelectorAll('.nav-link');
@@ -144,8 +135,6 @@
             element.style.fontWeight = 'bold';
         }
     </script>
-
-
 </body>
 </html>
 
