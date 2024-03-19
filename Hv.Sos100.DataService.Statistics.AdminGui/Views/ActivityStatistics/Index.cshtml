@@ -14,7 +14,7 @@
 }
 <div class="secondNav">
     <div class="secondNavText">
-        <a class="secondNavLink" asp-action="Index" asp-controller="ActivityStatistics">Aktiviteter</a>
+        <a class="gradienttext" asp-action="Index" asp-controller="ActivityStatistics">Aktiviteter</a>
         <a class="secondNavLink" asp-action="Index" asp-controller="EventStatistics">Evenemang</a>
         <a class="secondNavLink" asp-action="Index" asp-controller="AdStatistics">Annonser</a>
     </div>
@@ -59,6 +59,7 @@
                 <th class="tableStyle">Sparad av 16-30 år</th>
                 <th class="tableStyle">Sparad av 31-50 år</th>
                 <th class="tableStyle">Sparad av över 50 år</th> *@
+                <th class="tableStyle">Namn</th>
                 <th class="tableStyle">Kategori</th>
             </tr>
         </thead>
@@ -74,6 +75,7 @@
                 <td class="tableStyle">@activity.Age16To30Saved</td>
                 <td class="tableStyle">@activity.Age31To50Saved</td>
                 <td class="tableStyle">@activity.AgeAbove50Saved</td> *@
+                <td class="tableStyle">@activity?.Name</td>
                 <td class="tableStyle">@category?.Name</td>
             </tr>
         }

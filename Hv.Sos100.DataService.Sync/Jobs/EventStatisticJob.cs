@@ -56,6 +56,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                     {
                         EventID = eventItem.EventID,
                         UserID = organizer.UserID,
+                        Name = eventItem.Name,
                         CategoryID = eventItem.CategoryID,
                         TimeStamp = DateTime.Now,
                         TotalSignups = totalSignups,

@@ -1,0 +1,168 @@
+﻿body {
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-weight: 500;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.categorymenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+    background-color: #181717;
+}
+
+.navbar-nav1 {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .navbar-nav1 li {
+        display: inline-block;
+        margin-right: 1rem; /* Justera avståndet mellan elementen */
+    }
+
+.nav-item1 a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+    .nav-item1 a:hover {
+        color: darkgoldenrod;
+    }
+
+.gradienttext a {
+    font-size: 1rem; /* Justera storleken efter behov */
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+    filter: saturate(200%);
+    text-decoration: none !important; /* Ta bort understrykning */
+}
+
+h1 {
+    font-size: 3rem;
+    background-image: linear-gradient(to right, #FE85B6,#FFBE74, #FEA8C4, #FFBE74); /* Gradient för texten */
+    -webkit-background-clip: text; /* Använd gradienten som textfärg för webkit-baserade webbläsare */
+    background-clip: text; /* Använd gradienten som textfärg */
+    color: transparent; /* Gör texten genomskinlig, så att gradienten syns igenom */
+    filter: saturate(200%);
+    margin-bottom: 1rem;
+}
+
+.statistics-container {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.statistics-itemselector-container {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.statistics-itemselector-select {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 10rem;
+}
+
+select {
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    border: 1px solid #FFA487;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+    select:focus {
+        outline: none;
+    }
+
+
+.statistics-itemselector-name {
+    margin-left: 1rem;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 10rem;
+    font-size: 2rem;
+}
+
+.statistics-data-general-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.statistics-data-general-category {
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 10rem;
+    margin-right: 1rem;
+}
+
+.statistics-data-general-count {
+    padding: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 10rem;
+    border-left: solid 0.5rem white;
+}
+
+.statistics-charts-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.chart-container-gender,
+.chart-container-age{
+    display: flex;
+    padding: 1rem;
+}
+
+.chart-container-age {
+    border-left: solid 0.5rem white;
+}
+
+canvas {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 1400px) {
+    .statistics-charts-container {
+        flex-direction: column;
+    }
+    .chart-container-age {
+        border-left: 0;
+        border-top: solid 0.5rem white;
+    }
+}
