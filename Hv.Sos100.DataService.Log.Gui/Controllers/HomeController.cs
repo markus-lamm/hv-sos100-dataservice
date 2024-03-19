@@ -33,16 +33,17 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
 
                 if (existingSession == false)
                 {
-                    Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
                 }
             }
 
             var userRole = HttpContext.Session.GetString("UserRole");
             if (userRole != "Admin")
             {
-                Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
+            _authenticationService.ReadSessionVariables(controller: this, HttpContext);
             var logs = await _apiService.GetLogs() ?? new();
             logs = logs.OrderByDescending(l => l.TimeStamp).ToList();
             return View(logs);

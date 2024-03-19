@@ -6,6 +6,7 @@ using Hv.Sos100.DataService.Advertisement.Api.Model;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Hv.Sos100.SingleSignOn;
 using Hv.Sos100.Logger;
+using Hv.Sos100.DataService.Advertisement.Gui.Data;
 
 namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 {
@@ -13,13 +14,14 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
     {
         private readonly HttpClient _httpClient = new();
         private readonly string _baseURL = "https://informatik6.ei.hv.se/advertisement/";
+        private readonly AuthenticationUtils _authenticate;
         private readonly AuthenticationService _authenticationService;
         private readonly LogService _logger = new();
 
-        public HomeController( AuthenticationService authenticationService)
+        public HomeController(AuthenticationUtils authenticate, AuthenticationService authenticationService)
         {
+            _authenticate = authenticate;
             _authenticationService = authenticationService;
-
         }
 
         public async Task<IActionResult> Index()
@@ -30,53 +32,44 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
                 await _authenticationService.CreateSession("ssoadmin@eventivo.com", "ssoadmin", controllerBase: this, HttpContext);
             }
 
-            var isAuthenticated = await IsLoggedin();
-            
-            List<Ads>? deserialized = new();
-            _httpClient.BaseAddress = new Uri(_baseURL);
-            HttpResponseMessage result = new();
-
-            if (isAuthenticated)
+            var isAuthenticatedNonCitizen = await _authenticate.IsAuthenticatedNonCitizen(controller: this, HttpContext);
+            if (isAuthenticatedNonCitizen == false)
             {
-                var currentSession = GetSession();
-                var userRole = currentSession!.GetString("UserRole");
-                var userId = currentSession!.GetString("UserID");
-                
-                if (userRole == "Admin")
-                {
-                    result = await _httpClient.GetAsync("api/Ads/getallads");
-                }
-                else if (userRole == "Organizer")
-                {
-                    result = await _httpClient.GetAsync($"api/Ads/getuserads/{userId}");
-                }
-
-                var adsJsonString = await result.Content.ReadAsStringAsync();
-                deserialized = JsonConvert.DeserializeObject<List<Ads>>(adsJsonString);
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
-            return View(deserialized);
+            var userId = HttpContext.Session.GetString("UserID");
+            var userRole = HttpContext.Session.GetString("UserRole");
 
+            _httpClient.BaseAddress = new Uri(_baseURL);
+            HttpResponseMessage result = new();
+            if (userRole == "Admin")
+            {
+                result = await _httpClient.GetAsync("api/Ads/getallads");
+            }
+            else if (userRole == "Organizer")
+            {
+                result = await _httpClient.GetAsync($"api/Ads/getuserads/{userId}");
+            }
+
+            var response = await result.Content.ReadAsStringAsync();
+            List<Ads>? adsList = JsonConvert.DeserializeObject<List<Ads>>(response);
+
+            return View(adsList);
         }
 
         public async Task<IActionResult> Create()
         {
-            if (!await IsLoggedin())
+            var isAuthenticatedNonCitizen = await _authenticate.IsAuthenticatedNonCitizen(controller: this, HttpContext);
+            if (isAuthenticatedNonCitizen == false)
             {
-                ViewBag.ShowLoginModal = true;
-                return View(nameof(Index));
-            }
-
-            var currentSession = GetSession();
-            if (currentSession!.GetString("UserRole") == "Citizen")
-            {
-                return View(nameof(Index));
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
             var imageTypes = new List<string> { "Fyrkantig annons", "Horizontell annons", "Vertikal annons" };
             var imageTypesValues = new List<string> { "square", "horizontal", "vertical" };
 
-            List<SelectListItem> selectListItems = new List<SelectListItem>();
+            List<SelectListItem> selectListItems = new();
 
             for (int i = 0; i < imageTypes.Count; i++)
             {
@@ -89,7 +82,6 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
             ViewData["ImageTypes"] = new SelectList(selectListItems, "Value", "Text");
 
             return View();
-
         }
 
         [HttpPost]
@@ -107,8 +99,7 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
                     ad.ImageSource = $"data:{file.ContentType};base64,{byte64string}";
                 }
 
-                var currentSession = GetSession();
-                var userId = currentSession!.GetString("UserID");
+                var userId = HttpContext.Session.GetString("UserID");
                 ad.UserID = int.Parse(userId!);
 
                 _httpClient.BaseAddress = new Uri(_baseURL);
@@ -126,10 +117,10 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
         // GET: MovieAPIController/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            if (!await IsLoggedin())
+            var isAuthenticatedNonCitizen = await _authenticate.IsAuthenticatedNonCitizen(controller: this, HttpContext);
+            if (isAuthenticatedNonCitizen == false)
             {
-                ViewBag.ShowLoginModal = true;
-                return View(nameof(Index));
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
             if (id == null)
@@ -147,7 +138,6 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
             return View(ad);
         }
-
 
         // POST: MovieAPIController/Delete/5
         [HttpPost]
@@ -169,47 +159,13 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
 
         public async Task<List<Ads>> GetAds()
         {
-
             _httpClient.BaseAddress = new Uri(_baseURL);
 
             var result = await _httpClient.GetAsync("api/Ads/getallads");
             var adsJsonString = await result.Content.ReadAsStringAsync();
             var deserialized = JsonConvert.DeserializeObject<List<Ads>>(adsJsonString);
 
-
             return deserialized ?? new List<Ads>();
-            
-        }
-
-        public async Task<bool> IsLoggedin()
-        {
-            var existingSession = await _authenticationService.ResumeSession(controllerBase: this, HttpContext);
-            if (existingSession)
-            {
-                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
-            }
-
-            return bool.TryParse(HttpContext.Session.GetString("IsAuthenticated"), out _);
-        }
-        public ISession? GetSession()
-        {
-            return HttpContext.Session;
-        }
-
-        public async Task<IActionResult> Login(string email, string password)
-        {
-            var authenticationResult = await _authenticationService.CreateSession(email, password, controllerBase: this, HttpContext);
-            if (authenticationResult)
-            {
-                _authenticationService.ReadSessionVariables(controller: this, HttpContext);
-            }
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Logout()
-        {
-            _authenticationService.EndSession(controllerBase: this, HttpContext);
-            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
