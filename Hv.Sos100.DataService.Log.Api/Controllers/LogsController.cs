@@ -64,6 +64,11 @@ public class LogsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Models.Log>> PostLog(Models.Log log)
     {
+        if (log.SourceSystem == "mySystem" || log.Message == "this is a message")
+        {
+            return BadRequest("Log posts containing mySystem or this is a message will be rejected");
+        }
+
         _context.Logs.Add(log);
         await _context.SaveChangesAsync();
 
@@ -81,6 +86,18 @@ public class LogsController : ControllerBase
         }
 
         _context.Logs.Remove(log);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    // DELETE: api/Logs/BadLogs
+    [HttpDelete("BadLogs")]
+    public async Task<IActionResult> DeleteBadLogs()
+    {
+        var logsToDelete = _context.Logs.Where(log => log.SourceSystem == "mySystem" || log.Message == "this is a message");
+
+        _context.Logs.RemoveRange(logsToDelete);
         await _context.SaveChangesAsync();
 
         return NoContent();
