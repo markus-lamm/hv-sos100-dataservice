@@ -1,5 +1,7 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -19,4 +21,76 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+h1 {
+    font-size: 50px;
+    background-image: linear-gradient(to right, #FE85B6, #FFBE74, #FEA8C4, #FFBE74);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: saturate(200%);
+    padding-bottom: 10px;
+}
+.titelContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 52vw;
+    padding-top: 8vh;
+    padding-bottom: 6vh;
+    
+}
+.btnCreate {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFE26F;
+    color: #000000;
+    padding: 15px;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 5px 5px;
+    border: none;
+}
+.btnDelete {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    background-color: #FF6F6F;
+    color: #FFFFFF;
+    white-space: nowrap;
+    padding: 15px;
+    border-radius: 5px 5px;
+    border: none;
+}
+h1::before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 1px;
+    bottom: 0;
+    left: 0%;
+    border-bottom: 5px solid #131313;
+}
+.createContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 90vw;
+}
+.createBox{
+    width: 70vh;
+    gap: 10%;
+}
+.deleteTitel{
+    padding: 3%;
+}
+.deleteContainer{
+    display:flex;
+    flex-direction: column;
+    margin-left: 5vw;
+    margin-bottom: 4vh;
+}
+dd{
+    margin-bottom: 1vh;
 }
