@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Event</title>
-    <link rel="stylesheet" href="~/css/styles.css">
+    <title>Eventivo EventStatistik</title>
+    <link rel="stylesheet" href="~/css/event.css">
+    <link rel="stylesheet" href="~/css/site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -24,47 +25,53 @@
         </ul>
     </nav>
 
-    <h1>EVENTSTATISTIK</h1>
-    <hr>
-   
-    <div class="ChooseEvent"> 
-        <label for="events">VÄLJ EVENT:</label>
-        <select id="events" onchange="updateStatistics()">
-            @foreach (var eventData in Model.EventList!)
-            {
-                <option value="@eventData.EventStatisticsID">@eventData.EventStatisticsID</option>
-            }
-        </select>
-        <div class="Eventname"> <h3>Eventnamn</h3></div>
-    </div>
+    <div class="statistics-container">
 
-    <div class="chart-container1">
-    <div class="signup-wrapper">
-    <div class="signup-label">Kategori:</div>
-            <div class="signup-count" id="category"></div>
-    </div>
-        <div class="chart-info">
-            <div class="signup-wrapper">
-                <div class="signup-label">Antal anmälda:</div>
-                <div class="signup-count" id="totalSignups"></div>
+        <h1>EVENTSTATISTIK</h1>
+
+        <div class="statistics-itemselector-container">
+            <div class="statistics-itemselector-select">
+                <label for="events">VÄLJ EVENT:</label>
+                <select id="events" onchange="updateStatistics()">
+                    <option selected disabled>Select</option>
+                    @foreach (var eventData in Model.EventList!)
+                    {
+                        <option value="@eventData.EventStatisticsID">@eventData.EventStatisticsID</option>
+                    }
+                </select>
+            </div>
+            <div class="statistics-itemselector-name">Eventnamn</div> @* Change to display selected name *@
+        </div>
+
+        <div class="statistics-data-general-container">
+            <div class="statistics-data-general-category">
+                <div class="">Kategori:</div>
+                <div class="" id="category"></div>
+            </div>
+            <div class="statistics-data-general-count">
+                <div class="">Antal Anmälda:</div>
+                <div class="" id="totalSignups"></div>
             </div>
         </div>
-    </div>
 
-    <div class="chart-container">
-        <div class="chart-info">
-            <h2>KÖN</h2>
-            <p>Statistik för hur många av vardera kön som anmält sig.</p>
-        </div>
-        <canvas id="GenderChart"></canvas>
-    </div>
+        <div class="statistics-charts-container">
+            <div class="chart-container-gender">
+                <div class="chart-info">
+                    <h2>KÖN</h2>
+                    <p>Statistik för hur många av vardera kön som anmält sig.</p>
+                </div>
+                <canvas id="GenderChart"></canvas>
+            </div>
 
-    <div class="chart-container">
-        <div class="chart-info">
-            <h2>ÅLDER</h2>
-            <p>Statistik för hur många i varje åldersgrupp som anmält sig.</p>
+            <div class="chart-container-age">
+                <div class="chart-info">
+                    <h2>ÅLDER</h2>
+                    <p>Statistik för hur många i varje åldersgrupp som anmält sig.</p>
+                </div>
+                <canvas id="AgeChart"></canvas>
+            </div>
         </div>
-        <canvas id="AgeChart"></canvas>
+
     </div>
 
     <script>

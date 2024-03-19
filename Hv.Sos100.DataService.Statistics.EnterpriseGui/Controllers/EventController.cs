@@ -2,7 +2,7 @@
 using Hv.Sos100.DataService.Statistics.EnterpriseGui.Data;
 using Hv.Sos100.DataService.Statistics.EnterpriseGui.Models;
 
-namespace DataGui.Controllers
+namespace Hv.Sos100.DataService.Statistics.EnterpriseGui.Controllers
 {
     public class EventController : Controller
     {
@@ -23,7 +23,7 @@ namespace DataGui.Controllers
                 return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
-            List<Hv.Sos100.DataService.Statistics.Api.Models.EventStatistics>? eventList = await _apiService.GetApiRequest<Hv.Sos100.DataService.Statistics.Api.Models.EventStatistics>("https://informatik6.ei.hv.se/statisticapi/api/EventStatistics");
+            List<Api.Models.EventStatistics>? eventList = await _apiService.GetApiRequest<Api.Models.EventStatistics>("https://informatik6.ei.hv.se/statisticapi/api/EventStatistics");
             if (eventList == null)
             {
                 ViewBag.Message = "Tyvärr gick något fel";
