@@ -26,11 +26,11 @@
 
     <div class="statistics-container">
 
-        <h1>EVENTSTATISTIK</h1>
+        <h1>EVENEMANGSSTATISTIK</h1>
 
         <div class="statistics-itemselector-container">
             <div class="statistics-itemselector-select">
-                <label for="events">VÄLJ EVENT:</label>
+                <label for="events">VÄLJ EVENEMANG:</label>
                 <select id="events" onchange="updateStatistics()">
                     <option selected disabled>Select</option>
                     @foreach (var eventData in Model.EventList!)
@@ -39,7 +39,7 @@
                     }
                 </select>
             </div>
-            <div class="statistics-itemselector-name" id="statistics-itemselector-name">Eventnamn</div>
+            <div class="statistics-itemselector-name" id="statistics-itemselector-name">Evenemangsnamn</div>
         </div>
 
         <div class="statistics-data-general-container hidden">
@@ -110,6 +110,7 @@
             var selectedEventStatisticsId = parseInt(document.getElementById('events').value);
             var allEvents = JSON.parse('@Html.Raw(Json.Serialize(Model.EventList))');
             var selectedEvent = allEvents.find(e => e.eventStatisticsID === selectedEventStatisticsId);
+            
 
             var statisticsItemName = document.getElementById('statistics-itemselector-name');
             if (statisticsItemName) {
@@ -127,8 +128,11 @@
             }
 
             var allCategories = JSON.parse('@Html.Raw(Json.Serialize(Model.CategoryList))');
-            var selectedCategory = allCategories.find(c => c.CategoryID === selectedEvent.CategoryID);
+            
+     
+            var selectedCategory = allCategories.find(c => c.categoryID === selectedEvent.categoryID);
 
+            
             var categoryElement = document.getElementById('category');
             if (categoryElement) {
                 categoryElement.innerText = selectedCategory ? selectedCategory.name : 'Unknown';
