@@ -15,6 +15,7 @@ namespace Hv.Sos100.DataService.Statistics.Api.Models
         public int? Age16To30Saved {  get; set; }
         public int? Age31To50Saved { get; set; }
         public int? AgeAbove50Saved { get; set; }
+        public string? Name { get; set; }
     }
 }
           

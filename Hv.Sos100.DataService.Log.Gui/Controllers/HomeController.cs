@@ -27,23 +27,24 @@ namespace Hv.Sos100.DataService.Log.Gui.Controllers
             }
 
             var isAuthenticated = HttpContext.Session.GetString("IsAuthenticated");
-            if (isAuthenticated == null)
+            if (isAuthenticated != "true")
             {
                 var existingSession = await _authenticationService.ResumeSession(controllerBase:this, HttpContext);
 
                 if (existingSession == false)
                 {
-                    Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                    return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
                 }
             }
 
             var userRole = HttpContext.Session.GetString("UserRole");
             if (userRole != "Admin")
             {
-                Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
+                return Redirect("https://informatik5.ei.hv.se/eventivo/Home/Login");
             }
 
-            var logs = await _apiService.GetLogs() ?? new List<Api.Models.Log>();
+            _authenticationService.ReadSessionVariables(controller: this, HttpContext);
+            var logs = await _apiService.GetLogs() ?? new();
             logs = logs.OrderByDescending(l => l.TimeStamp).ToList();
             return View(logs);
         }

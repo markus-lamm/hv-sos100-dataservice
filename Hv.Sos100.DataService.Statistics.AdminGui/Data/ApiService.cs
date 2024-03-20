@@ -23,7 +23,7 @@ public class ApiService
         }
         catch(Exception ex)
         {
-            await _logService.CreateLog("Hv.Sos100.DataService.Statistics.AdminGui.GetApiRequest", ex);
+            await _logService.CreateLog("DataService.Statistics.AdminGui.ApiService.GetApiRequest", ex);
             return null;
         }
     }

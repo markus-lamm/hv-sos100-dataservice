@@ -1,7 +1,7 @@
 ﻿using Hv.Sos100.SingleSignOn;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DataGui.Controllers
+namespace Hv.Sos100.DataService.Statistics.EnterpriseGui.Controllers
 {
     public class HomeController : Controller
     {

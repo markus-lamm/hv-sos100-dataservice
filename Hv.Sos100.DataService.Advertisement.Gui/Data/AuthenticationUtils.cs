@@ -1,7 +1,7 @@
 ﻿using Hv.Sos100.SingleSignOn;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hv.Sos100.DataService.Statistics.AdminGui.Data;
+namespace Hv.Sos100.DataService.Advertisement.Gui.Data;
 
 public class AuthenticationUtils
 {
@@ -12,7 +12,7 @@ public class AuthenticationUtils
         _authenticationService = authenticationService;
     }
 
-    public async Task<bool> IsAuthenticatedAdmin(Controller controller, HttpContext httpContext)
+    public async Task<bool> IsAuthenticatedNonCitizen(Controller controller, HttpContext httpContext)
     {
         var isAuthenticated = httpContext.Session.GetString("IsAuthenticated");
         if (isAuthenticated == null)
@@ -23,7 +23,7 @@ public class AuthenticationUtils
                 return false;
             }
             var userRole = httpContext.Session.GetString("UserRole");
-            if (userRole != "Admin")
+            if (userRole == "Citizen")
             {
                 return false;
             }

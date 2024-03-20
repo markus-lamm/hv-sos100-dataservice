@@ -20,21 +20,21 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             List<Event>? eventList = await GetEvents();
             if(eventList == null)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.EventExecute", LogService.Severity.Warning, "GetEvents returns null");
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.Execute", LogService.Severity.Warning, "GetEvents returns null");
                 return;
             }
 
             List<Citizen>? citizenList = await GetCitizens();
             if(citizenList == null)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.EventExecute", LogService.Severity.Warning, "GetCitizens returns null");
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.Execute", LogService.Severity.Warning, "GetCitizens returns null");
                 return;
             }
 
             List<Organizer>? organizerList = await GetOrganizers();
             if(organizerList == null)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.EventExecute", LogService.Severity.Warning, "GetOrganizers returns null");
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.Execute", LogService.Severity.Warning, "GetOrganizers returns null");
                 return;
             }
 
@@ -56,6 +56,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                     {
                         EventID = eventItem.EventID,
                         UserID = organizer.UserID,
+                        Name = eventItem.Name,
                         CategoryID = eventItem.CategoryID,
                         TimeStamp = DateTime.Now,
                         TotalSignups = totalSignups,
@@ -84,7 +85,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetEvents", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.GetEvents", ex);
                 return null;
             }
         }
@@ -102,7 +103,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetCitizens", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.GetCitizens", ex);
                 return null;
             }
         }
@@ -120,7 +121,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetOrganizers", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.GetOrganizers", ex);
                 return null;
             }
         }
@@ -133,12 +134,12 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                 var response = await client.PostAsJsonAsync("api/EventStatistics/event/list", eventStatisticsList);
                 if (!response.IsSuccessStatusCode)
                 {
-                    await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostEventStatistics", LogService.Severity.Error, "Post to EventStatistics api creates error");
+                    await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.PostEventStatistics", LogService.Severity.Error, "Post to EventStatistics api creates error");
                 }
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostEventStatistics", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.EventStatisticJob.PostEventStatistics", ex);
             }
         }
 

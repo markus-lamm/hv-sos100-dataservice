@@ -20,7 +20,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             List<Activity>? activityList = await GetActivities();
             if(activityList == null) 
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.ActivityExecute", LogService.Severity.Warning, "GetActivities returns null");
+                await _logger.CreateLog("DataService.Statistics.Sync.ActivityStatisticJob.Execute", LogService.Severity.Warning, "GetActivities returns null");
                 return; 
             }
 
@@ -31,6 +31,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                     ActivityID = activityItem.ActivityID, 
                     TimeStamp = activityItem.TimeStamp,
                     CategoryID = activityItem.CategoryID,
+                    Name = activityItem.Name,
                 };
                 activityStatisticsList.Add(activityStatisticsItem); 
             }
@@ -51,7 +52,7 @@ namespace Hv.Sos100.DataService.Sync.Jobs
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.GetActivities", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.ActivityStatisticJob.GetActivities", ex);
                 return null;
             }
         }
@@ -63,12 +64,12 @@ namespace Hv.Sos100.DataService.Sync.Jobs
                 var client = _httpClientFactory.CreateClient("statisticapi");
                 var response = await client.PostAsJsonAsync("api/ActivityStatistics/activity/list", activityList);
                 if (!response.IsSuccessStatusCode) { 
-                    await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostActivityStatistics", LogService.Severity.Error, "Post to ActivityStatistics api creates error"); 
+                    await _logger.CreateLog("DataService.Statistics.Sync.ActivityStatisticJob.PostActivityStatistics", LogService.Severity.Error, "Post to ActivityStatistics api creates error"); 
                 }
             }
             catch (Exception ex)
             {
-                await _logger.CreateLog("Hv.Sos100.DataService.Sync.PostActivityStatistics", ex);
+                await _logger.CreateLog("DataService.Statistics.Sync.ActivityStatisticJob.PostActivityStatistics", ex);
             }
         }
 
