@@ -1,6 +1,9 @@
-﻿body {
+﻿
+body
+{
     background-size: cover;
     background-repeat: no-repeat;
+    font-family: 'Istok Web', sans-serif;
     font-weight: 500;
     font-style: normal;
     margin: 0;
@@ -29,7 +32,7 @@
 .nav-item1 a {
     color: #fff;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 14px;
     transition: color 0.3s ease;
 }
 
