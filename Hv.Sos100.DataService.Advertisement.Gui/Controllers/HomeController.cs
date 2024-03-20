@@ -173,5 +173,12 @@ namespace Hv.Sos100.DataService.Advertisement.Gui.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Logout()
+        {
+            _authenticationService.EndSession(controllerBase: this, HttpContext);
+
+            return Redirect("https://informatik5.ei.hv.se/eventivo");
+        }
     }
 }

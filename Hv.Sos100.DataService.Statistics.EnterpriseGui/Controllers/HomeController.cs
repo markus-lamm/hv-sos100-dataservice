@@ -22,5 +22,12 @@ namespace Hv.Sos100.DataService.Statistics.EnterpriseGui.Controllers
 
             return RedirectToAction("Index", "Event");
         }
+
+        public IActionResult Logout()
+        {
+            _authenticationService.EndSession(controllerBase: this, HttpContext);
+
+            return Redirect("https://informatik5.ei.hv.se/eventivo");
+        }
     }
 }
