@@ -127,7 +127,7 @@
             }
 
             var allCategories = JSON.parse('@Html.Raw(Json.Serialize(Model.CategoryList))');
-            var selectedCategory = allCategories.find(c => c.CategoryID === selectedActivity.CategoryID);
+            var selectedCategory = allCategories.find(c => c.categoryID === selectedActivity.categoryID);
 
             var categoryElement = document.getElementById('category');
             if (categoryElement) {

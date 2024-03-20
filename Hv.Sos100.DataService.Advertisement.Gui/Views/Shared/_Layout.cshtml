@@ -6,7 +6,6 @@
     <title>Eventivo Annons</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Hv.Sos100.DataService.Log.Gui.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://informatik4.ei.hv.se/CSS/eventivoNavbarFinal.css" />
     <link rel="icon" href="~/images/logo_eventivo.png" type="image/png">
 </head>
@@ -34,7 +33,7 @@
                 <a class="nav-link" href="https://informatik8.ei.hv.se/places/places/Crudindex">PLATSER</a>
                 <a class="nav-link" href="https://informatik6.ei.hv.se/StatisticAdminGui">STATISTIK</a>
                 <a class="nav-link" href="https://informatik5.ei.hv.se/monitoring">ÖVERVAKNING</a>
-                <a class="btn btn-danger my-2 my-sm-0" asp-action="Logout" asp-controller="Events">Logout</a>
+                <a class="btn btn-danger my-2 my-sm-0" asp-action="Logout" asp-controller="Home">Logout</a>
             }
             else if (userRole == "Organizer")
             {
@@ -42,7 +41,7 @@
                 <a class="nav-link" href="https://informatik1.ei.hv.se/ActivityWEB/FixedEvents">AKTIVITET</a>
                 <a class="nav-link" href="https://informatik6.ei.hv.se/StatisticEnterpriseGui">STATISTIK</a>
                 <a class="nav-link" href="https://informatik6.ei.hv.se/adsgui">ANNONSER</a>
-                <a class="btn btn-danger my-2 my-sm-0" asp-action="Logout" asp-controller="Events">Logout</a>
+                <a class="btn btn-danger my-2 my-sm-0" asp-action="Logout" asp-controller="Home">Logout</a>
             }
             else
             {
