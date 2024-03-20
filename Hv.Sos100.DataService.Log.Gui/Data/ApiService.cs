@@ -10,13 +10,15 @@ public class ApiService
 
     public async Task<List<Api.Models.Log>?> GetLogs()
     {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/api/Logs");
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            await _logService.CreateLog("Log.Api.GetLogs", LogService.Severity.Error, response.ReasonPhrase ?? "Unknown api call error");
+            var response = await _httpClient.GetAsync($"{BaseUrl}/api/Logs");
+            return await response.Content.ReadFromJsonAsync<List<Api.Models.Log>>();
+        }
+        catch (Exception ex)
+        {
+            await _logService.CreateLog("DataService.Log.Gui.ApiService.GetLogs", ex);
             return null;
         }
-
-        return await response.Content.ReadFromJsonAsync<List<Api.Models.Log>>();
     }
 }

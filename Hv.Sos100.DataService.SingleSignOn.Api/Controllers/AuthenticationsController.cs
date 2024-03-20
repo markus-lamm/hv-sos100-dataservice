@@ -122,8 +122,8 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    await _logService.CreateLog("Sso.Api.ValidateNewSession", ex);
-                    return BadRequest("The api had a unknown database error");
+                    await _logService.CreateLog("DataService.SingleSignOn.Api.AuthenticationsController.ValidateNewSession", ex);
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The api had an unknown database error");
                 }
 
                 return Ok(existingAuthentication);
@@ -145,8 +145,8 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             }
             catch (Exception ex)
             {
-                await _logService.CreateLog("Sso.Api.ValidateNewSession", ex);
-                return BadRequest("The api had a unknown database error");
+                await _logService.CreateLog("DataService.SingleSignOn.Api.AuthenticationsController.ValidateNewSession", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "The api had an unknown database error");
             }
 
             // Clear sensitive data before returning
@@ -178,8 +178,8 @@ namespace Hv.Sos100.DataService.SingleSignOn.Api.Controllers
             }
             catch (Exception ex)
             {
-                await _logService.CreateLog("Sso.Api.ValidateExistingSession", ex);
-                return BadRequest("The api had a unknown database error");
+                await _logService.CreateLog("DataService.SingleSignOn.Api.AuthenticationsController.ValidateExistingSession", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "The api had an unknown database error");
             }
 
             // Clear sensitive data before returning

@@ -153,6 +153,10 @@ canvas {
     margin-bottom: 20px;
 }
 
+.hidden {
+    display: none;
+}
+
 @media (max-width: 1400px) {
     .statistics-charts-container {
         flex-direction: column;

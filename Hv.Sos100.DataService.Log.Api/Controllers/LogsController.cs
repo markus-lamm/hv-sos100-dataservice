@@ -92,10 +92,10 @@ public class LogsController : ControllerBase
     }
 
     // DELETE: api/Logs/BadLogs
-    [HttpDelete("BadLogs")]
-    public async Task<IActionResult> DeleteBadLogs()
+    [HttpDelete("BadLogs/{sourceSystemValue}")]
+    public async Task<IActionResult> DeleteBadLogs(string sourceSystemValue)
     {
-        var logsToDelete = _context.Logs.Where(log => log.SourceSystem == "mySystem" || log.Message == "this is a message");
+        var logsToDelete = _context.Logs.Where(log => log.SourceSystem == sourceSystemValue);
 
         _context.Logs.RemoveRange(logsToDelete);
         await _context.SaveChangesAsync();

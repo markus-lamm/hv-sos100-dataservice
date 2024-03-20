@@ -28,6 +28,7 @@ public class AuthenticationUtils
                 return false;
             }
         }
+        _authenticationService.ReadSessionVariables(controller: controller, httpContext);
         return true;
     }
 }

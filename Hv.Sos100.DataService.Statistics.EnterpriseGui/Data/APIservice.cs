@@ -23,7 +23,7 @@ namespace Hv.Sos100.DataService.Statistics.EnterpriseGui.Data
             }
             catch (Exception ex)
             {
-                await _logService.CreateLog("Hv.Sos100.DataService.Statistics.AdminGui.GetApiRequest", ex);
+                await _logService.CreateLog("DataService.Statistics.EnterpriseGui.ApiService.GetApiRequest", ex);
                 return null;
             }
         }
