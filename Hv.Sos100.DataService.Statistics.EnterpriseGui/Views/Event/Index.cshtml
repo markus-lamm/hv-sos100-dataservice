@@ -39,7 +39,7 @@
                     }
                 </select>
             </div>
-            <div class="statistics-itemselector-name" id="statistics-itemselector-name">Eventnamn</div>
+            <div class="statistics-itemselector-name" id="statistics-itemselector-name">Evenemangsnamn</div>
         </div>
 
         <div class="statistics-data-general-container hidden">
@@ -128,16 +128,11 @@
             }
 
             var allCategories = JSON.parse('@Html.Raw(Json.Serialize(Model.CategoryList))');
-            console.log(selectedEvent);
-            console.log(allCategories);
             
+     
             var selectedCategory = allCategories.find(c => c.categoryID === selectedEvent.categoryID);
 
             
-
-            console.log(selectedCategory);
-            
-
             var categoryElement = document.getElementById('category');
             if (categoryElement) {
                 categoryElement.innerText = selectedCategory ? selectedCategory.name : 'Unknown';
