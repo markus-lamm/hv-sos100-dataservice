@@ -5,6 +5,6 @@
         public int ActivityID { get; set; }
         public DateTime TimeStamp { get; set; }
         public int CategoryID { get; set; }
-        public string? Name { get; internal set; }
+        public string? Name { get; set; }
     }
 }

@@ -20,9 +20,9 @@ namespace Hv.Sos100.DataService.Sync.Shared
             options.AddJob<T>(jobBuilder => jobBuilder.WithIdentity(JobKey.Create(jobName)))
                    .AddTrigger(trigger => trigger.ForJob(jobName).WithDailyTimeIntervalSchedule
                       (s =>
-                         s.WithIntervalInHours(8)
+                         s.WithIntervalInHours(1)
                         .OnEveryDay()
-                        .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(17, 0))
+                        .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(00, 0))
                       ));
         }
     }
