@@ -1,4 +1,3 @@
-
 using Hv.Sos100.DataService.Statistics.Api.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +15,11 @@ namespace Hv.Sos100.DataService.Statistics.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options => options.AddPolicy("StatisticPolicy", builder =>
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
+
             builder.Services.AddDbContext<StatisticsContext>(options => 
             options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerDatabase")));
 
@@ -29,8 +33,8 @@ namespace Hv.Sos100.DataService.Statistics.Api
 
             app.UseAuthorization();
 
-
-            app.MapControllers();
+            app.UseCors("StatisticPolicy");
+            app.MapControllers().RequireCors("StatisticPolicy");
 
             app.Run();
         }
